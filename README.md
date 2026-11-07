@@ -29,9 +29,11 @@ adjacent samples, and pair it with each state variable. If BACON finds an invari
   comparison is between their search methods.
 - BACON.1 needed fixes for ODE data (negative derivatives, oscillating signals, a retry
   loop that always "finds" something). Each one is a named switch (`--bacon-fixes`), and
-  `--bacon-fixes none` runs the original algorithm. Current defaults: B1, B3, B4, B5.
+  `--bacon-fixes none` runs the original algorithm. Current defaults: B1, B3, B4, B5, B6.
 - B5 also starts BACON's search from per-unit rates (`Dx_i/x_j`), because BACON.1's
   up/down heuristic never proposes them when a derivative rises and then falls.
+- B6 makes BACON's straight-line test robust: a Theil–Sen slope, and the line must pass the
+  same constancy test as every other law, with no leftover trend.
 - The default BACON variant is **BACON-dt-robust**: a law counts as constant when the
   *typical* point is within tolerance (median-based), not *every* point. The strict
   variant (`--bacon-variants strict`) is BACON's original test; it only ever worked on
@@ -51,7 +53,7 @@ the comparison fair in both directions.
 |---|---|
 | `systems.py` | Ground-truth ODEs (decay, logistic, oscillator, power decay), clean trajectories, noise (std = level × std of each state) |
 | `derivatives.py` | Derivative estimates given to **both** methods: `fd` (central differences, PySINDy's default) and `sfd` (Savitzky–Golay smoothed, window 11) |
-| `bacon_dt.py` | BACON.1 subclass with derivative columns, switchable fixes B1–B5 (default B1, B3, B4, B5) and the robust variant (default) |
+| `bacon_dt.py` | BACON.1 subclass with derivative columns, switchable fixes B1–B6 (default B1, B3–B6) and the robust variant (default) |
 | `sindy_runner.py` | PySINDy: polynomial library degree 3, STLSQ, threshold chosen by a sweep |
 | `scoring.py` | Term structure match, coefficient error, error when simulating the learned ODE |
 | `run_test.py` | Runs one system across noise levels × seeds × derivative methods; writes results + manifest |
@@ -79,7 +81,8 @@ the comparison fair in both directions.
 | 4 | fixes B1–B4, both variants | `run_test.py --system oscillator --bacon-fixes sign_aware signed_constancy bounded_retry intercept_vs_std --bacon-variants strict robust` (and `--n-traj 3`) |
 | rerun 1 | as Test 4, every system | see `experiments.sh` (`results/rerun1/`) |
 | rerun 2 | fixes B1, B3, B4, robust only | see `experiments.sh` (`results/rerun2/`) |
-| 5, 6 (rerun 3) | current defaults: fixes B1, B3, B4, B5, robust only | `run_test.py --system <name>` (`results/rerun3/`); PySINDy side run: `--system powerdecay --sindy-library poly+halfpowers` |
+| 5, 6 (rerun 3) | fixes B1, B3, B4, B5, robust only | see `experiments.sh` (`results/rerun3/`) |
+| 7 (rerun 4) | current defaults: fixes B1, B3–B6, robust only | `run_test.py --system <name>` (`results/rerun4/`); PySINDy side run: `--system powerdecay --sindy-library poly+halfpowers` |
 
 "Recovered" = exactly the right terms **and** coefficients within 5%.
 
@@ -444,3 +447,78 @@ altered any earlier result.
 1. A robust straight-line test for BACON (e.g. fit on the median trend, not every point):
    the current bottleneck on logistic and power decay above 1% noise.
 2. Next system: Lotka–Volterra (two interacting species; `Dx/x` is a straight line in `y`).
+
+### Test 7: robust straight-line test (B6), every system rerun
+BACON.1 accepts a straight-line law `b - m·a = c` only if the least-squares correlation is
+almost perfect (`1 - |r|` < 0.026 at its loosest), which noise breaks even when the line is
+clearly there. New fix **B6 `robust_line`**:
+1. Slope by **Theil–Sen** (median of all pairwise slopes; up to ~29% of points can be way
+   off without moving it).
+2. The leftover `b - m·a` must pass **the same constancy test as every other law**, at the
+   current tolerance δ, so lines, ratios and products are held to one standard.
+3. **No leftover trend:** split the data into thirds by `a`. If one third's median leftover
+   is both significantly off (more than 3 standard errors) and more than δ/2 off, it's a
+   curve, not a line. Without this, the first version accepted power decay's curved
+   `x/Dx` as a line; without the δ/2 floor, it rejected true lines on clean data.
+
+Config: fixes B1, B3, B4, B5, B6, robust variant, PySINDy threshold sweep, RK45.
+`./experiments.sh run 8 rerun4`, results in `results/rerun4/`. Cells: exactly recovered /
+runs, fd · sfd. (The PySINDy half-power side run on power decay is unchanged from Test 6.)
+
+**decay** (fd · sfd)
+
+| method | 0% | 1% | 5% | 10% |
+|---|---|---|---|---|
+| BACON-dt-robust | 1/1 · 1/1 | 3/5 · 5/5 | 0/5 · 4/5 | 0/5 · 0/5 |
+| PySINDy | 1/1 · 1/1 | 5/5 · 5/5 | 4/5 · 5/5 | 2/5 · 3/5 |
+
+**logistic** (fd · sfd)
+
+| method | 0% | 1% | 5% | 10% |
+|---|---|---|---|---|
+| BACON-dt-robust | 1/1 · 1/1 | 5/5 · 5/5 | 1/5 · 4/5 | 0/5 · 1/5 |
+| PySINDy | 1/1 · 1/1 | 4/5 · 5/5 | 1/5 · 3/5 | 1/5 · 3/5 |
+
+**oscillator** (fd · sfd)
+
+| method | 0% | 1% | 5% | 10% |
+|---|---|---|---|---|
+| BACON-dt-robust | 1/1 · 1/1 | 5/5 · 5/5 | 1/5 · 5/5 | 0/5 · 4/5 |
+| PySINDy | 0/1 · 0/1 | 5/5 · 5/5 | 3/5 · 5/5 | 2/5 · 2/5 |
+
+**oscillator (3 trajectories)** (fd · sfd)
+
+| method | 0% | 1% | 5% | 10% |
+|---|---|---|---|---|
+| BACON-dt-robust | 1/1 · 1/1 | 5/5 · 5/5 | 0/5 · 5/5 | 0/5 · 5/5 |
+| PySINDy | 1/1 · 1/1 | 5/5 · 5/5 | 5/5 · 5/5 | 5/5 · 5/5 |
+
+**powerdecay** (fd · sfd)
+
+| method | 0% | 1% | 5% | 10% |
+|---|---|---|---|---|
+| BACON-dt-robust | 1/1 · 1/1 | 0/5 · 4/5 | 0/5 · 0/5 | 0/5 · 0/5 |
+| PySINDy | 0/1 · 0/1 | 0/5 · 0/5 | 0/5 · 0/5 | 0/5 · 0/5 |
+
+**Takeaways**
+- **Logistic jumped:** 5% noise 0/5 → 4/5 (smoothed) and 1/5 (raw), 10% noise 0/5 → 1/5
+  (smoothed), and raw derivatives at 1% noise 0/5 → 5/5. BACON now matches or beats PySINDy
+  on logistic at 0–5% noise. Every other logistic law it returns has the right form, with
+  coefficients 5–8% off.
+- **Oscillator improved slightly** (5% raw 0/5 → 1/5) and returns no wrong-form laws.
+- **Decay and power decay lost a little.** Decay at 1% raw derivatives went 5/5 → 3/5 and at 5%
+  smoothed 5/5 → 4/5; power decay at 1% smoothed went 5/5 → 4/5. In each case a false
+  straight line (e.g. `0.55·Dx + x/Dx = -2.49`) passed at a tighter tolerance than the true
+  law. At 5% noise power decay now returns wrong laws instead of nothing.
+- **The trade:** on BACON-dt-robust over all 5 setups, exact recoveries 74 → 82 of 160 and
+  wrong-form laws 8 → 11. Details in CHANGES_FROM_BACON.md, ablation 4.
+- **With B6 on, B4 has no effect any more** (B6's constancy test already rejects lines with
+  `c ≈ 0`). A candidate to drop, like B2.
+- **Check:** all 73 committed results files regenerate identically (`summarize.py verify`).
+
+**Next steps to try**
+1. Stop false lines winning on tolerance alone: when a line and a ratio law both pass,
+   prefer the one with fewer fitted constants (a ratio has one, a line two), or compare
+   them on fit, not just on the δ at which they passed.
+2. Drop B4 (no effect with B6).
+3. Next system: Lotka–Volterra.

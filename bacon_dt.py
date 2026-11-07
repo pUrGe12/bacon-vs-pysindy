@@ -11,8 +11,13 @@ test can be rerun exactly as it was. CHANGES_FROM_BACON.md documents each one
     B4 intercept_vs_std  "significant intercept" judged against std(b), not mean(b)
     B5 rate_seed         also start the search from the per-unit rate D(x_i)/x_j
                          (applied in discover(), not inside BACON.1)
+    B6 robust_line       straight-line laws: Theil-Sen slope; the leftover b - m*a must
+                         pass the same constancy test as every other law AND show no
+                         trend left over (thirds-of-the-data check: a trend counts if
+                         it is significant, z > TREND_Z, and bigger than delta/2)
+                         (original: least-squares slope, accepted if 1 - |r| < epsilon)
 
-Defaults (DEFAULT_FIXES): B1, B3, B4, B5. B2 was on in Tests 1-4 and the first rerun,
+Defaults (DEFAULT_FIXES): B1, B3, B4, B5, B6. B2 was on in Tests 1-4 and the first rerun,
 then switched off by default: the ablation showed no benefit, so it is one less change
 from the original. It stays available so those runs can be reproduced.
 
@@ -29,20 +34,41 @@ from statistics import fmean, median
 import numpy as np
 import pandas as pd
 import sympy as sp
-from scipy.stats import linregress
+from scipy.stats import linregress, theilslopes
 
 BACON_PATH = os.environ.get("BACON_PATH", os.path.expanduser("~/Desktop/BACON"))
 sys.path.append(BACON_PATH)
 from space_of_laws.laws_methods.bacon1 import BACON_1, nu, eta, dummies  # noqa: E402
 
-ALL_FIXES = ("sign_aware", "signed_constancy", "bounded_retry", "intercept_vs_std", "rate_seed")
-DEFAULT_FIXES = ("sign_aware", "bounded_retry", "intercept_vs_std", "rate_seed")
+ALL_FIXES = ("sign_aware", "signed_constancy", "bounded_retry", "intercept_vs_std", "rate_seed",
+             "robust_line")
+DEFAULT_FIXES = ("sign_aware", "bounded_retry", "intercept_vs_std", "rate_seed", "robust_line")
 HARD_STOP = 200
+TREND_Z = 3.0   # B6: a leftover trend this many standard errors from zero rejects a line...
+TREND_MIN = 0.5  # ...if it is also bigger than TREND_MIN * delta (relative to the intercept)
 
 # Tolerance schedule (CHANGES_FROM_BACON.md, P1). Original BACON_1 defaults:
 # epsilon=0.001, delta=0.1, epsilon_scale=1.1, delta_scale=1.05, c_val=0.02.
 DEFAULT_PARAMS = dict(epsilon=0.001, delta=0.01, epsilon_scale=1.5, delta_scale=1.5,
                       c_val=0.02, max_delta=0.3)
+
+
+def _leftover_trend(a, resid, c, min_rel):
+    """B6: split the data into thirds by `a`; flag a trend if any third's median
+    leftover is more than TREND_Z standard errors from the overall median `c`, and
+    more than min_rel * |c| (on noise-free data, tiny finite-difference errors are
+    "significant" but don't matter). A true straight line leaves only noise; a
+    curve fitted by a line leaves a bend.
+    Standard error of a median of k points ~ 1.2533 * sigma / sqrt(k), with
+    sigma ~ 1.4826 * MAD (the usual robust estimates for roughly normal noise)."""
+    r = np.asarray(resid, float)[np.argsort(np.asarray(a, float))]
+    mad = median(abs(v - c) for v in r)
+    if mad == 0:
+        return False
+    thirds = np.array_split(r, 3)
+    se = 1.2533 * 1.4826 * mad / np.sqrt(min(len(t) for t in thirds))
+    dev = max(abs(median(t) - c) for t in thirds)
+    return dev > TREND_Z * se and dev > min_rel * abs(c)
 
 
 class SignedBACON1(BACON_1):
@@ -110,9 +136,20 @@ class SignedBACON1(BACON_1):
         if self.update == "constant":
             return
 
+        if "robust_line" in self.fixes:
+            # B6: robust slope; the line b - m*a = c must pass the same constancy test
+            # as any other law, at the current delta. Original: 1 - |r| < epsilon.
+            m = theilslopes(np.asarray(b, float), np.asarray(a, float))[0]
+            resid = b - m * a
+            c = self.center(resid)
+            line_fits = (self._within_delta(resid, c)
+                         and not _leftover_trend(a, resid, c, TREND_MIN * self.delta))
+        else:
+            line_fits = 1 - abs(r) < self.epsilon
+
         # B4: original compares the intercept with mean(b), ~0 for oscillating signals.
         scale = np.std(b) if "intercept_vs_std" in self.fixes else abs(fmean(b))
-        if 1 - abs(r) < self.epsilon and abs(c) > self.c_val * scale:
+        if line_fits and abs(c) > self.c_val * scale:
             self.linear(a_, b_, a, b, m)
             return
 
@@ -126,6 +163,12 @@ class SignedBACON1(BACON_1):
             sy = sp.simplify(a_ * b_)
             if self.new_term(sy):
                 self.product(a_, b_, a, b)
+
+    def _within_delta(self, data, M):
+        """Constancy test used for B6 line residuals (sign-safe in both variants)."""
+        if self.robust:
+            return median(abs(v - M) for v in data) < self.delta * abs(M)
+        return all(abs(v - M) < self.delta * abs(M) for v in data)
 
     def check_constant(self, symbol, data):
         # Same early exit as BACON_1: a raw input column can't be "the law".

@@ -71,6 +71,20 @@ done
 cmds+=("$PY run_test.py --system powerdecay --out results/ablation3 --tag no_rate_seed --bacon-fixes sign_aware bounded_retry intercept_vs_std --bacon-variants robust")
 cmds+=("$PY run_test.py --system powerdecay --out results/ablation3 --tag original --bacon-fixes none --bacon-variants strict robust")
 
+# --- Rerun 4 = Test 7 (current defaults): fixes B1, B3-B6; robust only -----------------
+B13456="sign_aware bounded_retry intercept_vs_std rate_seed robust_line"
+for s in "${SYSTEMS3[@]}"; do
+  t=$(sfx "$s"); cmds+=("$PY run_test.py --system $s --out results/rerun4 ${t:+--tag ${t#_}} --bacon-fixes $B13456 --bacon-variants robust")
+done
+cmds+=("$PY run_test.py --system powerdecay --out results/rerun4 --tag halfpowers --bacon-fixes $B13456 --bacon-variants robust --sindy-library poly+halfpowers")
+# --- Ablation 4: each of B1, B3, B4, B5 off from rerun 4 ("without B6" = rerun 3) -------
+for s in "${SYSTEMS3[@]}"; do
+  t=$(sfx "$s")
+  for off in sign_aware bounded_retry intercept_vs_std rate_seed; do
+    cmds+=("$PY run_test.py --system $s --out results/ablation4 --tag no_$off$t --bacon-fixes $(without "$B13456" $off) --bacon-variants robust")
+  done
+done
+
 if [ "$MODE" = "run" ]; then
   mkdir -p results/logs
   printf '%s\n' "${cmds[@]}" | { [ -n "$ONLY" ] && grep -- "--out results/$ONLY " || cat; } |
