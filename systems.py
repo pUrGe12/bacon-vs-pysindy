@@ -15,13 +15,19 @@ class System:
     x0: list
     t: np.ndarray
     description: str = ""
+    extra_x0s: list = field(default_factory=list)  # more starting points, for --n-traj > 1
     symbols: list = field(init=False)
 
     def __post_init__(self):
         self.symbols = [sp.Symbol(n, real=True) for n in self.names]
 
-    def simulate(self):
-        sol = solve_ivp(self.f, (self.t[0], self.t[-1]), self.x0, t_eval=self.t,
+    @property
+    def initial_conditions(self):
+        return [self.x0] + self.extra_x0s
+
+    def simulate(self, x0=None):
+        x0 = self.x0 if x0 is None else x0
+        sol = solve_ivp(self.f, (self.t[0], self.t[-1]), x0, t_eval=self.t,
                         rtol=1e-10, atol=1e-12, method="LSODA")
         return sol.y.T  # shape (n_samples, n_states)
 
@@ -70,6 +76,7 @@ def oscillator():
         f=lambda t, s: [s[1], -w2 * s[0]],
         true_rhs=[v, -w2 * x],
         x0=[1.0, 0.0],
+        extra_x0s=[[0.5, 1.0], [-1.5, 0.5]],  # energies x^2 + v^2/4 = 1, 0.5, 2.31
         t=np.linspace(0, 10, 201),
         description="Harmonic oscillator  x' = v,  v' = -4x  (position and velocity observed)",
     )

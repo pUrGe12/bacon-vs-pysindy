@@ -8,42 +8,75 @@ ODEs if we give it a notion of derivatives? We compare it against PySINDy.
 
 ```
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
-.venv/bin/python run_test.py --system decay
+.venv/bin/python run_test.py --system decay          # one system, current code
+./experiments.sh run 14                              # every experiment, 14 in parallel
+./experiments.sh run 8 rerun2                        # only one set (repro, rerun2, ablation2, ...)
 ```
 
 BACON is imported from `~/Desktop/BACON` (set `BACON_PATH` to change). That repo is not modified.
 
-## How it works
+## How BACON was adapted to time series
+
+BACON looks for a combination of two variables that stays constant (e.g. Kepler's
+`D³/P²`). We give it a **derivative column** `Dx = dx/dt`, computed from differences between
+adjacent samples, and pair it with each state variable. If BACON finds an invariant such as
+`x/Dx = -2`, we solve it for `Dx` and get the ODE `x' = -0.5x`.
+
+- Only BACON's core law finder (BACON.1) is used. Its multi-variable layers (BACON.3/5,
+  MCTS) assume controlled experiments where all variables but one are held fixed, which
+  time series never are.
+- Both methods get the **same derivative estimates** (`fd` raw, `sfd` smoothed), so the
+  comparison is between their search methods.
+- BACON.1 needed fixes for ODE data (negative derivatives, oscillating signals, a retry
+  loop that always "finds" something). Each one is a named switch (`--bacon-fixes`), and
+  `--bacon-fixes none` runs the original algorithm. Current defaults: B1, B3, B4.
+- The default BACON variant is **BACON-dt-robust**: a law counts as constant when the
+  *typical* point is within tolerance (median-based), not *every* point. The strict
+  variant (`--bacon-variants strict`) is BACON's original test; it only ever worked on
+  clean data.
+
+**[CHANGES_FROM_BACON.md](CHANGES_FROM_BACON.md)** lists every difference from the
+original BACON and from PySINDy's defaults, with the test that introduced it and its
+measured effect (an ablation over all systems).
+
+Framing: BACON was never built for time series, so losing here is expected. Later we
+will also adapt PySINDy to BACON's home turf (static laws like Kepler, ideal gas) to make
+the comparison fair in both directions.
+
+## Files
 
 | File | What it does |
 |---|---|
 | `systems.py` | Ground-truth ODEs, clean trajectories, noise (std = level × std of each state) |
 | `derivatives.py` | Derivative estimates given to **both** methods: `fd` (central differences, PySINDy's default) and `sfd` (Savitzky–Golay smoothed, window 11) |
-| `bacon_dt.py` | BACON with derivative columns `Dx`, plus fixes (below) |
-| `sindy_runner.py` | PySINDy: polynomial library degree 3, STLSQ. Threshold picked automatically: sweep 0.001–1, keep the sparsest model whose R² is within 0.01 of the best (since Test 2; Test 1 used a fixed 0.1) |
+| `bacon_dt.py` | BACON.1 subclass with derivative columns, switchable fixes B1–B4 (default B1, B3, B4) and the robust variant (default) |
+| `sindy_runner.py` | PySINDy: polynomial library degree 3, STLSQ, threshold chosen by a sweep |
 | `scoring.py` | Term structure match, coefficient error, error when simulating the learned ODE |
-| `run_test.py` | Runs a system across noise levels × seeds × derivative methods |
+| `run_test.py` | Runs one system across noise levels × seeds × derivative methods; writes results + manifest |
+| `experiments.sh` | The exact command for every experiment in this README |
+| `summarize.py` | Builds the tables below from the result files |
+| `check_original.py` | Checks that "all fixes off" gives the same output as the original BACON.1 |
 
-**BACON-dt** pairs each derivative `D(x_i)` with each state `x_j` and runs BACON.1 to look for
-an invariant (e.g. `x/Dx = const`), then solves the invariant for `Dx` to get the ODE.
+## Reproducibility
 
-Fixes to BACON.1 needed for ODE data:
-1. **Sign-blind heuristic.** BACON.1 picks product vs ratio from the sign of the
-   correlation. For `Dx = -kx` the correlation is negative, so it multiplies (`Dx·x`,
-   `Dx·x²`, …) and never tries the ratio. BACON-dt decides from the trend of `|a|`, `|b|`.
-2. **Constancy test broken for negative values.** `M(1-δ) < v < M(1+δ)` is never true when
-   `M < 0`. Replaced with `|v - M| < δ|M|` (identical for `M > 0`).
-3. **Unbounded retries.** On failure BACON.1 loosens its tolerances and retries without end,
-   so it always returns *something*. BACON-dt loosens δ from 1% by ×1.5 up to 30%, then
-   reports "no invariant".
+- Every run writes `results/.../<name>.csv` (one row per run, including which BACON fixes
+  were on), `<name>_summary.csv` and `<name>_manifest.json`. The manifest records the
+  command, all settings, git commits of this repo and of BACON (with an "uncommitted
+  changes" flag), a hash of each source file, and package versions.
+- `results/<system>.csv` and `results/oscillator_test4_*.csv` are the files written by the
+  original runs of Tests 1–4. `experiments.sh` reproduces each test with its original
+  settings into `results/repro/`. All 448 of 448 rows are identical:
+  `.venv/bin/python summarize.py repro`. Every command in `experiments.sh` spells out its
+  settings, so changing a default never changes an old experiment.
 
-**BACON-dt-robust** (since Test 2) also replaces "every point within δ of the mean" with
-"the typical point (median absolute deviation) within δ of the median", and reports the
-constant as the median.
-
-Framing: BACON was never built for time series, so losing here is expected. Later we
-will also adapt PySINDy to BACON's home turf (static laws like Kepler, ideal gas) to make
-the comparison fair in both directions.
+| Test | Config (details in CHANGES_FROM_BACON.md) | Reproduce |
+|---|---|---|
+| 1 | fixes B1–B3, strict only, PySINDy threshold 0.1, LSODA | `run_test.py --system decay --bacon-fixes sign_aware signed_constancy bounded_retry --bacon-variants strict --sindy-threshold 0.1 --sim-solver LSODA` |
+| 2 | fixes B1–B3, threshold sweep, LSODA | `run_test.py --system logistic --bacon-fixes sign_aware signed_constancy bounded_retry --sim-solver LSODA` |
+| 3 | fixes B1–B3, threshold sweep, RK45 | `run_test.py --system oscillator --bacon-fixes sign_aware signed_constancy bounded_retry` |
+| 4 | fixes B1–B4, both variants | `run_test.py --system oscillator --bacon-fixes sign_aware signed_constancy bounded_retry intercept_vs_std --bacon-variants strict robust` (and `--n-traj 3`) |
+| rerun 1 | as Test 4, every system | see `experiments.sh` (`results/rerun1/`) |
+| rerun 2 | current defaults: fixes B1, B3, B4, robust only | `run_test.py --system <name>` (`results/rerun2/`) |
 
 "Recovered" = exactly the right terms **and** coefficients within 5%.
 
@@ -60,6 +93,11 @@ Recovery rate (out of 5 runs; 1 run at zero noise):
 | 1%  | 0/5 | 0/5 | 5/5 | 5/5 |
 | 5%  | 0/5 | 0/5 | 4/5 | 5/5 |
 | 10% | 0/5 | 0/5 | 2/5 | 3/5 |
+
+> **Correction (after Test 4):** the fixes list written at the time said the original
+> constancy test "is never true when `M < 0`". That was wrong: the original applies the test
+> to `abs(b)`, so negative constants already worked. Fix B2 instead makes the test use
+> signed values. See CHANGES_FROM_BACON.md, B2. The results below are unaffected.
 
 **Takeaways**
 - On clean data both get `x' = -0.5001x`. BACON-dt finds it as the invariant `x/Dx = -2`.
@@ -161,3 +199,149 @@ equation is blowing up" guard raised an error inside it.
    mean, so zero-mean signals don't trigger it.
 2. PySINDy: give it several trajectories from different initial conditions. That is the
    standard practice, and it removes the library degeneracy.
+
+### Test 4: Oscillator again, with both fixes from Test 3
+Same system and noise as Test 3. Two changes: BACON fix 4 (intercept vs std, both BACON
+variants), and an option to pool several trajectories. Run twice:
+- **1 trajectory:** identical data to Test 3, so any change comes from the BACON fix
+  (`results/oscillator_test4_1traj.csv`).
+- **3 trajectories:** starting points (1, 0), (0.5, 1), (-1.5, 0.5), i.e. energies
+  `x² + v²/4` = 1, 0.5, 2.31. Both methods get the same pooled 3× data
+  (`results/oscillator_test4_3traj.csv`).
+
+Exactly recovered / runs (in brackets: simulates within 10%). Both derivative types shown
+for the robust variant; strict BACON-dt is 0/5 under noise in every configuration.
+
+| noise | Test 3 robust (fd · sfd) | 1 traj robust (fd · sfd) | 1 traj PySINDy (fd · sfd) | 3 traj robust (fd · sfd) | 3 traj PySINDy (fd · sfd) |
+|---|---|---|---|---|---|
+| 0%  | 1/1 · 1/1 | 1/1 · 1/1 | 0/1 · 0/1 | 1/1 · 1/1 | **1/1 · 1/1** |
+| 1%  | 0/5 · 0/5 | **5/5 · 5/5** | 5/5 · 5/5 | 5/5 · 5/5 | 5/5 · 5/5 |
+| 5%  | 0/5 · 0/5 | 0/5 · **5/5** (3) | 3/5 · 5/5 | 0/5 · 5/5 (3) | 5/5 · 5/5 |
+| 10% | 0/5 · 1/5 | 0/5 · **3/5** (0) | 2/5 · 2/5 | 0/5 · **5/5** (0) | 5/5 · 5/5 (0) |
+
+**Takeaways**
+- **The intercept fix was the main thing holding BACON back.** On the same data as Test 3,
+  BACON-dt-robust with smoothed derivatives goes from 0/5 to 5/5 at 1% and 5% noise, and
+  to 3/5 at 10%, ahead of PySINDy's 2/5 on one trajectory.
+- **Multiple trajectories fix PySINDy's clean-data failure.** With 3 energy levels the
+  library columns are no longer dependent, and PySINDy gets `x' = 0.998v`,
+  `v' = -3.992x` on clean data, and 5/5 at every noise level.
+- **With 3 trajectories and smoothed derivatives it's a tie:** both methods 5/5 at every
+  noise level.
+- **PySINDy still wins with raw derivatives** (fd): it gets 5/5 at 5% and 10% noise, where
+  BACON-dt-robust finds nothing. Raw differences amplify noise, so the typical `v/Dx` point
+  is too scattered for even the median test. Least squares averages it out.
+- **Strict BACON-dt is 0/5 under noise in every configuration.** `x/Dv` blows up at every
+  zero crossing, so the "every point within δ" test cannot pass. For signals that cross
+  zero, the robust test is required.
+- **The "simulates within 10%" column is a weak signal for oscillators.** A 2–3% frequency
+  error becomes a large phase error after 3 periods, so at 10% noise no method passes it,
+  not even the exactly recovered runs.
+- Speed: PySINDy ~0.07 s per run (13-threshold sweep), BACON-dt-robust ~0.4 s.
+
+**Next steps to try**
+1. Rerun Tests 1–2 with the current code (fix 4, threshold sweep). Decay should now work for
+   BACON-dt-robust; logistic still needs a search that tries `Dx/x`.
+2. Derivative-aware search for BACON (always try `Dx_i/x_j` as a starting term), the
+   fix that logistic growth needs.
+
+### Rerun 1: every system with the Test 4 code
+Config: BACON fixes B1–B4, both variants, PySINDy threshold sweep, RK45. Commands in
+`experiments.sh`, results in `results/rerun1/`, tables from `summarize.py current rerun1`.
+Cells: exactly recovered / runs, raw (fd) · smoothed (sfd) derivatives.
+
+**decay** (fd · sfd)
+
+| method | 0% | 1% | 5% | 10% |
+|---|---|---|---|---|
+| BACON-dt | 1/1 · 1/1 | 0/5 · 0/5 | 0/5 · 0/5 | 0/5 · 0/5 |
+| BACON-dt-robust | 1/1 · 1/1 | 5/5 · 5/5 | 0/5 · 4/5 | 0/5 · 0/5 |
+| PySINDy | 1/1 · 1/1 | 5/5 · 5/5 | 4/5 · 5/5 | 2/5 · 3/5 |
+
+**logistic** (fd · sfd)
+
+| method | 0% | 1% | 5% | 10% |
+|---|---|---|---|---|
+| BACON-dt | 0/1 · 0/1 | 0/5 · 0/5 | 0/5 · 0/5 | 0/5 · 0/5 |
+| BACON-dt-robust | 0/1 · 0/1 | 0/5 · 0/5 | 0/5 · 0/5 | 0/5 · 0/5 |
+| PySINDy | 1/1 · 1/1 | 4/5 · 5/5 | 1/5 · 3/5 | 1/5 · 3/5 |
+
+**oscillator** (fd · sfd)
+
+| method | 0% | 1% | 5% | 10% |
+|---|---|---|---|---|
+| BACON-dt | 1/1 · 1/1 | 0/5 · 0/5 | 0/5 · 0/5 | 0/5 · 0/5 |
+| BACON-dt-robust | 1/1 · 1/1 | 5/5 · 5/5 | 0/5 · 5/5 | 0/5 · 3/5 |
+| PySINDy | 0/1 · 0/1 | 5/5 · 5/5 | 3/5 · 5/5 | 2/5 · 2/5 |
+
+**oscillator (3 trajectories)** (fd · sfd)
+
+| method | 0% | 1% | 5% | 10% |
+|---|---|---|---|---|
+| BACON-dt | 1/1 · 1/1 | 0/5 · 0/5 | 0/5 · 0/5 | 0/5 · 0/5 |
+| BACON-dt-robust | 1/1 · 1/1 | 5/5 · 5/5 | 0/5 · 5/5 | 0/5 · 5/5 |
+| PySINDy | 1/1 · 1/1 | 5/5 · 5/5 | 5/5 · 5/5 | 5/5 · 5/5 |
+
+**Takeaways**
+- **Decay changed most.** BACON-dt-robust (which didn't exist in Test 1) now recovers
+  `x' = -0.5x` in 5/5 runs at 1% noise with either derivative, and 4/5 at 5% (smoothed).
+  The ablation shows this comes from the robust variant, not fix B4. PySINDy is still
+  ahead at 5–10% noise.
+- **Logistic is unchanged:** BACON finds nothing, PySINDy as before. The missing piece is
+  still the search order (trying `Dx/x`), not the law test.
+- **Oscillator results match Test 4 exactly,** as they should (same code and settings).
+- **Strict BACON-dt only works on clean data.** Every noisy recovery comes from the robust
+  variant, so the robust variant should be the default BACON-dt going forward.
+- **Ablation** (CHANGES_FROM_BACON.md): B1 is essential everywhere; B4 is decisive for
+  oscillations; B3 (retry cap) prevents most wrong laws (the original BACON returns a
+  wrong law in every run on every system); B2 has almost no effect.
+
+**Decision after rerun 1:** drop B2 (switched off by default) and make the robust variant
+the only default BACON variant.
+
+### Rerun 2: current defaults (B2 off, robust variant only)
+Config: BACON fixes B1, B3, B4, BACON-dt-robust only, PySINDy threshold sweep, RK45.
+`./experiments.sh run 8 rerun2`, results in `results/rerun2/`, tables from
+`summarize.py current rerun2`. Cells: exactly recovered / runs, fd · sfd.
+
+**decay** (fd · sfd)
+
+| method | 0% | 1% | 5% | 10% |
+|---|---|---|---|---|
+| BACON-dt-robust | 1/1 · 1/1 | 5/5 · 5/5 | 0/5 · 4/5 | 0/5 · 0/5 |
+| PySINDy | 1/1 · 1/1 | 5/5 · 5/5 | 4/5 · 5/5 | 2/5 · 3/5 |
+
+**logistic** (fd · sfd)
+
+| method | 0% | 1% | 5% | 10% |
+|---|---|---|---|---|
+| BACON-dt-robust | 0/1 · 0/1 | 0/5 · 0/5 | 0/5 · 0/5 | 0/5 · 0/5 |
+| PySINDy | 1/1 · 1/1 | 4/5 · 5/5 | 1/5 · 3/5 | 1/5 · 3/5 |
+
+**oscillator** (fd · sfd)
+
+| method | 0% | 1% | 5% | 10% |
+|---|---|---|---|---|
+| BACON-dt-robust | 1/1 · 1/1 | 5/5 · 5/5 | 0/5 · 5/5 | 0/5 · 3/5 |
+| PySINDy | 0/1 · 0/1 | 5/5 · 5/5 | 3/5 · 5/5 | 2/5 · 2/5 |
+
+**oscillator (3 trajectories)** (fd · sfd)
+
+| method | 0% | 1% | 5% | 10% |
+|---|---|---|---|---|
+| BACON-dt-robust | 1/1 · 1/1 | 5/5 · 5/5 | 0/5 · 5/5 | 0/5 · 5/5 |
+| PySINDy | 1/1 · 1/1 | 5/5 · 5/5 | 5/5 · 5/5 | 5/5 · 5/5 |
+
+**Takeaways**
+- **Same recoveries as rerun 1** on every system. Dropping B2 changed 4 of 128 runs, all
+  at 5% noise with raw derivatives on the oscillator: where BACON used to find nothing, it
+  now returns a loose law, one of them the right form with coefficients 6% off. Details in
+  CHANGES_FROM_BACON.md, ablation 2.
+- **Where things stand:**
+  - **Decay:** BACON ties PySINDy up to 1% noise, then falls behind (4/5 vs 5/5 at 5% smoothed).
+  - **Logistic:** BACON finds nothing.
+  - **Oscillator, one trajectory:** BACON is ahead on clean data and at 10% noise (smoothed).
+  - **Oscillator, three trajectories:** a tie with smoothed derivatives.
+  - **Raw derivatives:** PySINDy is ahead at 5% and 10% noise on every system.
+
+**Next:** logistic growth, which needs a derivative-aware search order (try `Dx/x`).

@@ -32,8 +32,12 @@ def score_equation(learned, true):
     return {"structure_ok": set(lt) == set(tt), "coef_err": diff / norm}
 
 
-def simulation_error(rhs_list, symbols, x0, t, X_clean):
-    """Integrate the learned ODE from the true x0; relative L2 error vs clean data."""
+def simulation_error(rhs_list, symbols, x0, t, X_clean, solver="RK45"):
+    """Integrate the learned ODE from the true x0; relative L2 error vs clean data.
+
+    solver: Tests 1-2 used LSODA, Tests 3+ use RK45 (LSODA hung when the
+    blow-up guard raised inside its Fortran callback).
+    """
     if any(r is None for r in rhs_list):
         return np.nan
     f = sp.lambdify(symbols, rhs_list, "numpy")
@@ -52,7 +56,7 @@ def simulation_error(rhs_list, symbols, x0, t, X_clean):
         return out.astype(float)
 
     try:
-        sol = solve_ivp(rhs, (t[0], t[-1]), x0, t_eval=t, method="RK45",
+        sol = solve_ivp(rhs, (t[0], t[-1]), x0, t_eval=t, method=solver,
                         rtol=1e-8, atol=1e-10)
         if not sol.success or sol.y.shape[1] != len(t):
             return np.inf

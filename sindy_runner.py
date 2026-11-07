@@ -5,6 +5,8 @@ whose coefficient is below it (e.g. the -0.1 x^2 of the logistic equation), and
 tuning it per system would use knowledge of the answer. Instead we sweep a grid
 and keep the sparsest model whose R^2 is within R2_TOL of the best one.
 (AIC/BIC were tried too: they keep tiny junk terms on noise-free data.)
+Pass a number as `threshold` to use one fixed threshold instead (Test 1 used 0.1).
+See CHANGES_FROM_BACON.md, S1-S3.
 """
 import warnings
 
@@ -17,8 +19,9 @@ THRESHOLDS = np.logspace(-3, 0, 13)
 R2_TOL = 0.01
 
 
-def discover(X, Xdot, t, symbols, degree=3, thresholds=THRESHOLDS):
+def discover(X, Xdot, dt, symbols, degree=3, threshold="sweep"):
     names = [str(s) for s in symbols]
+    thresholds = THRESHOLDS if threshold == "sweep" else [float(threshold)]
     total_var = np.sum((Xdot - Xdot.mean(axis=0)) ** 2)
     fits = []
     for thr in thresholds:
@@ -26,7 +29,7 @@ def discover(X, Xdot, t, symbols, degree=3, thresholds=THRESHOLDS):
                          feature_library=ps.PolynomialLibrary(degree=degree))
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")  # "threshold eliminated all coefficients"
-            model.fit(X, t=t, x_dot=Xdot, feature_names=names)
+            model.fit(X, t=dt, x_dot=Xdot, feature_names=names)
         rss = np.sum((Xdot - model.predict(X)) ** 2)
         k = int(np.count_nonzero(model.coefficients()))
         if k > 0:

@@ -1,0 +1,97 @@
+system,n_traj,noise,seed,deriv,method,equations,structure_ok,coef_err,sim_err,recovered,seconds,bacon_invariant
+oscillator,3,0.0,0,fd,BACON-dt,Dx = 0.9983*v | Dv = -3.993*x,True,0.0016658335454509121,0.01964881984347562,True,0.28500729100051103,v/Dx = 1.002 (delta 0.010); x/Dv = -0.2504 (delta 0.010)
+oscillator,3,0.0,0,fd,BACON-dt-robust,Dx = 0.9983*v | Dv = -3.993*x,True,0.0016658335228982857,0.019648819891805506,True,0.1820752139974502,v/Dx = 1.002 (delta 0.010); x/Dv = -0.2504 (delta 0.010)
+oscillator,3,0.0,0,fd,PySINDy,Dx = 0.9983*v | Dv = -3.993*x,True,0.0016658335256793944,0.019648819880323968,True,0.06578775399975711,
+oscillator,3,0.0,0,sfd,BACON-dt,Dx = 0.9981*v | Dv = -3.992*x,True,0.0019400121120617397,0.022871356164776202,True,0.3573530700014089,v/Dx = 1.002 (delta 0.051); x/Dv = -0.2505 (delta 0.010)
+oscillator,3,0.0,0,sfd,BACON-dt-robust,Dx = 0.998*v | Dv = -3.992*x,True,0.0019621875335948946,0.023145165245863446,True,0.187165590999939,v/Dx = 1.002 (delta 0.010); x/Dv = -0.2505 (delta 0.010)
+oscillator,3,0.0,0,sfd,PySINDy,Dx = 0.998*v | Dv = -3.992*x,True,0.0019692935258976974,0.02313132232835328,True,0.060699801997543545,
+oscillator,3,0.01,0,fd,BACON-dt,Dx = — | Dv = —,False,,,False,0.8888186779986427,no invariant; no invariant
+oscillator,3,0.01,0,fd,BACON-dt-robust,Dx = 1.003*v | Dv = -3.997*x,True,0.0034572512896287044,0.01514269919520376,True,0.6195918060002441,v/Dx = 0.9966 (delta 0.076); x/Dv = -0.2502 (delta 0.076)
+oscillator,3,0.01,0,fd,PySINDy,Dx = 0.9979*v | Dv = -3.994*x,True,0.0020533732449348197,0.02097524525540273,True,0.06269326300025568,
+oscillator,3,0.01,0,sfd,BACON-dt,Dx = — | Dv = —,False,,,False,0.5682501070004946,no invariant; no invariant
+oscillator,3,0.01,0,sfd,BACON-dt-robust,Dx = 0.999*v | Dv = -4.002*x,True,0.0009822268833452608,0.003161881222336836,True,0.27940053600104875,v/Dx = 1.001 (delta 0.022); x/Dv = -0.2499 (delta 0.022)
+oscillator,3,0.01,0,sfd,PySINDy,Dx = 0.9975*v | Dv = -3.993*x,True,0.0025184498229353647,0.02489129763829932,True,0.061933911998494295,
+oscillator,3,0.01,1,fd,BACON-dt,Dx = — | Dv = —,False,,,False,0.9309479270013981,no invariant; no invariant
+oscillator,3,0.01,1,fd,BACON-dt-robust,Dx = 1.002*v | Dv = -3.999*x,True,0.001544710016130324,0.0074163103783065,True,0.634533486001601,v/Dx = 0.9985 (delta 0.076); x/Dv = -0.2501 (delta 0.076)
+oscillator,3,0.01,1,fd,PySINDy,Dx = 0.9988*v | Dv = -3.989*x,True,0.0027174344687767027,0.023412606953214708,True,0.062342457997146994,
+oscillator,3,0.01,1,sfd,BACON-dt,Dx = — | Dv = —,False,,,False,0.8814576340009808,no invariant; no invariant
+oscillator,3,0.01,1,sfd,BACON-dt-robust,Dx = 0.9984*v | Dv = -3.995*x,True,0.001650146022988186,0.016898725859758986,True,0.3600424140022369,v/Dx = 1.002 (delta 0.022); x/Dv = -0.2503 (delta 0.022)
+oscillator,3,0.01,1,sfd,PySINDy,Dx = 0.9984*v | Dv = -3.99*x,True,0.0026281314846797743,0.02527324654894501,True,0.0642844559988589,
+oscillator,3,0.01,2,fd,BACON-dt,Dx = — | Dv = —,False,,,False,0.9382548159992439,no invariant; no invariant
+oscillator,3,0.01,2,fd,BACON-dt-robust,Dx = 0.9991*v | Dv = -4.009*x,True,0.0023435220281784463,0.009060722882406646,True,0.6612164269972709,v/Dx = 1.001 (delta 0.076); x/Dv = -0.2494 (delta 0.076)
+oscillator,3,0.01,2,fd,PySINDy,Dx = 0.9971*v | Dv = -3.996*x,True,0.0029229294240392667,0.022835832342026654,True,0.06982421000066097,
+oscillator,3,0.01,2,sfd,BACON-dt,Dx = — | Dv = —,False,,,False,0.9578157230025681,no invariant; no invariant
+oscillator,3,0.01,2,sfd,BACON-dt-robust,Dx = 0.9973*v | Dv = -3.997*x,True,0.0026594073125948414,0.01966129457982786,True,0.36839931899885414,v/Dx = 1.003 (delta 0.022); x/Dv = -0.2502 (delta 0.022)
+oscillator,3,0.01,2,sfd,PySINDy,Dx = 0.9972*v | Dv = -3.995*x,True,0.00282169808814825,0.02456735060413368,True,0.06508669899994857,
+oscillator,3,0.01,3,fd,BACON-dt,Dx = — | Dv = —,False,,,False,0.9434780209994642,no invariant; no invariant
+oscillator,3,0.01,3,fd,BACON-dt-robust,Dx = 1.002*v | Dv = -3.995*x,True,0.0023082630379382962,0.006850924463980692,True,0.6408947429990803,v/Dx = 0.9977 (delta 0.076); x/Dv = -0.2503 (delta 0.076)
+oscillator,3,0.01,3,fd,PySINDy,Dx = 0.9991*v | Dv = -3.991*x,True,0.0023711022084833555,0.019602379057216842,True,0.06526711699916632,
+oscillator,3,0.01,3,sfd,BACON-dt,Dx = — | Dv = —,False,,,False,0.940256218000286,no invariant; no invariant
+oscillator,3,0.01,3,sfd,BACON-dt-robust,Dx = 0.9996*v | Dv = -3.994*x,True,0.0014509925076701125,0.010689423460852597,True,0.3765945119994285,v/Dx = 1 (delta 0.022); x/Dv = -0.2504 (delta 0.022)
+oscillator,3,0.01,3,sfd,PySINDy,Dx = 0.9985*v | Dv = -3.991*x,True,0.002195088141209167,0.02170218315161176,True,0.06444114999976591,
+oscillator,3,0.01,4,fd,BACON-dt,Dx = — | Dv = —,False,,,False,0.9594691970014537,no invariant; no invariant
+oscillator,3,0.01,4,fd,BACON-dt-robust,Dx = 1.002*v | Dv = -4.005*x,True,0.0016915372197847667,0.016849534289809304,True,0.6499948679993395,v/Dx = 0.9983 (delta 0.076); x/Dv = -0.2497 (delta 0.076)
+oscillator,3,0.01,4,fd,PySINDy,Dx = 0.9982*v | Dv = -3.993*x,True,0.0017983962073634396,0.020445526836147174,True,0.06622390100164921,
+oscillator,3,0.01,4,sfd,BACON-dt,Dx = — | Dv = —,False,,,False,0.9489427999978943,no invariant; no invariant
+oscillator,3,0.01,4,sfd,BACON-dt-robust,Dx = 0.9989*v | Dv = -3.993*x,True,0.0018341248845087366,0.01715468745440182,True,0.3726086179995036,v/Dx = 1.001 (delta 0.022); x/Dv = -0.2505 (delta 0.022)
+oscillator,3,0.01,4,sfd,PySINDy,Dx = 0.9979*v | Dv = -3.991*x,True,0.0022965942071555556,0.02568638695885428,True,0.06576702600068529,
+oscillator,3,0.05,0,fd,BACON-dt,Dx = — | Dv = —,False,,,False,0.43468404300074326,no invariant; no invariant
+oscillator,3,0.05,0,fd,BACON-dt-robust,Dx = — | Dv = —,False,,,False,0.44935841000187793,no invariant; no invariant
+oscillator,3,0.05,0,fd,PySINDy,Dx = 0.9943*v | Dv = -3.988*x,True,0.005726693665695892,0.05176456626079767,True,0.06720151500121574,
+oscillator,3,0.05,0,sfd,BACON-dt,Dx = — | Dv = —,False,,,False,0.980877795998822,no invariant; no invariant
+oscillator,3,0.05,0,sfd,BACON-dt-robust,Dx = 1.007*v | Dv = -4.056*x,True,0.014019745300890785,0.12375435028297706,True,0.7229898479999974,v/Dx = 0.9931 (delta 0.114); x/Dv = -0.2465 (delta 0.076)
+oscillator,3,0.05,0,sfd,PySINDy,Dx = 0.9935*v | Dv = -3.99*x,True,0.006484613135086192,0.053365101816447665,True,0.06820980300108204,
+oscillator,3,0.05,1,fd,BACON-dt,Dx = — | Dv = —,False,,,False,0.7175465200016333,no invariant; no invariant
+oscillator,3,0.05,1,fd,BACON-dt-robust,Dx = — | Dv = —,False,,,False,0.7410628079996968,no invariant; no invariant
+oscillator,3,0.05,1,fd,PySINDy,Dx = 0.9983*v | Dv = -3.964*x,True,0.008995253632442357,0.06341989785075722,True,0.06765019799786387,
+oscillator,3,0.05,1,sfd,BACON-dt,Dx = — | Dv = —,False,,,False,0.9720750039996346,no invariant; no invariant
+oscillator,3,0.05,1,sfd,BACON-dt-robust,Dx = 1.003*v | Dv = -4.012*x,True,0.002987854531598666,0.033055231916699256,True,0.7825959680012602,v/Dx = 0.9974 (delta 0.114); x/Dv = -0.2493 (delta 0.114)
+oscillator,3,0.05,1,sfd,PySINDy,Dx = 0.9977*v | Dv = -3.971*x,True,0.007133790828959374,0.05585397890983224,True,0.06747404999987339,
+oscillator,3,0.05,2,fd,BACON-dt,Dx = — | Dv = —,False,,,False,0.46116686999812373,no invariant; no invariant
+oscillator,3,0.05,2,fd,BACON-dt-robust,Dx = — | Dv = —,False,,,False,0.47855684800015297,no invariant; no invariant
+oscillator,3,0.05,2,fd,PySINDy,Dx = 0.9901*v | Dv = -3.999*x,True,0.009917713820828511,0.0603462848504712,True,0.06814930800101138,
+oscillator,3,0.05,2,sfd,BACON-dt,Dx = — | Dv = —,False,,,False,0.9850942560005933,no invariant; no invariant
+oscillator,3,0.05,2,sfd,BACON-dt-robust,Dx = 0.9994*v | Dv = -4.024*x,True,0.006010781225528117,0.03258408805341114,True,0.7614065820016549,v/Dx = 1.001 (delta 0.114); x/Dv = -0.2485 (delta 0.114)
+oscillator,3,0.05,2,sfd,PySINDy,Dx = 0.992*v | Dv = -3.996*x,True,0.007968347464701986,0.05224526686000943,True,0.0676553889970819,
+oscillator,3,0.05,3,fd,BACON-dt,Dx = — | Dv = —,False,,,False,0.7316667899976892,no invariant; no invariant
+oscillator,3,0.05,3,fd,BACON-dt-robust,Dx = — | Dv = —,False,,,False,0.7559722520018113,no invariant; no invariant
+oscillator,3,0.05,3,fd,PySINDy,Dx = 1.0*v | Dv = -3.972*x,True,0.006937766369891518,0.04099069600680632,True,0.06835769499957678,
+oscillator,3,0.05,3,sfd,BACON-dt,Dx = — | Dv = —,False,,,False,0.9631377909972798,no invariant; no invariant
+oscillator,3,0.05,3,sfd,BACON-dt-robust,Dx = 1.012*v | Dv = -4.03*x,True,0.01248288421103716,0.11709948345633837,True,0.7604534459969727,v/Dx = 0.9877 (delta 0.114); x/Dv = -0.2481 (delta 0.114)
+oscillator,3,0.05,3,sfd,PySINDy,Dx = 0.9984*v | Dv = -3.98*x,True,0.005074893144253356,0.03937267502494119,True,0.06916575699870009,
+oscillator,3,0.05,4,fd,BACON-dt,Dx = — | Dv = —,False,,,False,0.4731754699969315,no invariant; no invariant
+oscillator,3,0.05,4,fd,BACON-dt-robust,Dx = — | Dv = —,False,,,False,0.4870413839998946,no invariant; no invariant
+oscillator,3,0.05,4,fd,PySINDy,Dx = 0.9942*v | Dv = -3.979*x,True,0.005752425583977261,0.06431855893025341,True,0.07058945300013875,
+oscillator,3,0.05,4,sfd,BACON-dt,Dx = — | Dv = —,False,,,False,1.0092643130010401,no invariant; no invariant
+oscillator,3,0.05,4,sfd,BACON-dt-robust,Dx = 1.009*v | Dv = -4.01*x,True,0.008531938242770654,0.06434044046921837,True,0.7675214490009239,v/Dx = 0.9915 (delta 0.114); x/Dv = -0.2494 (delta 0.114)
+oscillator,3,0.05,4,sfd,PySINDy,Dx = 0.9953*v | Dv = -3.976*x,True,0.0061031753653089105,0.06372146564569071,True,0.07005175900121685,
+oscillator,3,0.1,0,fd,BACON-dt,Dx = — | Dv = —,False,,,False,0.4702245150001545,no invariant; no invariant
+oscillator,3,0.1,0,fd,BACON-dt-robust,Dx = — | Dv = —,False,,,False,0.48871902099926956,no invariant; no invariant
+oscillator,3,0.1,0,fd,PySINDy,Dx = 0.985*v | Dv = -3.96*x,True,0.015017703826512352,0.14688072611642655,True,0.06885674799923436,
+oscillator,3,0.1,0,sfd,BACON-dt,Dx = — | Dv = —,False,,,False,1.0102730140024505,no invariant; no invariant
+oscillator,3,0.1,0,sfd,BACON-dt-robust,Dx = 1.026*v | Dv = -4.134*x,True,0.033569867558709277,0.34560465093318476,True,0.9388587410030595,v/Dx = 0.9748 (delta 0.256); x/Dv = -0.2419 (delta 0.171)
+oscillator,3,0.1,0,sfd,PySINDy,Dx = 0.9846*v | Dv = -3.969*x,True,0.01534967680770949,0.13656461800975478,True,0.06930470400038757,
+oscillator,3,0.1,1,fd,BACON-dt,Dx = — | Dv = —,False,,,False,0.36121763000119245,no invariant; no invariant
+oscillator,3,0.1,1,fd,BACON-dt-robust,Dx = — | Dv = —,False,,,False,0.4439911210029095,no invariant; no invariant
+oscillator,3,0.1,1,fd,PySINDy,Dx = 0.993*v | Dv = -3.915*x,True,0.021349293159260707,0.16796678916160257,True,0.08221342199976789,
+oscillator,3,0.1,1,sfd,BACON-dt,Dx = — | Dv = —,False,,,False,1.0171654990008392,no invariant; no invariant
+oscillator,3,0.1,1,sfd,BACON-dt-robust,Dx = 1.019*v | Dv = -4.067*x,True,0.018627423167476564,0.2067749009144643,True,0.9396100789999764,v/Dx = 0.9817 (delta 0.171); x/Dv = -0.2459 (delta 0.256)
+oscillator,3,0.1,1,sfd,PySINDy,Dx = 0.9926*v | Dv = -3.933*x,True,0.016702485619645158,0.14238909287961357,True,0.06855492199974833,
+oscillator,3,0.1,2,fd,BACON-dt,Dx = — | Dv = —,False,,,False,0.35744720400180086,no invariant; no invariant
+oscillator,3,0.1,2,fd,BACON-dt-robust,Dx = — | Dv = —,False,,,False,0.38509967000209144,no invariant; no invariant
+oscillator,3,0.1,2,fd,PySINDy,Dx = 0.977*v | Dv = -3.982*x,True,0.022963281570865357,0.16210703680797964,True,0.0696740259991202,
+oscillator,3,0.1,2,sfd,BACON-dt,Dx = — | Dv = —,False,,,False,1.0268631190010638,no invariant; no invariant
+oscillator,3,0.1,2,sfd,BACON-dt-robust,Dx = 1.018*v | Dv = -4.083*x,True,0.02075978433579917,0.227245093902569,True,0.9463777300006768,v/Dx = 0.9823 (delta 0.256); x/Dv = -0.2449 (delta 0.171)
+oscillator,3,0.1,2,sfd,PySINDy,Dx = 0.9818*v | Dv = -3.981*x,True,0.01821315723299366,0.13556577017322782,True,0.07463427699985914,
+oscillator,3,0.1,3,fd,BACON-dt,Dx = — | Dv = —,False,,,False,0.2565171160022146,no invariant; no invariant
+oscillator,3,0.1,3,fd,BACON-dt-robust,Dx = — | Dv = —,False,,,False,0.2894533850012522,no invariant; no invariant
+oscillator,3,0.1,3,fd,PySINDy,Dx = 0.9971*v | Dv = -3.934*x,True,0.016486761608909384,0.11533373309009315,True,0.06688503500117804,
+oscillator,3,0.1,3,sfd,BACON-dt,Dx = — | Dv = —,False,,,False,0.9251921489994857,no invariant; no invariant
+oscillator,3,0.1,3,sfd,BACON-dt-robust,Dx = 1.031*v | Dv = -4.116*x,True,0.030608652165619032,0.3462042078205197,True,0.8873829930016655,v/Dx = 0.9703 (delta 0.256); x/Dv = -0.2429 (delta 0.256)
+oscillator,3,0.1,3,sfd,PySINDy,Dx = 0.9937*v | Dv = -3.948*x,True,0.01290165988682379,0.11335211628987917,True,0.06071629799771472,
+oscillator,3,0.1,4,fd,BACON-dt,Dx = — | Dv = —,False,,,False,0.329283758001111,no invariant; no invariant
+oscillator,3,0.1,4,fd,BACON-dt-robust,Dx = — | Dv = —,False,,,False,0.3430041070023435,no invariant; no invariant
+oscillator,3,0.1,4,fd,PySINDy,Dx = 0.9818*v | Dv = -3.932*x,True,0.018186795145400447,0.20784659149109677,True,0.06194719400082249,
+oscillator,3,0.1,4,sfd,BACON-dt,Dx = — | Dv = —,False,,,False,0.8899206530004449,no invariant; no invariant
+oscillator,3,0.1,4,sfd,BACON-dt-robust,Dx = 1.023*v | Dv = -4.059*x,True,0.022773857917339324,0.21815892687245697,True,0.8675265320016479,v/Dx = 0.9777 (delta 0.256); x/Dv = -0.2464 (delta 0.256)
+oscillator,3,0.1,4,sfd,PySINDy,Dx = 0.987*v | Dv = -3.935*x,True,0.016167434755858245,0.17182620085515563,True,0.06307092999850283,
