@@ -82,8 +82,23 @@ def oscillator():
     )
 
 
+def powerdecay():
+    k = 0.5
+    x = sp.Symbol("x", real=True)
+    return System(
+        name="powerdecay",
+        names=["x"],
+        f=lambda t, s: [-k * abs(s[0]) ** 1.5],
+        true_rhs=[-k * x ** sp.Rational(3, 2)],
+        x0=[4.0],
+        t=np.linspace(0, 5, 101),  # x falls from 4 to 0.33, staying clear of 0 under noise
+        description="Fractional power decay  x' = -0.5 x^1.5",
+    )
+
+
 SYSTEMS = {
     "decay": decay,
     "logistic": logistic,
     "oscillator": oscillator,
+    "powerdecay": powerdecay,
 }

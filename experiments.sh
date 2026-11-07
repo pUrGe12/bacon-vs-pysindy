@@ -52,6 +52,25 @@ for s in "${SYSTEMS[@]}"; do
   done
 done
 
+# --- Rerun 3 (current defaults): fixes B1, B3, B4, B5; robust only; + power decay -------
+B1345="sign_aware bounded_retry intercept_vs_std rate_seed"
+SYSTEMS3=("${SYSTEMS[@]}" "powerdecay")
+for s in "${SYSTEMS3[@]}"; do
+  t=$(sfx "$s"); cmds+=("$PY run_test.py --system $s --out results/rerun3 ${t:+--tag ${t#_}} --bacon-fixes $B1345 --bacon-variants robust")
+done
+# Informed PySINDy baseline: polynomial library plus |x|^0.5, |x|^1.5, |x|^2.5
+cmds+=("$PY run_test.py --system powerdecay --out results/rerun3 --tag halfpowers --bacon-fixes $B1345 --bacon-variants robust --sindy-library poly+halfpowers")
+# --- Ablation 3: each of B1, B3, B4 off from rerun 3, every system ----------------------
+# ("without B5" on the old systems = rerun 2; power decay gets it here, plus "all off")
+for s in "${SYSTEMS3[@]}"; do
+  t=$(sfx "$s")
+  for off in sign_aware bounded_retry intercept_vs_std; do
+    cmds+=("$PY run_test.py --system $s --out results/ablation3 --tag no_$off$t --bacon-fixes $(without "$B1345" $off) --bacon-variants robust")
+  done
+done
+cmds+=("$PY run_test.py --system powerdecay --out results/ablation3 --tag no_rate_seed --bacon-fixes sign_aware bounded_retry intercept_vs_std --bacon-variants robust")
+cmds+=("$PY run_test.py --system powerdecay --out results/ablation3 --tag original --bacon-fixes none --bacon-variants strict robust")
+
 if [ "$MODE" = "run" ]; then
   mkdir -p results/logs
   printf '%s\n' "${cmds[@]}" | { [ -n "$ONLY" ] && grep -- "--out results/$ONLY " || cat; } |

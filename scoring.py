@@ -12,9 +12,14 @@ def _clean_powers(expr):
 
 
 def terms(expr):
-    """{monomial: coefficient} of an expanded expression."""
+    """{monomial: coefficient} of an expanded expression.
+
+    Nested powers are merged as if variables were positive, so BACON's sqrt(x**3)
+    and the true x**(3/2) count as the same term (CHANGES_FROM_BACON.md, H6).
+    """
     out = {}
-    for term in sp.Add.make_args(sp.expand(_clean_powers(sp.sympify(expr)))):
+    expr = sp.powdenest(_clean_powers(sp.sympify(expr)), force=True)
+    for term in sp.Add.make_args(sp.expand(expr)):
         coeff, mono = term.as_coeff_Mul()
         if abs(float(coeff)) > 1e-10:
             out[mono] = out.get(mono, 0.0) + float(coeff)

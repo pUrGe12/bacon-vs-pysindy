@@ -29,7 +29,9 @@ adjacent samples, and pair it with each state variable. If BACON finds an invari
   comparison is between their search methods.
 - BACON.1 needed fixes for ODE data (negative derivatives, oscillating signals, a retry
   loop that always "finds" something). Each one is a named switch (`--bacon-fixes`), and
-  `--bacon-fixes none` runs the original algorithm. Current defaults: B1, B3, B4.
+  `--bacon-fixes none` runs the original algorithm. Current defaults: B1, B3, B4, B5.
+- B5 also starts BACON's search from per-unit rates (`Dx_i/x_j`), because BACON.1's
+  up/down heuristic never proposes them when a derivative rises and then falls.
 - The default BACON variant is **BACON-dt-robust**: a law counts as constant when the
   *typical* point is within tolerance (median-based), not *every* point. The strict
   variant (`--bacon-variants strict`) is BACON's original test; it only ever worked on
@@ -47,9 +49,9 @@ the comparison fair in both directions.
 
 | File | What it does |
 |---|---|
-| `systems.py` | Ground-truth ODEs, clean trajectories, noise (std = level × std of each state) |
+| `systems.py` | Ground-truth ODEs (decay, logistic, oscillator, power decay), clean trajectories, noise (std = level × std of each state) |
 | `derivatives.py` | Derivative estimates given to **both** methods: `fd` (central differences, PySINDy's default) and `sfd` (Savitzky–Golay smoothed, window 11) |
-| `bacon_dt.py` | BACON.1 subclass with derivative columns, switchable fixes B1–B4 (default B1, B3, B4) and the robust variant (default) |
+| `bacon_dt.py` | BACON.1 subclass with derivative columns, switchable fixes B1–B5 (default B1, B3, B4, B5) and the robust variant (default) |
 | `sindy_runner.py` | PySINDy: polynomial library degree 3, STLSQ, threshold chosen by a sweep |
 | `scoring.py` | Term structure match, coefficient error, error when simulating the learned ODE |
 | `run_test.py` | Runs one system across noise levels × seeds × derivative methods; writes results + manifest |
@@ -76,7 +78,8 @@ the comparison fair in both directions.
 | 3 | fixes B1–B3, threshold sweep, RK45 | `run_test.py --system oscillator --bacon-fixes sign_aware signed_constancy bounded_retry` |
 | 4 | fixes B1–B4, both variants | `run_test.py --system oscillator --bacon-fixes sign_aware signed_constancy bounded_retry intercept_vs_std --bacon-variants strict robust` (and `--n-traj 3`) |
 | rerun 1 | as Test 4, every system | see `experiments.sh` (`results/rerun1/`) |
-| rerun 2 | current defaults: fixes B1, B3, B4, robust only | `run_test.py --system <name>` (`results/rerun2/`) |
+| rerun 2 | fixes B1, B3, B4, robust only | see `experiments.sh` (`results/rerun2/`) |
+| 5, 6 (rerun 3) | current defaults: fixes B1, B3, B4, B5, robust only | `run_test.py --system <name>` (`results/rerun3/`); PySINDy side run: `--system powerdecay --sindy-library poly+halfpowers` |
 
 "Recovered" = exactly the right terms **and** coefficients within 5%.
 
@@ -299,7 +302,7 @@ Cells: exactly recovered / runs, raw (fd) · smoothed (sfd) derivatives.
 **Decision after rerun 1:** drop B2 (switched off by default) and make the robust variant
 the only default BACON variant.
 
-### Rerun 2: current defaults (B2 off, robust variant only)
+### Rerun 2: B2 off, robust variant only
 Config: BACON fixes B1, B3, B4, BACON-dt-robust only, PySINDy threshold sweep, RK45.
 `./experiments.sh run 8 rerun2`, results in `results/rerun2/`, tables from
 `summarize.py current rerun2`. Cells: exactly recovered / runs, fd · sfd.
@@ -345,3 +348,99 @@ Config: BACON fixes B1, B3, B4, BACON-dt-robust only, PySINDy threshold sweep, R
   - **Raw derivatives:** PySINDy is ahead at 5% and 10% noise on every system.
 
 **Next:** logistic growth, which needs a derivative-aware search order (try `Dx/x`).
+
+### Test 5: logistic growth fixed (B5 rate seed), every system rerun
+New fix **B5 `rate_seed`**: for each derivative, BACON also starts its search from the
+per-unit rate `Dx_i/x_j`, not only from `Dx_i`. Config: fixes B1, B3, B4, B5, robust variant,
+PySINDy threshold sweep, RK45. `./experiments.sh run 8 rerun3`, results in `results/rerun3/`.
+Cells: exactly recovered / runs, fd · sfd.
+
+**decay** (fd · sfd)
+
+| method | 0% | 1% | 5% | 10% |
+|---|---|---|---|---|
+| BACON-dt-robust | 1/1 · 1/1 | 5/5 · 5/5 | 0/5 · 5/5 | 0/5 · 0/5 |
+| PySINDy | 1/1 · 1/1 | 5/5 · 5/5 | 4/5 · 5/5 | 2/5 · 3/5 |
+
+**logistic** (fd · sfd)
+
+| method | 0% | 1% | 5% | 10% |
+|---|---|---|---|---|
+| BACON-dt-robust | 1/1 · 1/1 | 0/5 · 5/5 | 0/5 · 0/5 | 0/5 · 0/5 |
+| PySINDy | 1/1 · 1/1 | 4/5 · 5/5 | 1/5 · 3/5 | 1/5 · 3/5 |
+
+**oscillator** (fd · sfd)
+
+| method | 0% | 1% | 5% | 10% |
+|---|---|---|---|---|
+| BACON-dt-robust | 1/1 · 1/1 | 5/5 · 5/5 | 0/5 · 5/5 | 0/5 · 4/5 |
+| PySINDy | 0/1 · 0/1 | 5/5 · 5/5 | 3/5 · 5/5 | 2/5 · 2/5 |
+
+**oscillator (3 trajectories)** (fd · sfd)
+
+| method | 0% | 1% | 5% | 10% |
+|---|---|---|---|---|
+| BACON-dt-robust | 1/1 · 1/1 | 5/5 · 5/5 | 0/5 · 5/5 | 0/5 · 5/5 |
+| PySINDy | 1/1 · 1/1 | 5/5 · 5/5 | 5/5 · 5/5 | 5/5 · 5/5 |
+
+**Takeaways**
+- **Logistic now works for BACON:** clean data and 5/5 at 1% noise (smoothed), as the
+  invariant `Dx/x + 0.1x = 1`, i.e. exactly `x' = x - 0.1x²`. Before B5: nothing, ever.
+- **It stops at 1% noise.** At 5% the `Dx/x` versus `x` data is too scattered for
+  BACON.1's straight-line test, which needs `1 - |r|` below about 0.026 at the loosest
+  tolerance. Measured `1 - |r|` at 5% noise: 0.07–0.28. Early on `x` is small (0.5), so
+  dividing by it amplifies the noise. A robust line test would be the next fix.
+- **B5 helped elsewhere too:** decay at 5% noise (smoothed) 4/5 → 5/5, oscillator at 10%
+  (smoothed) 3/5 → 4/5. It made nothing worse (ablation 3 in CHANGES_FROM_BACON.md).
+- PySINDy is unchanged; it still leads on logistic at 5–10% noise.
+
+### Test 6: fractional power decay, `x' = -0.5x^1.5`
+x0 = 4, t ∈ [0, 5] (x falls to 0.33), 101 samples, 5 noise seeds. Expected to be BACON's
+home turf: its ratio search finds rational powers (like Kepler's `D³/P²`), while PySINDy's
+polynomial term list cannot express `x^1.5`. As an informed side run, PySINDy also gets a
+term list with half-integer powers (`--sindy-library poly+halfpowers`).
+
+**powerdecay** (fd · sfd)
+
+| method | 0% | 1% | 5% | 10% |
+|---|---|---|---|---|
+| BACON-dt-robust | 1/1 · 1/1 | 0/5 · 5/5 | 0/5 · 0/5 | 0/5 · 0/5 |
+| PySINDy | 0/1 · 0/1 | 0/5 · 0/5 | 0/5 · 0/5 | 0/5 · 0/5 |
+
+**powerdecay (PySINDy with half powers)** (fd · sfd)
+
+| method | 0% | 1% | 5% | 10% |
+|---|---|---|---|---|
+| BACON-dt-robust | 1/1 · 1/1 | 0/5 · 5/5 | 0/5 · 0/5 | 0/5 · 0/5 |
+| PySINDy | 1/1 · 1/1 | 5/5 · 5/5 | 3/5 · 4/5 | 0/5 · 1/5 |
+
+(BACON's rows are identical in both tables; only PySINDy's term list differs.)
+
+**Takeaways**
+- **BACON finds the exact law** on clean data and at 1% noise (smoothed, 5/5), as the
+  invariant `x³/Dx² = 4.0`, i.e. `x' = -0.5·√(x³)`. Same kind of law as Kepler's.
+- **PySINDy with its default polynomial list can't, at any noise level.** It fits
+  `x' = -0.32x - 0.18x²`, which simulates within 1–2% of the data but is not the law.
+- **Given half powers, PySINDy wins with noise:** 5/5 at 1%, 3–4/5 at 5%, 0–1/5 at 10%,
+  where BACON finds nothing above 1%. But it only works because we put `x^1.5` in its list,
+  i.e. we told it the answer's form. BACON found the form on its own.
+- **Why BACON stops at 1%:** the invariant `Dx²/x³` squares the derivative and divides by
+  `x³`, which amplifies noise. Its typical spread is 10% of its value at 1% noise, 45% at
+  5% and 71% at 10%, above BACON's 30% tolerance cap.
+- **With raw derivatives at 1% noise BACON settles for a straight line,** `x' = 0.36 - 0.94x`,
+  found at a loose tolerance (δ = 0.26). Counted wrong, but it simulates within 4%.
+
+Also fixed for this test:
+- **Scoring (H6):** `√(x³)` and `x^(3/2)` now count as the same term.
+- **PySINDy's custom term list (S5):** written so PySINDy keeps all three half-power
+  terms. My first version was silently dropped by PySINDy, because it counts each
+  function's arguments.
+
+**Check:** all 50 committed results files regenerate identically with the new code
+(`summarize.py verify`), so neither B5 (off in old commands) nor the scoring change
+altered any earlier result.
+
+**Next steps to try**
+1. A robust straight-line test for BACON (e.g. fit on the median trend, not every point):
+   the current bottleneck on logistic and power decay above 1% noise.
+2. Next system: Lotka–Volterra (two interacting species; `Dx/x` is a straight line in `y`).

@@ -4,8 +4,12 @@
     .venv/bin/python summarize.py current rerun2      # one results folder, every system
     .venv/bin/python summarize.py ablation1           # each fix off, from rerun 1 (B1-B4)
     .venv/bin/python summarize.py ablation2           # each fix off, from rerun 2 (B1, B3, B4)
+    .venv/bin/python summarize.py ablation3           # each fix off, from rerun 3 (B1, B3-B5)
+    .venv/bin/python summarize.py verify              # regenerated results == committed ones?
 """
+import io
 import os
+import subprocess
 import sys
 
 import pandas as pd
@@ -35,6 +39,14 @@ ABLATION_ROWS = {
         ("without B3 bounded_retry", "results/ablation1/{s}_no_bounded_retry{x}.csv"),
         ("without B4 intercept_vs_std", "results/ablation1/{s}_no_intercept_vs_std{x}.csv"),
     ],
+    "ablation3": [
+        ("defaults B1, B3, B4, B5 (rerun 3)", "results/rerun3/{s}{x}.csv"),
+        ("no fixes (original BACON.1)", "results/{orig}/{s}_original{x}.csv"),
+        ("without B1 sign_aware", "results/ablation3/{s}_no_sign_aware{x}.csv"),
+        ("without B3 bounded_retry", "results/ablation3/{s}_no_bounded_retry{x}.csv"),
+        ("without B4 intercept_vs_std", "results/ablation3/{s}_no_intercept_vs_std{x}.csv"),
+        ("without B5 rate_seed", "results/{norate}/{s}{x}.csv"),
+    ],
     "ablation2": [
         ("defaults B1, B3, B4 (rerun 2)", "results/rerun2/{s}{x}.csv"),
         ("no fixes (original BACON.1)", "results/ablation1/{s}_original{x}.csv"),
@@ -52,14 +64,39 @@ def repro():
     for name, (new, old) in REPRO.items():
         a, b = pd.read_csv(new), pd.read_csv(old)
         m = a.merge(b, on=KEY, suffixes=("_new", "_old"))
-        same = pd.Series(True, index=m.index)
-        for c in CHECK:
-            same &= m[f"{c}_new"].astype(str) == m[f"{c}_old"].astype(str)
-        for c in NUM:
-            x, y = m[f"{c}_new"], m[f"{c}_old"]
-            same &= ((x - y).abs() <= 1e-9 * (1 + y.abs())) | (x.isna() & y.isna()) | (x == y)
+        same = _same(m)
         diff = [" ".join(map(str, r)) for r in m.loc[~same, KEY].itertuples(index=False)]
         print(f"| {name} | {len(m)} of {len(b)} | {int(same.sum())} | {', '.join(diff) or '—'} |")
+
+
+def _same(m):
+    same = pd.Series(True, index=m.index)
+    for c in CHECK:
+        same &= m[f"{c}_new"].astype(str) == m[f"{c}_old"].astype(str)
+    for c in NUM:
+        x, y = m[f"{c}_new"], m[f"{c}_old"]
+        same &= ((x - y).abs() <= 1e-9 * (1 + y.abs())) | (x.isna() & y.isna()) | (x == y)
+    return same
+
+
+def verify():
+    """Compare every committed results CSV with the file now on disk (ignores timing)."""
+    files = [f for f in subprocess.run(["git", "ls-files", "results/*.csv"], capture_output=True,
+                                       text=True, check=True).stdout.split()
+             if not f.endswith("_summary.csv")]
+    bad = 0
+    for f in files:
+        old = pd.read_csv(io.StringIO(subprocess.run(["git", "show", f"HEAD:{f}"],
+                          capture_output=True, text=True, check=True).stdout))
+        new = pd.read_csv(f)
+        keys = [k for k in KEY + ["n_traj"] if k in old and k in new]
+        m = new.merge(old, on=keys, suffixes=("_new", "_old"))
+        ok = len(m) == len(old) == len(new) and bool(_same(m).all())
+        bad += not ok
+        if not ok:
+            print(f"DIFFERS: {f} ({int((~_same(m)).sum())} rows)")
+    print(f"{len(files) - bad} files identical, {bad} differ"
+          if files else "no committed results")
 
 
 def _counts(df, method):
@@ -73,10 +110,14 @@ def _counts(df, method):
 
 
 def current(folder):
-    for system, sfx in SYSTEMS:
+    systems = SYSTEMS + [("powerdecay", ""), ("powerdecay", "_halfpowers")]
+    for system, sfx in systems:
+        if not os.path.exists(f"results/{folder}/{system}{sfx}.csv"):
+            continue
         df = pd.read_csv(f"results/{folder}/{system}{sfx}.csv")
         noises = sorted(df.noise.unique())
-        print(f"\n**{system}{' (3 trajectories)' if sfx else ''}** (fd · sfd)\n")
+        label = {"_3traj": " (3 trajectories)", "_halfpowers": " (PySINDy with half powers)"}
+        print(f"\n**{system}{label.get(sfx, '')}** (fd · sfd)\n")
         print("| method | " + " | ".join(f"{n:.0%}" for n in noises) + " |")
         print("|---" * (len(noises) + 1) + "|")
         for method in ("BACON-dt", "BACON-dt-robust", "PySINDy"):
@@ -93,7 +134,8 @@ def _total(df, method):
 def ablation(which):
     print("Each cell: runs with the right law · runs that returned a wrong law, "
           "out of 32 (clean + noisy, fd and sfd pooled). The rest returned nothing.\n")
-    cols = [f"{s}{' 3traj' if x else ''}" for s, x in SYSTEMS]
+    systems = SYSTEMS + ([("powerdecay", "")] if which == "ablation3" else [])
+    cols = [f"{s}{' 3traj' if x else ''}" for s, x in systems]
     methods = ("BACON-dt", "BACON-dt-robust") if which == "ablation1" else ("BACON-dt-robust",)
     for method in methods:
         print(f"\n**{method}**\n")
@@ -101,8 +143,12 @@ def ablation(which):
         print("|---" * (len(cols) + 1) + "|")
         for label, pattern in ABLATION_ROWS[which]:
             cells = []
-            for s, x in SYSTEMS:
-                path = pattern.format(s=s, x=x)
+            for s, x in systems:
+                new = s == "powerdecay"   # first run in rerun 3: its ablations live in ablation3
+                path = pattern.format(s=s, x=x, orig="ablation3" if new else "ablation1",
+                                      norate="ablation3" if new else "rerun2")
+                if new and "{norate}" in pattern:
+                    path = "results/ablation3/powerdecay_no_rate_seed.csv"
                 cells.append(_total(pd.read_csv(path), method) if os.path.exists(path) else "missing")
             print(f"| {label} | " + " | ".join(cells) + " |")
 
@@ -111,6 +157,8 @@ if __name__ == "__main__":
     cmd = sys.argv[1]
     if cmd == "repro":
         repro()
+    elif cmd == "verify":
+        verify()
     elif cmd == "current":
         current(sys.argv[2])
     else:

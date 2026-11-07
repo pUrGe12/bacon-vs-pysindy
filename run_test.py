@@ -77,8 +77,9 @@ def manifest(system, cfg):
                   "fixes_on": list(cfg["bacon_fixes"]),
                   "fixes_off": [f for f in bacon_dt.ALL_FIXES if f not in cfg["bacon_fixes"]],
                   "params": bacon_dt.DEFAULT_PARAMS},
-        "pysindy": {"library": "polynomial degree 3", "optimizer": "STLSQ",
+        "pysindy": {"poly_degree": 3, "optimizer": "STLSQ",
                     "threshold": cfg["sindy_threshold"],
+                    "library_kind": cfg["sindy_library"],
                     "sweep_grid": list(map(float, sindy_runner.THRESHOLDS)),
                     "r2_tol": sindy_runner.R2_TOL},
         "harness": {"noise_levels": cfg["noises"], "seeds": cfg["seeds"],
@@ -90,10 +91,11 @@ def manifest(system, cfg):
 
 def run(system_name, noises, seeds, out_dir, n_traj=1, tag="",
         bacon_fixes=bacon_dt.DEFAULT_FIXES, bacon_variants=("robust",),
-        sindy_threshold="sweep", sim_solver="RK45"):
+        sindy_threshold="sweep", sim_solver="RK45", sindy_library="poly"):
     system = SYSTEMS[system_name]()
     cfg = dict(noises=noises, seeds=seeds, n_traj=n_traj, bacon_fixes=tuple(bacon_fixes),
                bacon_variants=tuple(bacon_variants), sindy_threshold=sindy_threshold,
+               sindy_library=sindy_library,
                sim_solver=sim_solver)
     meta = manifest(system, cfg)
 
@@ -127,7 +129,8 @@ def run(system_name, noises, seeds, out_dir, n_traj=1, tag="",
                             f"{r['invariant']} = {r['constant']:.4g} (delta {r['delta']:.3f})"
                             if r["rhs"] is not None else "no invariant" for r in found)
                     else:
-                        rhs = sindy_runner.discover(Xf, Xdf, dt, syms, threshold=sindy_threshold)
+                        rhs = sindy_runner.discover(Xf, Xdf, dt, syms, threshold=sindy_threshold,
+                                                    library=sindy_library)
                         extra = ""
                     secs = time.perf_counter() - t0
 
@@ -148,6 +151,7 @@ def run(system_name, noises, seeds, out_dir, n_traj=1, tag="",
                         "bacon_invariant": extra,
                         "bacon_fixes": fixes_str if method.startswith("BACON") else "",
                         "sindy_threshold": sindy_threshold if method == "PySINDy" else "",
+                        "sindy_library": sindy_library if method == "PySINDy" else "",
                     })
                     r = rows[-1]
                     print(f"noise={noise:<5} seed={seed} {deriv:<3} {method:<15} "
@@ -197,7 +201,9 @@ if __name__ == "__main__":
     p.add_argument("--sindy-threshold", type=_threshold, default="sweep",
                    help="'sweep' (default) or a fixed STLSQ threshold, e.g. 0.1")
     p.add_argument("--sim-solver", default="RK45", choices=["RK45", "LSODA"])
+    p.add_argument("--sindy-library", default="poly", choices=["poly", "poly+halfpowers"],
+                   help="PySINDy term library (default: polynomial degree 3)")
     a = p.parse_args()
     fixes = [] if a.bacon_fixes == ["none"] else a.bacon_fixes
     run(a.system, a.noise, a.seeds, a.out, a.n_traj, a.tag,
-        fixes, a.bacon_variants, a.sindy_threshold, a.sim_solver)
+        fixes, a.bacon_variants, a.sindy_threshold, a.sim_solver, a.sindy_library)

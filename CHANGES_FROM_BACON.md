@@ -41,8 +41,9 @@ oscillator, `v' = -ω²x - γv`) are out of reach unless the linear step happens
 
 ## B. Fixes to BACON.1 (switchable: `--bacon-fixes`)
 
-Default (since rerun 2): **B1, B3, B4 on, B2 off.** `--bacon-fixes none` gives the original
-BACON.1 decisions. Tests 1–3 ran with B1–B3, Test 4 and rerun 1 with B1–B4.
+Default (since rerun 3 / Test 5): **B1, B3, B4, B5 on, B2 off.** `--bacon-fixes none` gives
+the original BACON.1 decisions. Tests 1–3 ran with B1–B3, Test 4 and rerun 1 with B1–B4,
+rerun 2 with B1, B3, B4.
 
 | ID | Flag | Original BACON.1 | BACON-dt | Why | Since |
 |---|---|---|---|---|---|
@@ -50,6 +51,7 @@ BACON.1 decisions. Tests 1–3 ran with B1–B3, Test 4 and rerun 1 with B1–B4
 | B2 | `signed_constancy` | `check_constant(b_, abs(b))`, then every `v` in `M(1-δ) < v < M(1+δ)`, i.e. on **absolute values** | Every `v` within `|v - M| < δ|M|`, on **signed values** | Stops a quantity that flips sign (e.g. ±2) from counting as constant. **Off by default since rerun 2:** the ablation showed no benefit, so we keep the original behaviour. *Correction:* Tests 1–4 described this as "the original fails when `M < 0`". That was wrong: the original passes `abs(b)`, so negative constants already worked. | Test 1 |
 | B3 | `bounded_retry` | If nothing is found, build a new `BACON_1` with `ε × epsilon_scale`, `δ × delta_scale` and recurse, **without limit** | Stop once `δ > 0.3` and report "no invariant" | Without a cap, BACON always returns *something* once the tolerance is loose enough. With the cap off, a hard stop at 200 loosenings keeps runs from hanging. | Test 1 |
 | B4 | `intercept_vs_std` | Take the linear branch if `1 - |r| < ε` and `|c / mean(b)| > c_val` | `... and |c| > c_val · std(b)` | Oscillating signals have mean ≈ 0, so any noise-level intercept passes and BACON writes `Dx - m·v = c` instead of the ratio `v/Dx` | Test 4 |
+| B5 | `rate_seed` | The search starts from the two input columns `(x_j, D(x_i))` only | Also run BACON.1 from `(x_j, D(x_i)/x_j)`, the per-unit rate (skipped where `x_j` has zeros). Implemented in `discover()` (the pairing layer, A2), not inside BACON.1; all candidates compete under the same rule (tightest δ, then best R²). | BACON.1 picks its next term from whether one variable goes up or down with the other. In logistic growth `Dx` rises, then falls as `x` grows, so BACON never proposes `Dx/x`, although `Dx/x = r - (r/K)x` is a straight line in `x`. Per-unit rates are a standard building block of ODE models, not a logistic-specific trick. | Test 5 |
 
 ### R. Robust variant (BACON-dt-robust, since Test 2; the only default variant since rerun 2)
 
@@ -108,7 +110,7 @@ What each fix is worth (ablation 1):
 - **B4 matters only for oscillating signals,** where it is decisive: robust on the
   oscillator goes from 3 right · 20 wrong without it to 20 right · 3 wrong with it.
 
-### Ablation 2: from the current defaults (B1, B3, B4, robust variant)
+### Ablation 2: from the rerun-2 defaults (B1, B3, B4, robust variant)
 
 Made by `./experiments.sh run 12 ablation2`; tables from `.venv/bin/python summarize.py ablation2`.
 "No fixes" reuses ablation 1; "plus B2" is rerun 1.
@@ -134,6 +136,35 @@ Each cell: runs with the right law · runs that returned a wrong law, out of 32 
   counts as wrong under the 5% rule. No junk laws.
 - B1, B3 and B4 matter exactly as in ablation 1.
 
+### Ablation 3: from the current defaults (B1, B3, B4, B5, robust variant)
+
+Made by `./experiments.sh run 17 ablation3`; tables from `.venv/bin/python summarize.py ablation3`.
+"Without B5" on the old systems is rerun 2; power decay gets its own "all off" and
+"without B5" runs in `results/ablation3/`.
+
+Each cell: runs with the right law · runs that returned a wrong law, out of 32 (clean + noisy, fd and sfd pooled). The rest returned nothing.
+
+
+**BACON-dt-robust**
+
+| config | decay | logistic | oscillator | oscillator 3traj | powerdecay |
+|---|---|---|---|---|---|
+| defaults B1, B3, B4, B5 (rerun 3) | 17 right · 0 wrong | 7 right · 0 wrong | 21 right · 4 wrong | 22 right · 1 wrong | 7 right · 5 wrong |
+| no fixes (original BACON.1) | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong |
+| without B1 sign_aware | 17 right · 0 wrong | 7 right · 0 wrong | 22 right · 1 wrong | 18 right · 4 wrong | 0 right · 12 wrong |
+| without B3 bounded_retry | 20 right · 12 wrong | 10 right · 22 wrong | 27 right · 5 wrong | 30 right · 2 wrong | 7 right · 25 wrong |
+| without B4 intercept_vs_std | 17 right · 0 wrong | 7 right · 0 wrong | 6 right · 19 wrong | 4 right · 20 wrong | 7 right · 5 wrong |
+| without B5 rate_seed | 16 right · 1 wrong | 0 right · 0 wrong | 20 right · 4 wrong | 22 right · 0 wrong | 2 right · 10 wrong |
+
+- **B5 helps everywhere and hurts nowhere.** Logistic 0 → 7 right; power decay 2 → 7 right
+  and 10 → 5 wrong; decay 16 → 17 right and 1 → 0 wrong; oscillator 20 → 21 right.
+- **With B5, B1 is only essential for power decay** (7 → 0 right without it). On decay,
+  logistic and the oscillator, the rate seed hands BACON the right ratio directly, so the
+  up/down heuristic matters less; on the oscillator with 3 trajectories B1 still helps
+  (18 → 22 right).
+- **B3 and B4 behave as in ablations 1–2:** without the cap, BACON returns many more wrong
+  laws (logistic 0 → 22); without B4, the oscillator collapses (21 → 6 right).
+
 ---
 
 ## S. PySINDy configuration (differences from PySINDy defaults)
@@ -144,6 +175,7 @@ Each cell: runs with the right law · runs that returned a wrong law, out of 32 
 | S2 | STLSQ threshold 0.1 | Test 1: fixed 0.1. Test 2+: sweep 13 log-spaced thresholds 0.001–1 and keep the sparsest model whose R² is within 0.01 of the best (`--sindy-threshold`). Reason: a fixed 0.1 deleted the true `-0.1x²` logistic term. AIC/BIC were tried and kept tiny junk terms on clean data. | Test 2 |
 | S3 | Differentiates the data itself (default `FiniteDifference`) | Given the same `x_dot` as BACON. `fd` equals PySINDy's default. | Test 1 |
 | S4 | Multiple trajectories passed as a list | Rows concatenated and fitted with the given `x_dot` (same result, since no differentiation happens inside) | Test 4 |
+| S5 | — | Optional `--sindy-library poly+halfpowers`: polynomial degree 3 plus `|x|^0.5`, `|x|^1.5`, `|x|^2.5` per state. An **informed** baseline (it assumes we already suspect half-integer powers), used only as a labelled side run on power decay. Default stays polynomial. | Test 6 |
 
 ## H. Harness and scoring history
 
@@ -154,6 +186,7 @@ Each cell: runs with the right law · runs that returned a wrong law, out of 32 
 | H3 | "Recovered" = exactly the right terms and coefficient error < 5%. Unchanged throughout. | Test 1 |
 | H4 | Noise: Gaussian, std = level × std of each state column. Unchanged throughout. | Test 1 |
 | H5 | Every run writes `<name>_manifest.json`: command, settings, BACON fixes on/off, git commits of both repos (with an "uncommitted changes" flag), a hash of each source file, package versions | after Test 4 |
+| H6 | Term matching merges nested powers as if variables were positive, so `sqrt(x**3)` (how BACON writes it) and `x**(3/2)` count as the same term. Checked: no committed result changed. | Test 6 |
 
 ## Configuration of each test
 
@@ -164,9 +197,11 @@ Each cell: runs with the right law · runs that returned a wrong law, out of 32 
 | 3 | oscillator | B1–B3 | strict, robust | sweep | RK45 | 1 |
 | 4 | oscillator | B1–B4 | strict, robust | sweep | RK45 | 1 and 3 |
 | rerun 1 | all | B1–B4 | strict, robust | sweep | RK45 | 1 (oscillator also 3) |
-| rerun 2 (current defaults) | all | B1, B3, B4 | robust | sweep | RK45 | 1 (oscillator also 3) |
+| rerun 2 | all | B1, B3, B4 | robust | sweep | RK45 | 1 (oscillator also 3) |
+| rerun 3 = Tests 5 & 6 (current defaults) | all + power decay | B1, B3, B4, B5 | robust | sweep (+ half-power side run) | RK45 | 1 (oscillator also 3) |
 
 Exact commands for each are in `experiments.sh`. Reproducing Tests 1–4 with those commands
 gives results identical to the original runs (448 of 448 rows; `summarize.py repro`), and
-still does after the default changes of rerun 2, because every old command spells out its
-settings.
+still does after the default changes of reruns 2 and 3, because every old command spells
+out its settings. `summarize.py verify` regenerates-and-compares every committed results
+file: after Test 6, all 50 were identical (timing columns aside).

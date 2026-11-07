@@ -9,10 +9,12 @@ test can be rerun exactly as it was. CHANGES_FROM_BACON.md documents each one
     B2 signed_constancy  constancy tested on signed values (original: on |b|)
     B3 bounded_retry     stop loosening tolerances at max_delta and report nothing
     B4 intercept_vs_std  "significant intercept" judged against std(b), not mean(b)
+    B5 rate_seed         also start the search from the per-unit rate D(x_i)/x_j
+                         (applied in discover(), not inside BACON.1)
 
-Defaults (DEFAULT_FIXES): B1, B3, B4. B2 was on in Tests 1-4 and the first rerun, then
-switched off by default: the ablation showed no benefit, so it is one less change from
-the original. It stays available so those runs can be reproduced.
+Defaults (DEFAULT_FIXES): B1, B3, B4, B5. B2 was on in Tests 1-4 and the first rerun,
+then switched off by default: the ablation showed no benefit, so it is one less change
+from the original. It stays available so those runs can be reproduced.
 
 With every fix switched off, SignedBACON1 makes the same decisions as BACON_1
 (apart from a hard stop after HARD_STOP loosenings, so a run can't hang).
@@ -33,8 +35,8 @@ BACON_PATH = os.environ.get("BACON_PATH", os.path.expanduser("~/Desktop/BACON"))
 sys.path.append(BACON_PATH)
 from space_of_laws.laws_methods.bacon1 import BACON_1, nu, eta, dummies  # noqa: E402
 
-ALL_FIXES = ("sign_aware", "signed_constancy", "bounded_retry", "intercept_vs_std")
-DEFAULT_FIXES = ("sign_aware", "bounded_retry", "intercept_vs_std")
+ALL_FIXES = ("sign_aware", "signed_constancy", "bounded_retry", "intercept_vs_std", "rate_seed")
+DEFAULT_FIXES = ("sign_aware", "bounded_retry", "intercept_vs_std", "rate_seed")
 HARD_STOP = 200
 
 # Tolerance schedule (CHANGES_FROM_BACON.md, P1). Original BACON_1 defaults:
@@ -162,6 +164,11 @@ def discover(X, Xdot, symbols, robust=True, fixes=DEFAULT_FIXES, verbose=False):
     D(x_i) with every state x_j and let BACON.1 look for an invariant. Solve the
     invariant for D(x_i) to get the ODE right-hand side.
 
+    With B5 (rate_seed), each pair is also searched starting from the per-unit rate
+    D(x_i)/x_j. BACON.1's up/down heuristic never proposes that ratio when D(x_i)
+    rises and falls with x_j (e.g. logistic growth), although D/x is then often a
+    straight line in x.
+
     Returns a list (one per state) of dicts: rhs (sympy or None), invariant,
     constant, delta, partner, r2.
     """
@@ -172,8 +179,13 @@ def discover(X, Xdot, symbols, robust=True, fixes=DEFAULT_FIXES, verbose=False):
         y = Xdot[:, i]
         best = {"rhs": None, "invariant": None, "constant": None,
                 "delta": None, "partner": None, "r2": -np.inf}
-        for xj in symbols:
-            df = pd.DataFrame({xj: cols[xj], D: y})
+        starts = [(xj, D, y) for xj in symbols]
+        if "rate_seed" in fixes:
+            with np.errstate(divide="ignore", invalid="ignore"):
+                starts += [(xj, D / xj, y / cols[xj]) for xj in symbols
+                           if np.all(np.isfinite(y / cols[xj]))]
+        for xj, target, target_data in starts:
+            df = pd.DataFrame({xj: cols[xj], target: target_data})
             bacon = SignedBACON1(df, [xj, D], robust=robust, fixes=fixes,
                                  verbose=verbose, **DEFAULT_PARAMS)
             out = bacon.bacon_iterations()
