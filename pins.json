@@ -1,0 +1,20 @@
+{
+  "python": "3.10.12",
+  "packages": "requirements.lock (pip freeze of the environment that produced every result)",
+  "bacon": {
+    "url": "https://github.com/JonahMiller/BACON",
+    "commit": "4dbdc957b6409fce57b3dae621cac3c9fb69ccd0",
+    "files_sha256": {
+      "space_of_laws/laws_methods/bacon1.py": "9e7593bddadfaa197d5939a16bd91e3e2b7f48a374a1d7104388c4499b813675",
+      "utils/laws_helper.py": "d9fbabb1e52178e7202fa92759d084199323ac743ec017b1544ef7b218622256"
+    }
+  },
+  "odebench": {
+    "equations_url": "https://raw.githubusercontent.com/sdascoli/odeformer/32dd990839ae9af0049023dcc20a640732fe2050/odeformer/odebench/strogatz_equations.py",
+    "equations_commit": "32dd990839ae9af0049023dcc20a640732fe2050",
+    "equations_sha256": "06bbb9dae2886a82f0a1d4b0cd062d063241bcfed56c01ef2a3a01d863bcf8b4",
+    "time_grid_source": "https://github.com/GPBench/ODEBench/blob/a92cda65b0b369f0f68686113bf1bd4a812ea6f8/generate_trajectories.py",
+    "converted_file": "data/odebench_equations.json",
+    "converted_sha256": "627508d4b95e58737e5e5e0ca76fe327ec212055c677690ee160e7a32bd6e361"
+  }
+}

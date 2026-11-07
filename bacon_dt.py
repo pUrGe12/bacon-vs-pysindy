@@ -1,6 +1,6 @@
 """BACON with a "differential" notion, for time-series data.
 
-Reuses BACON.1 from the original repo (~/Desktop/BACON, override with BACON_PATH).
+Reuses BACON.1 from the original repo (pinned in pins.json; see setup.sh and BACON_PATH below).
 Every deviation from the original BACON.1 code is a named, switchable fix, so any
 test can be rerun exactly as it was. CHANGES_FROM_BACON.md documents each one
 (what the original does, what we do, why, and which test introduced it).
@@ -40,7 +40,11 @@ import pandas as pd
 import sympy as sp
 from scipy.stats import linregress, theilslopes
 
-BACON_PATH = os.environ.get("BACON_PATH", os.path.expanduser("~/Desktop/BACON"))
+# Where the original BACON code lives: $BACON_PATH, else the pinned copy that setup.sh
+# clones into external/BACON (commit in pins.json), else ~/Desktop/BACON.
+_PINNED = os.path.join(os.path.dirname(os.path.abspath(__file__)), "external", "BACON")
+BACON_PATH = os.environ.get("BACON_PATH") or (
+    _PINNED if os.path.isdir(_PINNED) else os.path.expanduser("~/Desktop/BACON"))
 sys.path.append(BACON_PATH)
 from space_of_laws.laws_methods.bacon1 import BACON_1, nu, eta, dummies  # noqa: E402
 

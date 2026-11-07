@@ -7,13 +7,42 @@ ODEs if we give it a notion of derivatives? We compare it against PySINDy.
 ## Setup
 
 ```
-python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
-.venv/bin/python run_test.py --system decay          # one system, current code
+./setup.sh                                           # exact environment + pinned BACON
+.venv/bin/python run_test.py --system decay          # one system, current defaults
 ./experiments.sh run 14                              # every experiment, 14 in parallel
-./experiments.sh run 8 rerun2                        # only one set (repro, rerun2, ablation2, ...)
+./experiments.sh run 8 rerun2                        # only one set (repro, rerun2, test10, ...)
 ```
 
-BACON is imported from `~/Desktop/BACON` (set `BACON_PATH` to change). That repo is not modified.
+The original BACON code is not modified. `setup.sh` clones it at the pinned commit into
+`external/BACON`; set `BACON_PATH` to use another copy.
+
+## Reproducing from scratch
+
+Everything needed to rerun every result and check it:
+
+| File | What it pins or does |
+|---|---|
+| `pins.json` | Python version; BACON repo URL, commit and SHA-256 of the files we use from it; ODEBench source URL, commit and SHA-256 |
+| `requirements.lock` | Every Python package at the exact version used (`requirements.txt` lists only the direct ones) |
+| `setup.sh` | Builds `.venv` from `requirements.lock`, clones BACON at the pinned commit, checks all pinned hashes |
+| `experiments.sh` | The exact command for every experiment (272), with every setting spelled out |
+| `MANIFEST.json` | Every experiment: command, output files, and a fingerprint of its results |
+| `manifest.py` | `make` rebuilds `MANIFEST.json`; `check [SET]` compares the results on disk with it |
+| `reproduce.sh` | `check_original.py`, then reruns experiments (all, or one set) and checks them against `MANIFEST.json` |
+| `results/*/..._manifest.json` | Per run: command, settings, git commits, source-file hashes, package versions, start and end time |
+
+```
+git clone https://github.com/pUrGe12/bacon-vs-pysindy && cd bacon-vs-pysindy
+./setup.sh
+./reproduce.sh rerun6b       # one set, a few minutes
+./reproduce.sh               # everything: about 4.5 h on 20 cores (Test 10 alone ~4 h)
+```
+
+The fingerprint is a SHA-256 of each results file's outcome columns (learned equations,
+scores, errors to 6 significant digits; run times left out). Rerunning on the same
+platform reproduces it exactly. On a different CPU or operating system, floating-point
+details can in rare cases change a borderline run; `manifest.py check` names any file that
+differs, and `summarize.py verify` compares row by row with a numeric tolerance.
 
 ## How BACON was adapted to time series
 

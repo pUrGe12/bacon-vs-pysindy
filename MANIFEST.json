@@ -1,0 +1,3078 @@
+{
+ "about": "Every experiment in this repo: command, outputs, result fingerprints. Rebuild with `manifest.py make`, check with `manifest.py check`.",
+ "made": "2026-11-07T23:47:48",
+ "made_at_commit": "f3c9783034c8e2526365ab43cd6a85f91047b641",
+ "pins": {
+  "python": "3.10.12",
+  "packages": "requirements.lock (pip freeze of the environment that produced every result)",
+  "bacon": {
+   "url": "https://github.com/JonahMiller/BACON",
+   "commit": "4dbdc957b6409fce57b3dae621cac3c9fb69ccd0",
+   "files_sha256": {
+    "space_of_laws/laws_methods/bacon1.py": "9e7593bddadfaa197d5939a16bd91e3e2b7f48a374a1d7104388c4499b813675",
+    "utils/laws_helper.py": "d9fbabb1e52178e7202fa92759d084199323ac743ec017b1544ef7b218622256"
+   }
+  },
+  "odebench": {
+   "equations_url": "https://raw.githubusercontent.com/sdascoli/odeformer/32dd990839ae9af0049023dcc20a640732fe2050/odeformer/odebench/strogatz_equations.py",
+   "equations_commit": "32dd990839ae9af0049023dcc20a640732fe2050",
+   "equations_sha256": "06bbb9dae2886a82f0a1d4b0cd062d063241bcfed56c01ef2a3a01d863bcf8b4",
+   "time_grid_source": "https://github.com/GPBench/ODEBench/blob/a92cda65b0b369f0f68686113bf1bd4a812ea6f8/generate_trajectories.py",
+   "converted_file": "data/odebench_equations.json",
+   "converted_sha256": "627508d4b95e58737e5e5e0ca76fe327ec212055c677690ee160e7a32bd6e361"
+  }
+ },
+ "requirements_lock_sha256": "39d64bbea72ceb0cbbd76f5f66e18dd6d8313f71bbf70401884f35ac5802f543",
+ "how_to_reproduce": [
+  "./setup.sh",
+  "./reproduce.sh [SET]"
+ ],
+ "fingerprint": "SHA-256 of the outcome columns equations, structure_ok, recovered, coef_err, sim_err, bacon_invariant sorted by n_traj, noise, seed, deriv, method; numbers to 6 significant digits; run times left out",
+ "sets": [
+  "ablation1",
+  "ablation2",
+  "ablation3",
+  "ablation4",
+  "ablation5",
+  "repro",
+  "rerun1",
+  "rerun2",
+  "rerun3",
+  "rerun4",
+  "rerun5",
+  "rerun6",
+  "rerun6b",
+  "test10"
+ ],
+ "experiments": [
+  {
+   "set": "repro",
+   "command": ".venv/bin/python run_test.py --system decay      --out results/repro --tag test1       --bacon-fixes sign_aware signed_constancy bounded_retry --bacon-variants strict --sindy-threshold 0.1 --sim-solver LSODA --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/repro/decay_test1.csv",
+   "summary": "results/repro/decay_test1_summary.csv",
+   "run_manifest": "results/repro/decay_test1_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "772e8fb1c97e726b333a0de568a5735c233e1b6e3efd3cbca04b08417b938bfc"
+   }
+  },
+  {
+   "set": "repro",
+   "command": ".venv/bin/python run_test.py --system logistic   --out results/repro --tag test2       --bacon-fixes sign_aware signed_constancy bounded_retry --bacon-variants strict robust --sim-solver LSODA --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/repro/logistic_test2.csv",
+   "summary": "results/repro/logistic_test2_summary.csv",
+   "run_manifest": "results/repro/logistic_test2_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "f3bf7b0e6068b6de4078214015b15040c7072c8ce54c49906fde97669b85cacf"
+   }
+  },
+  {
+   "set": "repro",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/repro --tag test3       --bacon-fixes sign_aware signed_constancy bounded_retry --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/repro/oscillator_test3.csv",
+   "summary": "results/repro/oscillator_test3_summary.csv",
+   "run_manifest": "results/repro/oscillator_test3_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "1f6dc11aae1a5aaab925c5a3c967f12a1a7cd180e106ab56c45f85bdfa5af2e7"
+   }
+  },
+  {
+   "set": "repro",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/repro --tag test4_1traj --bacon-fixes sign_aware signed_constancy bounded_retry intercept_vs_std --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/repro/oscillator_test4_1traj.csv",
+   "summary": "results/repro/oscillator_test4_1traj_summary.csv",
+   "run_manifest": "results/repro/oscillator_test4_1traj_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "c916136ff99888e372254412b313581dc1cd0600d8047c6a9578dfaa6ba9f3de"
+   }
+  },
+  {
+   "set": "repro",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/repro --tag test4_3traj --bacon-fixes sign_aware signed_constancy bounded_retry intercept_vs_std --bacon-variants strict robust --n-traj 3 --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/repro/oscillator_test4_3traj.csv",
+   "summary": "results/repro/oscillator_test4_3traj_summary.csv",
+   "run_manifest": "results/repro/oscillator_test4_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "5da99dff9e57f11b13ffca9384e67530a24f366adf597aa30bb118c90dfc009a"
+   }
+  },
+  {
+   "set": "rerun1",
+   "command": ".venv/bin/python run_test.py --system decay --out results/rerun1  --bacon-fixes sign_aware signed_constancy bounded_retry intercept_vs_std --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun1/decay.csv",
+   "summary": "results/rerun1/decay_summary.csv",
+   "run_manifest": "results/rerun1/decay_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "5df54504508296f202ca2b37e45393e16b4a3a4869a4a6660ada8bfc208978d8"
+   }
+  },
+  {
+   "set": "rerun1",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/rerun1  --bacon-fixes sign_aware signed_constancy bounded_retry intercept_vs_std --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun1/logistic.csv",
+   "summary": "results/rerun1/logistic_summary.csv",
+   "run_manifest": "results/rerun1/logistic_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "cf87618b34dcea8e67d6e22fd473daf91f17b745ffdd58e07dce0b800e2d2f01"
+   }
+  },
+  {
+   "set": "rerun1",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/rerun1  --bacon-fixes sign_aware signed_constancy bounded_retry intercept_vs_std --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun1/oscillator.csv",
+   "summary": "results/rerun1/oscillator_summary.csv",
+   "run_manifest": "results/rerun1/oscillator_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "c916136ff99888e372254412b313581dc1cd0600d8047c6a9578dfaa6ba9f3de"
+   }
+  },
+  {
+   "set": "rerun1",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/rerun1 --tag 3traj --bacon-fixes sign_aware signed_constancy bounded_retry intercept_vs_std --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun1/oscillator_3traj.csv",
+   "summary": "results/rerun1/oscillator_3traj_summary.csv",
+   "run_manifest": "results/rerun1/oscillator_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "5da99dff9e57f11b13ffca9384e67530a24f366adf597aa30bb118c90dfc009a"
+   }
+  },
+  {
+   "set": "ablation1",
+   "command": ".venv/bin/python run_test.py --system decay --out results/ablation1 --tag original --bacon-fixes none --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation1/decay_original.csv",
+   "summary": "results/ablation1/decay_original_summary.csv",
+   "run_manifest": "results/ablation1/decay_original_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "72d6cea9d5a18dcf9001a43f92c7e1cc967c05d0e39268c46c788149a51dceb9"
+   }
+  },
+  {
+   "set": "ablation1",
+   "command": ".venv/bin/python run_test.py --system decay --out results/ablation1 --tag no_sign_aware --bacon-fixes signed_constancy bounded_retry intercept_vs_std  --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation1/decay_no_sign_aware.csv",
+   "summary": "results/ablation1/decay_no_sign_aware_summary.csv",
+   "run_manifest": "results/ablation1/decay_no_sign_aware_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "21983cc57894af52f67ca5b63a0236d67eaaeb5cf04f515c960c8220ee54896c"
+   }
+  },
+  {
+   "set": "ablation1",
+   "command": ".venv/bin/python run_test.py --system decay --out results/ablation1 --tag no_signed_constancy --bacon-fixes sign_aware bounded_retry intercept_vs_std  --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation1/decay_no_signed_constancy.csv",
+   "summary": "results/ablation1/decay_no_signed_constancy_summary.csv",
+   "run_manifest": "results/ablation1/decay_no_signed_constancy_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "5df54504508296f202ca2b37e45393e16b4a3a4869a4a6660ada8bfc208978d8"
+   }
+  },
+  {
+   "set": "ablation1",
+   "command": ".venv/bin/python run_test.py --system decay --out results/ablation1 --tag no_bounded_retry --bacon-fixes sign_aware signed_constancy intercept_vs_std  --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation1/decay_no_bounded_retry.csv",
+   "summary": "results/ablation1/decay_no_bounded_retry_summary.csv",
+   "run_manifest": "results/ablation1/decay_no_bounded_retry_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "3262273bf5edaf342d93f88e8cfffed101d2f567dc2b23d23f4ffd60b8739c46"
+   }
+  },
+  {
+   "set": "ablation1",
+   "command": ".venv/bin/python run_test.py --system decay --out results/ablation1 --tag no_intercept_vs_std --bacon-fixes sign_aware signed_constancy bounded_retry  --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation1/decay_no_intercept_vs_std.csv",
+   "summary": "results/ablation1/decay_no_intercept_vs_std_summary.csv",
+   "run_manifest": "results/ablation1/decay_no_intercept_vs_std_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "f97b34bc43f7807f024e53afc857ecc94974b83c90fc86d0a2411e7b5a005d13"
+   }
+  },
+  {
+   "set": "ablation1",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/ablation1 --tag original --bacon-fixes none --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation1/logistic_original.csv",
+   "summary": "results/ablation1/logistic_original_summary.csv",
+   "run_manifest": "results/ablation1/logistic_original_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "efabbcd213a260f2abe30e3557389edd480a17aa0ee8b8579294a1d87e5407b3"
+   }
+  },
+  {
+   "set": "ablation1",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/ablation1 --tag no_sign_aware --bacon-fixes signed_constancy bounded_retry intercept_vs_std  --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation1/logistic_no_sign_aware.csv",
+   "summary": "results/ablation1/logistic_no_sign_aware_summary.csv",
+   "run_manifest": "results/ablation1/logistic_no_sign_aware_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "cf87618b34dcea8e67d6e22fd473daf91f17b745ffdd58e07dce0b800e2d2f01"
+   }
+  },
+  {
+   "set": "ablation1",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/ablation1 --tag no_signed_constancy --bacon-fixes sign_aware bounded_retry intercept_vs_std  --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation1/logistic_no_signed_constancy.csv",
+   "summary": "results/ablation1/logistic_no_signed_constancy_summary.csv",
+   "run_manifest": "results/ablation1/logistic_no_signed_constancy_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "cf87618b34dcea8e67d6e22fd473daf91f17b745ffdd58e07dce0b800e2d2f01"
+   }
+  },
+  {
+   "set": "ablation1",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/ablation1 --tag no_bounded_retry --bacon-fixes sign_aware signed_constancy intercept_vs_std  --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation1/logistic_no_bounded_retry.csv",
+   "summary": "results/ablation1/logistic_no_bounded_retry_summary.csv",
+   "run_manifest": "results/ablation1/logistic_no_bounded_retry_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "aa51784e28ee9c671c1a357b0081d2d64db78ff84f51205258e806afd42e57f2"
+   }
+  },
+  {
+   "set": "ablation1",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/ablation1 --tag no_intercept_vs_std --bacon-fixes sign_aware signed_constancy bounded_retry  --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation1/logistic_no_intercept_vs_std.csv",
+   "summary": "results/ablation1/logistic_no_intercept_vs_std_summary.csv",
+   "run_manifest": "results/ablation1/logistic_no_intercept_vs_std_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "cf87618b34dcea8e67d6e22fd473daf91f17b745ffdd58e07dce0b800e2d2f01"
+   }
+  },
+  {
+   "set": "ablation1",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/ablation1 --tag original --bacon-fixes none --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation1/oscillator_original.csv",
+   "summary": "results/ablation1/oscillator_original_summary.csv",
+   "run_manifest": "results/ablation1/oscillator_original_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "e474c0b2e92b082c75f99977f44465e6ac43850c912f05934c0137428d0fce69"
+   }
+  },
+  {
+   "set": "ablation1",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/ablation1 --tag no_sign_aware --bacon-fixes signed_constancy bounded_retry intercept_vs_std  --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation1/oscillator_no_sign_aware.csv",
+   "summary": "results/ablation1/oscillator_no_sign_aware_summary.csv",
+   "run_manifest": "results/ablation1/oscillator_no_sign_aware_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "e8297bcde0e3012bf218338f973ffa5e14378549e0b2c49ec8fe7acac209df07"
+   }
+  },
+  {
+   "set": "ablation1",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/ablation1 --tag no_signed_constancy --bacon-fixes sign_aware bounded_retry intercept_vs_std  --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation1/oscillator_no_signed_constancy.csv",
+   "summary": "results/ablation1/oscillator_no_signed_constancy_summary.csv",
+   "run_manifest": "results/ablation1/oscillator_no_signed_constancy_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "afffdf1187eb27a17c6a64061b6536857adcb58ce3bf6e5af0279f8d7fcb26c3"
+   }
+  },
+  {
+   "set": "ablation1",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/ablation1 --tag no_bounded_retry --bacon-fixes sign_aware signed_constancy intercept_vs_std  --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation1/oscillator_no_bounded_retry.csv",
+   "summary": "results/ablation1/oscillator_no_bounded_retry_summary.csv",
+   "run_manifest": "results/ablation1/oscillator_no_bounded_retry_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "5d0a62b47861e23df015c982f4b3a4d0d5172dbc03e94b58c4b6205843aa3219"
+   }
+  },
+  {
+   "set": "ablation1",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/ablation1 --tag no_intercept_vs_std --bacon-fixes sign_aware signed_constancy bounded_retry  --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation1/oscillator_no_intercept_vs_std.csv",
+   "summary": "results/ablation1/oscillator_no_intercept_vs_std_summary.csv",
+   "run_manifest": "results/ablation1/oscillator_no_intercept_vs_std_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "1f6dc11aae1a5aaab925c5a3c967f12a1a7cd180e106ab56c45f85bdfa5af2e7"
+   }
+  },
+  {
+   "set": "ablation1",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/ablation1 --tag original_3traj --bacon-fixes none --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation1/oscillator_original_3traj.csv",
+   "summary": "results/ablation1/oscillator_original_3traj_summary.csv",
+   "run_manifest": "results/ablation1/oscillator_original_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "fe543cb0e4dafc009930895646b950aad0b0a9c784396f2f6b1808c4d6d1b2fa"
+   }
+  },
+  {
+   "set": "ablation1",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/ablation1 --tag no_sign_aware_3traj --bacon-fixes signed_constancy bounded_retry intercept_vs_std  --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation1/oscillator_no_sign_aware_3traj.csv",
+   "summary": "results/ablation1/oscillator_no_sign_aware_3traj_summary.csv",
+   "run_manifest": "results/ablation1/oscillator_no_sign_aware_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "4d8d1757ba771ac3e03a359f45facecc7655f74665defbc64172126a47cc85a8"
+   }
+  },
+  {
+   "set": "ablation1",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/ablation1 --tag no_signed_constancy_3traj --bacon-fixes sign_aware bounded_retry intercept_vs_std  --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation1/oscillator_no_signed_constancy_3traj.csv",
+   "summary": "results/ablation1/oscillator_no_signed_constancy_3traj_summary.csv",
+   "run_manifest": "results/ablation1/oscillator_no_signed_constancy_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "b98baf8649e2ea0414f81d2ca008be2ddfc97eb49b6ec9303deee3c82bc1c2f1"
+   }
+  },
+  {
+   "set": "ablation1",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/ablation1 --tag no_bounded_retry_3traj --bacon-fixes sign_aware signed_constancy intercept_vs_std  --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation1/oscillator_no_bounded_retry_3traj.csv",
+   "summary": "results/ablation1/oscillator_no_bounded_retry_3traj_summary.csv",
+   "run_manifest": "results/ablation1/oscillator_no_bounded_retry_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "d40186d3042a6f4bcc48a757152881d6bbfedfa91f1c0f043778014c6d071514"
+   }
+  },
+  {
+   "set": "ablation1",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/ablation1 --tag no_intercept_vs_std_3traj --bacon-fixes sign_aware signed_constancy bounded_retry  --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation1/oscillator_no_intercept_vs_std_3traj.csv",
+   "summary": "results/ablation1/oscillator_no_intercept_vs_std_3traj_summary.csv",
+   "run_manifest": "results/ablation1/oscillator_no_intercept_vs_std_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "826dccfa33bbc3bbdbef495bf222a2e6c6774bbccfcd14e2c40f07b3a4e57aad"
+   }
+  },
+  {
+   "set": "rerun2",
+   "command": ".venv/bin/python run_test.py --system decay --out results/rerun2  --bacon-fixes sign_aware bounded_retry intercept_vs_std --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun2/decay.csv",
+   "summary": "results/rerun2/decay_summary.csv",
+   "run_manifest": "results/rerun2/decay_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "a51c139a466665a9b29ae237c3f9eb40cda4ae723b1cd0dbde58fa10eb5ad5c4"
+   }
+  },
+  {
+   "set": "rerun2",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/rerun2  --bacon-fixes sign_aware bounded_retry intercept_vs_std --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun2/logistic.csv",
+   "summary": "results/rerun2/logistic_summary.csv",
+   "run_manifest": "results/rerun2/logistic_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "311a81802c6694f00036bab882121ea7b9c0f97e1151c9e9f5d22b020d9b9540"
+   }
+  },
+  {
+   "set": "rerun2",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/rerun2  --bacon-fixes sign_aware bounded_retry intercept_vs_std --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun2/oscillator.csv",
+   "summary": "results/rerun2/oscillator_summary.csv",
+   "run_manifest": "results/rerun2/oscillator_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "926b9ea2ff6d1a3bed7de3e8d40591bb5c599934aadb150485c97f79a317e812"
+   }
+  },
+  {
+   "set": "rerun2",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/rerun2 --tag 3traj --bacon-fixes sign_aware bounded_retry intercept_vs_std --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun2/oscillator_3traj.csv",
+   "summary": "results/rerun2/oscillator_3traj_summary.csv",
+   "run_manifest": "results/rerun2/oscillator_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "e87dbdb37a6c28b8f15553809868a602f9b222cc110ad9f9c8dfb29f1f7240e6"
+   }
+  },
+  {
+   "set": "ablation2",
+   "command": ".venv/bin/python run_test.py --system decay --out results/ablation2 --tag no_sign_aware --bacon-fixes bounded_retry intercept_vs_std  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation2/decay_no_sign_aware.csv",
+   "summary": "results/ablation2/decay_no_sign_aware_summary.csv",
+   "run_manifest": "results/ablation2/decay_no_sign_aware_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "babf4197dcf6a93aed22ac5384250c8edbeadb5a1ab1e00f79f65b72af7b2368"
+   }
+  },
+  {
+   "set": "ablation2",
+   "command": ".venv/bin/python run_test.py --system decay --out results/ablation2 --tag no_bounded_retry --bacon-fixes sign_aware intercept_vs_std  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation2/decay_no_bounded_retry.csv",
+   "summary": "results/ablation2/decay_no_bounded_retry_summary.csv",
+   "run_manifest": "results/ablation2/decay_no_bounded_retry_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "34bca2007d6545898a674e1737b9bd161a815ccb16d6273f45d41bcb09d49c62"
+   }
+  },
+  {
+   "set": "ablation2",
+   "command": ".venv/bin/python run_test.py --system decay --out results/ablation2 --tag no_intercept_vs_std --bacon-fixes sign_aware bounded_retry  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation2/decay_no_intercept_vs_std.csv",
+   "summary": "results/ablation2/decay_no_intercept_vs_std_summary.csv",
+   "run_manifest": "results/ablation2/decay_no_intercept_vs_std_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "a51c139a466665a9b29ae237c3f9eb40cda4ae723b1cd0dbde58fa10eb5ad5c4"
+   }
+  },
+  {
+   "set": "ablation2",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/ablation2 --tag no_sign_aware --bacon-fixes bounded_retry intercept_vs_std  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation2/logistic_no_sign_aware.csv",
+   "summary": "results/ablation2/logistic_no_sign_aware_summary.csv",
+   "run_manifest": "results/ablation2/logistic_no_sign_aware_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "311a81802c6694f00036bab882121ea7b9c0f97e1151c9e9f5d22b020d9b9540"
+   }
+  },
+  {
+   "set": "ablation2",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/ablation2 --tag no_bounded_retry --bacon-fixes sign_aware intercept_vs_std  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation2/logistic_no_bounded_retry.csv",
+   "summary": "results/ablation2/logistic_no_bounded_retry_summary.csv",
+   "run_manifest": "results/ablation2/logistic_no_bounded_retry_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "c52df50bdae1762ce8f4cabddd28e63664c0b7f15d8b630bdad975f58d4e8f82"
+   }
+  },
+  {
+   "set": "ablation2",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/ablation2 --tag no_intercept_vs_std --bacon-fixes sign_aware bounded_retry  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation2/logistic_no_intercept_vs_std.csv",
+   "summary": "results/ablation2/logistic_no_intercept_vs_std_summary.csv",
+   "run_manifest": "results/ablation2/logistic_no_intercept_vs_std_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "311a81802c6694f00036bab882121ea7b9c0f97e1151c9e9f5d22b020d9b9540"
+   }
+  },
+  {
+   "set": "ablation2",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/ablation2 --tag no_sign_aware --bacon-fixes bounded_retry intercept_vs_std  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation2/oscillator_no_sign_aware.csv",
+   "summary": "results/ablation2/oscillator_no_sign_aware_summary.csv",
+   "run_manifest": "results/ablation2/oscillator_no_sign_aware_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "0e50d8ae2b22e7971babf6872815865b39a79ff7ec9f8d4ff0297a928722ad4e"
+   }
+  },
+  {
+   "set": "ablation2",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/ablation2 --tag no_bounded_retry --bacon-fixes sign_aware intercept_vs_std  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation2/oscillator_no_bounded_retry.csv",
+   "summary": "results/ablation2/oscillator_no_bounded_retry_summary.csv",
+   "run_manifest": "results/ablation2/oscillator_no_bounded_retry_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "a07f12eae18a832fe393212ba3f5d0f4441f5f9fcbbb743804b4a606da141fc4"
+   }
+  },
+  {
+   "set": "ablation2",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/ablation2 --tag no_intercept_vs_std --bacon-fixes sign_aware bounded_retry  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation2/oscillator_no_intercept_vs_std.csv",
+   "summary": "results/ablation2/oscillator_no_intercept_vs_std_summary.csv",
+   "run_manifest": "results/ablation2/oscillator_no_intercept_vs_std_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "ca008eae83835004dd7dce0d40657f31673a215c2064a937108f9a685ad49ded"
+   }
+  },
+  {
+   "set": "ablation2",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/ablation2 --tag no_sign_aware_3traj --bacon-fixes bounded_retry intercept_vs_std  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation2/oscillator_no_sign_aware_3traj.csv",
+   "summary": "results/ablation2/oscillator_no_sign_aware_3traj_summary.csv",
+   "run_manifest": "results/ablation2/oscillator_no_sign_aware_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "d54d5185d3ec50298db5a1e717982da2b94181b7d1a896ef4b96a50261437ce2"
+   }
+  },
+  {
+   "set": "ablation2",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/ablation2 --tag no_bounded_retry_3traj --bacon-fixes sign_aware intercept_vs_std  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation2/oscillator_no_bounded_retry_3traj.csv",
+   "summary": "results/ablation2/oscillator_no_bounded_retry_3traj_summary.csv",
+   "run_manifest": "results/ablation2/oscillator_no_bounded_retry_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "251fe379fa5e29adf64b815b6af6b5701344c9e1239147a703094a44eb8b8f04"
+   }
+  },
+  {
+   "set": "ablation2",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/ablation2 --tag no_intercept_vs_std_3traj --bacon-fixes sign_aware bounded_retry  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation2/oscillator_no_intercept_vs_std_3traj.csv",
+   "summary": "results/ablation2/oscillator_no_intercept_vs_std_3traj_summary.csv",
+   "run_manifest": "results/ablation2/oscillator_no_intercept_vs_std_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "1eeb3cd58bc598ce3e7e16f78059bf569951213b848b708f455a31793eb430fd"
+   }
+  },
+  {
+   "set": "rerun3",
+   "command": ".venv/bin/python run_test.py --system decay --out results/rerun3  --bacon-fixes sign_aware bounded_retry intercept_vs_std rate_seed --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun3/decay.csv",
+   "summary": "results/rerun3/decay_summary.csv",
+   "run_manifest": "results/rerun3/decay_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "fed82a76f1dd0aefe4a744318918a7539da0b98afb8ec3125b53b476b324de51"
+   }
+  },
+  {
+   "set": "rerun3",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/rerun3  --bacon-fixes sign_aware bounded_retry intercept_vs_std rate_seed --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun3/logistic.csv",
+   "summary": "results/rerun3/logistic_summary.csv",
+   "run_manifest": "results/rerun3/logistic_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "8b97688fdbc9c0580f450458eb2e76521d7c7fafeddd62332c10d7568f3d8242"
+   }
+  },
+  {
+   "set": "rerun3",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/rerun3  --bacon-fixes sign_aware bounded_retry intercept_vs_std rate_seed --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun3/oscillator.csv",
+   "summary": "results/rerun3/oscillator_summary.csv",
+   "run_manifest": "results/rerun3/oscillator_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "e9d1ea4222d587dfbb23b62220d6240e075c73e748250833f39e9c3c667fa039"
+   }
+  },
+  {
+   "set": "rerun3",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/rerun3 --tag 3traj --bacon-fixes sign_aware bounded_retry intercept_vs_std rate_seed --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun3/oscillator_3traj.csv",
+   "summary": "results/rerun3/oscillator_3traj_summary.csv",
+   "run_manifest": "results/rerun3/oscillator_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "85ed2de4b53272374c0b0ad0dc2c88095d39095514cdf86936839b44581ffc4b"
+   }
+  },
+  {
+   "set": "rerun3",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/rerun3  --bacon-fixes sign_aware bounded_retry intercept_vs_std rate_seed --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun3/powerdecay.csv",
+   "summary": "results/rerun3/powerdecay_summary.csv",
+   "run_manifest": "results/rerun3/powerdecay_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "0b9c3f174a1cfd305b9d7fa16e2fe3f4fbd4e45f8afe3fa73981f7bfe9c270c0"
+   }
+  },
+  {
+   "set": "rerun3",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/rerun3 --tag halfpowers --bacon-fixes sign_aware bounded_retry intercept_vs_std rate_seed --bacon-variants robust --sindy-library poly+halfpowers --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun3/powerdecay_halfpowers.csv",
+   "summary": "results/rerun3/powerdecay_halfpowers_summary.csv",
+   "run_manifest": "results/rerun3/powerdecay_halfpowers_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "f0ac05a968afbd2b1b15c6c6b38ac581427aedf21db23908391cc44bb36a9207"
+   }
+  },
+  {
+   "set": "ablation3",
+   "command": ".venv/bin/python run_test.py --system decay --out results/ablation3 --tag no_sign_aware --bacon-fixes bounded_retry intercept_vs_std rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation3/decay_no_sign_aware.csv",
+   "summary": "results/ablation3/decay_no_sign_aware_summary.csv",
+   "run_manifest": "results/ablation3/decay_no_sign_aware_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "694020c1d059f79a50d9fc43fe2d009d7663cfc50041eb26c2e2931fc9f67cb4"
+   }
+  },
+  {
+   "set": "ablation3",
+   "command": ".venv/bin/python run_test.py --system decay --out results/ablation3 --tag no_bounded_retry --bacon-fixes sign_aware intercept_vs_std rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation3/decay_no_bounded_retry.csv",
+   "summary": "results/ablation3/decay_no_bounded_retry_summary.csv",
+   "run_manifest": "results/ablation3/decay_no_bounded_retry_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "1b1add3fb353b22419f43d36d483aa406cfe46ab9de5bb6049f3e997d8186423"
+   }
+  },
+  {
+   "set": "ablation3",
+   "command": ".venv/bin/python run_test.py --system decay --out results/ablation3 --tag no_intercept_vs_std --bacon-fixes sign_aware bounded_retry rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation3/decay_no_intercept_vs_std.csv",
+   "summary": "results/ablation3/decay_no_intercept_vs_std_summary.csv",
+   "run_manifest": "results/ablation3/decay_no_intercept_vs_std_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "fed82a76f1dd0aefe4a744318918a7539da0b98afb8ec3125b53b476b324de51"
+   }
+  },
+  {
+   "set": "ablation3",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/ablation3 --tag no_sign_aware --bacon-fixes bounded_retry intercept_vs_std rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation3/logistic_no_sign_aware.csv",
+   "summary": "results/ablation3/logistic_no_sign_aware_summary.csv",
+   "run_manifest": "results/ablation3/logistic_no_sign_aware_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "8b97688fdbc9c0580f450458eb2e76521d7c7fafeddd62332c10d7568f3d8242"
+   }
+  },
+  {
+   "set": "ablation3",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/ablation3 --tag no_bounded_retry --bacon-fixes sign_aware intercept_vs_std rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation3/logistic_no_bounded_retry.csv",
+   "summary": "results/ablation3/logistic_no_bounded_retry_summary.csv",
+   "run_manifest": "results/ablation3/logistic_no_bounded_retry_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "71ebd3b3d1761bab54db3e109cd00edb693937bd95c6c8297f3ce8ed410814b6"
+   }
+  },
+  {
+   "set": "ablation3",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/ablation3 --tag no_intercept_vs_std --bacon-fixes sign_aware bounded_retry rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation3/logistic_no_intercept_vs_std.csv",
+   "summary": "results/ablation3/logistic_no_intercept_vs_std_summary.csv",
+   "run_manifest": "results/ablation3/logistic_no_intercept_vs_std_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "8b97688fdbc9c0580f450458eb2e76521d7c7fafeddd62332c10d7568f3d8242"
+   }
+  },
+  {
+   "set": "ablation3",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/ablation3 --tag no_sign_aware --bacon-fixes bounded_retry intercept_vs_std rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation3/oscillator_no_sign_aware.csv",
+   "summary": "results/ablation3/oscillator_no_sign_aware_summary.csv",
+   "run_manifest": "results/ablation3/oscillator_no_sign_aware_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "b7aafb8fef7b194886e6d45b6542b7d1df39ed4ab1a8d112d1c3fb0276ded04c"
+   }
+  },
+  {
+   "set": "ablation3",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/ablation3 --tag no_bounded_retry --bacon-fixes sign_aware intercept_vs_std rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation3/oscillator_no_bounded_retry.csv",
+   "summary": "results/ablation3/oscillator_no_bounded_retry_summary.csv",
+   "run_manifest": "results/ablation3/oscillator_no_bounded_retry_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "f229358c2957561a74c0d03c06c9029fd063df9746c3448b61592305450ee003"
+   }
+  },
+  {
+   "set": "ablation3",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/ablation3 --tag no_intercept_vs_std --bacon-fixes sign_aware bounded_retry rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation3/oscillator_no_intercept_vs_std.csv",
+   "summary": "results/ablation3/oscillator_no_intercept_vs_std_summary.csv",
+   "run_manifest": "results/ablation3/oscillator_no_intercept_vs_std_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "d8a4bd8d5334397acd69c6029156159a4f4cab935194537d79afafdf80d5a8f2"
+   }
+  },
+  {
+   "set": "ablation3",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/ablation3 --tag no_sign_aware_3traj --bacon-fixes bounded_retry intercept_vs_std rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation3/oscillator_no_sign_aware_3traj.csv",
+   "summary": "results/ablation3/oscillator_no_sign_aware_3traj_summary.csv",
+   "run_manifest": "results/ablation3/oscillator_no_sign_aware_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "c58fb91493e3058df8d130441485ec1ecdb532c5737302b8fcbd5fa9e2390693"
+   }
+  },
+  {
+   "set": "ablation3",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/ablation3 --tag no_bounded_retry_3traj --bacon-fixes sign_aware intercept_vs_std rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation3/oscillator_no_bounded_retry_3traj.csv",
+   "summary": "results/ablation3/oscillator_no_bounded_retry_3traj_summary.csv",
+   "run_manifest": "results/ablation3/oscillator_no_bounded_retry_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "9951a026d213c8b1ad37df3cd24a8c2ae3b3b7b6783c4a568bf61be4fa706d0b"
+   }
+  },
+  {
+   "set": "ablation3",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/ablation3 --tag no_intercept_vs_std_3traj --bacon-fixes sign_aware bounded_retry rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation3/oscillator_no_intercept_vs_std_3traj.csv",
+   "summary": "results/ablation3/oscillator_no_intercept_vs_std_3traj_summary.csv",
+   "run_manifest": "results/ablation3/oscillator_no_intercept_vs_std_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "436fdfa41f1a0ab74fecea7661db0ddaf1fb553175b08708d7ffeb22cf6fc65e"
+   }
+  },
+  {
+   "set": "ablation3",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/ablation3 --tag no_sign_aware --bacon-fixes bounded_retry intercept_vs_std rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation3/powerdecay_no_sign_aware.csv",
+   "summary": "results/ablation3/powerdecay_no_sign_aware_summary.csv",
+   "run_manifest": "results/ablation3/powerdecay_no_sign_aware_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "52880d4f28b28e5da25de1fb1cc4ffa9fb1328e1940a53ce86ef813a5782c4b6"
+   }
+  },
+  {
+   "set": "ablation3",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/ablation3 --tag no_bounded_retry --bacon-fixes sign_aware intercept_vs_std rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation3/powerdecay_no_bounded_retry.csv",
+   "summary": "results/ablation3/powerdecay_no_bounded_retry_summary.csv",
+   "run_manifest": "results/ablation3/powerdecay_no_bounded_retry_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "7723344dc0b193e7cc456d78a1f6036c0f1e0e923d0a517cd99ff2de8e4e424b"
+   }
+  },
+  {
+   "set": "ablation3",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/ablation3 --tag no_intercept_vs_std --bacon-fixes sign_aware bounded_retry rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation3/powerdecay_no_intercept_vs_std.csv",
+   "summary": "results/ablation3/powerdecay_no_intercept_vs_std_summary.csv",
+   "run_manifest": "results/ablation3/powerdecay_no_intercept_vs_std_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "0b9c3f174a1cfd305b9d7fa16e2fe3f4fbd4e45f8afe3fa73981f7bfe9c270c0"
+   }
+  },
+  {
+   "set": "ablation3",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/ablation3 --tag no_rate_seed --bacon-fixes sign_aware bounded_retry intercept_vs_std --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation3/powerdecay_no_rate_seed.csv",
+   "summary": "results/ablation3/powerdecay_no_rate_seed_summary.csv",
+   "run_manifest": "results/ablation3/powerdecay_no_rate_seed_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "16da6595cc6c4cddc6a6fde5691097ac71e3cade91f1aa678148297a18fc9a7f"
+   }
+  },
+  {
+   "set": "ablation3",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/ablation3 --tag original --bacon-fixes none --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation3/powerdecay_original.csv",
+   "summary": "results/ablation3/powerdecay_original_summary.csv",
+   "run_manifest": "results/ablation3/powerdecay_original_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "4f6af2c6de23950aa41bed5e2eb12ed58807d84267467a6db754d035afd75bba"
+   }
+  },
+  {
+   "set": "rerun4",
+   "command": ".venv/bin/python run_test.py --system decay --out results/rerun4  --bacon-fixes sign_aware bounded_retry intercept_vs_std rate_seed robust_line --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun4/decay.csv",
+   "summary": "results/rerun4/decay_summary.csv",
+   "run_manifest": "results/rerun4/decay_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "938bd5d82f55b769f24711c89da6f53a1dceb6e7699c996225d9ee7a88fc140a"
+   }
+  },
+  {
+   "set": "rerun4",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/rerun4  --bacon-fixes sign_aware bounded_retry intercept_vs_std rate_seed robust_line --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun4/logistic.csv",
+   "summary": "results/rerun4/logistic_summary.csv",
+   "run_manifest": "results/rerun4/logistic_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "b6cf642dcd2d5fb8cc0e1b44de51c55cbc42c5b2101923a3d910d0b12a595779"
+   }
+  },
+  {
+   "set": "rerun4",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/rerun4  --bacon-fixes sign_aware bounded_retry intercept_vs_std rate_seed robust_line --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun4/oscillator.csv",
+   "summary": "results/rerun4/oscillator_summary.csv",
+   "run_manifest": "results/rerun4/oscillator_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "09134f814bee6138cb6e1011b98abe549b6dacd7b188050463e9481e91aa0b74"
+   }
+  },
+  {
+   "set": "rerun4",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/rerun4 --tag 3traj --bacon-fixes sign_aware bounded_retry intercept_vs_std rate_seed robust_line --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun4/oscillator_3traj.csv",
+   "summary": "results/rerun4/oscillator_3traj_summary.csv",
+   "run_manifest": "results/rerun4/oscillator_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "01a43e5c9606d53eb2a19559b1f0906e651b963de9d87f68281c8af33bd1ccdc"
+   }
+  },
+  {
+   "set": "rerun4",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/rerun4  --bacon-fixes sign_aware bounded_retry intercept_vs_std rate_seed robust_line --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun4/powerdecay.csv",
+   "summary": "results/rerun4/powerdecay_summary.csv",
+   "run_manifest": "results/rerun4/powerdecay_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "1510b9a4a35f2192851c36fc77681df3c50a79f4ccbda8e6b33a96db016b5953"
+   }
+  },
+  {
+   "set": "rerun4",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/rerun4 --tag halfpowers --bacon-fixes sign_aware bounded_retry intercept_vs_std rate_seed robust_line --bacon-variants robust --sindy-library poly+halfpowers --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun4/powerdecay_halfpowers.csv",
+   "summary": "results/rerun4/powerdecay_halfpowers_summary.csv",
+   "run_manifest": "results/rerun4/powerdecay_halfpowers_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "598f02c0f453ad47d208cc35c20e61ace0bfac47c2862d4b7f134716006701d5"
+   }
+  },
+  {
+   "set": "ablation4",
+   "command": ".venv/bin/python run_test.py --system decay --out results/ablation4 --tag no_sign_aware --bacon-fixes bounded_retry intercept_vs_std rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation4/decay_no_sign_aware.csv",
+   "summary": "results/ablation4/decay_no_sign_aware_summary.csv",
+   "run_manifest": "results/ablation4/decay_no_sign_aware_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "c193cf456b85bcd4930c66d0a95b9016351debd02e5a70c73c95a88c2fc30c29"
+   }
+  },
+  {
+   "set": "ablation4",
+   "command": ".venv/bin/python run_test.py --system decay --out results/ablation4 --tag no_bounded_retry --bacon-fixes sign_aware intercept_vs_std rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation4/decay_no_bounded_retry.csv",
+   "summary": "results/ablation4/decay_no_bounded_retry_summary.csv",
+   "run_manifest": "results/ablation4/decay_no_bounded_retry_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "72a264f9217f98a9e5cfb8a134d2430b7be2ea7394a5758647e2b7c4dbe4326c"
+   }
+  },
+  {
+   "set": "ablation4",
+   "command": ".venv/bin/python run_test.py --system decay --out results/ablation4 --tag no_intercept_vs_std --bacon-fixes sign_aware bounded_retry rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation4/decay_no_intercept_vs_std.csv",
+   "summary": "results/ablation4/decay_no_intercept_vs_std_summary.csv",
+   "run_manifest": "results/ablation4/decay_no_intercept_vs_std_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "938bd5d82f55b769f24711c89da6f53a1dceb6e7699c996225d9ee7a88fc140a"
+   }
+  },
+  {
+   "set": "ablation4",
+   "command": ".venv/bin/python run_test.py --system decay --out results/ablation4 --tag no_rate_seed --bacon-fixes sign_aware bounded_retry intercept_vs_std robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation4/decay_no_rate_seed.csv",
+   "summary": "results/ablation4/decay_no_rate_seed_summary.csv",
+   "run_manifest": "results/ablation4/decay_no_rate_seed_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "b11433624702324d38e1e00d897ca79a3d2ec186bea301003134a1eea950e83d"
+   }
+  },
+  {
+   "set": "ablation4",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/ablation4 --tag no_sign_aware --bacon-fixes bounded_retry intercept_vs_std rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation4/logistic_no_sign_aware.csv",
+   "summary": "results/ablation4/logistic_no_sign_aware_summary.csv",
+   "run_manifest": "results/ablation4/logistic_no_sign_aware_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "b6cf642dcd2d5fb8cc0e1b44de51c55cbc42c5b2101923a3d910d0b12a595779"
+   }
+  },
+  {
+   "set": "ablation4",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/ablation4 --tag no_bounded_retry --bacon-fixes sign_aware intercept_vs_std rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation4/logistic_no_bounded_retry.csv",
+   "summary": "results/ablation4/logistic_no_bounded_retry_summary.csv",
+   "run_manifest": "results/ablation4/logistic_no_bounded_retry_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "1b7b5b08f9ed5bfa49b4f0f64b933af0e5698d55d1d908541e80e85fc511be35"
+   }
+  },
+  {
+   "set": "ablation4",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/ablation4 --tag no_intercept_vs_std --bacon-fixes sign_aware bounded_retry rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation4/logistic_no_intercept_vs_std.csv",
+   "summary": "results/ablation4/logistic_no_intercept_vs_std_summary.csv",
+   "run_manifest": "results/ablation4/logistic_no_intercept_vs_std_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "b6cf642dcd2d5fb8cc0e1b44de51c55cbc42c5b2101923a3d910d0b12a595779"
+   }
+  },
+  {
+   "set": "ablation4",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/ablation4 --tag no_rate_seed --bacon-fixes sign_aware bounded_retry intercept_vs_std robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation4/logistic_no_rate_seed.csv",
+   "summary": "results/ablation4/logistic_no_rate_seed_summary.csv",
+   "run_manifest": "results/ablation4/logistic_no_rate_seed_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "311a81802c6694f00036bab882121ea7b9c0f97e1151c9e9f5d22b020d9b9540"
+   }
+  },
+  {
+   "set": "ablation4",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/ablation4 --tag no_sign_aware --bacon-fixes bounded_retry intercept_vs_std rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation4/oscillator_no_sign_aware.csv",
+   "summary": "results/ablation4/oscillator_no_sign_aware_summary.csv",
+   "run_manifest": "results/ablation4/oscillator_no_sign_aware_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "b7aafb8fef7b194886e6d45b6542b7d1df39ed4ab1a8d112d1c3fb0276ded04c"
+   }
+  },
+  {
+   "set": "ablation4",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/ablation4 --tag no_bounded_retry --bacon-fixes sign_aware intercept_vs_std rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation4/oscillator_no_bounded_retry.csv",
+   "summary": "results/ablation4/oscillator_no_bounded_retry_summary.csv",
+   "run_manifest": "results/ablation4/oscillator_no_bounded_retry_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "f31366c187ef58c8ac13fb2dd0dc38994a933a39a80c87ef267903d28c663e71"
+   }
+  },
+  {
+   "set": "ablation4",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/ablation4 --tag no_intercept_vs_std --bacon-fixes sign_aware bounded_retry rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation4/oscillator_no_intercept_vs_std.csv",
+   "summary": "results/ablation4/oscillator_no_intercept_vs_std_summary.csv",
+   "run_manifest": "results/ablation4/oscillator_no_intercept_vs_std_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "09134f814bee6138cb6e1011b98abe549b6dacd7b188050463e9481e91aa0b74"
+   }
+  },
+  {
+   "set": "ablation4",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/ablation4 --tag no_rate_seed --bacon-fixes sign_aware bounded_retry intercept_vs_std robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation4/oscillator_no_rate_seed.csv",
+   "summary": "results/ablation4/oscillator_no_rate_seed_summary.csv",
+   "run_manifest": "results/ablation4/oscillator_no_rate_seed_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "926b9ea2ff6d1a3bed7de3e8d40591bb5c599934aadb150485c97f79a317e812"
+   }
+  },
+  {
+   "set": "ablation4",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/ablation4 --tag no_sign_aware_3traj --bacon-fixes bounded_retry intercept_vs_std rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation4/oscillator_no_sign_aware_3traj.csv",
+   "summary": "results/ablation4/oscillator_no_sign_aware_3traj_summary.csv",
+   "run_manifest": "results/ablation4/oscillator_no_sign_aware_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "8292dbe0a80500aa1c324b73362be0c590c426006f7fc134bde6850e99b529a0"
+   }
+  },
+  {
+   "set": "ablation4",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/ablation4 --tag no_bounded_retry_3traj --bacon-fixes sign_aware intercept_vs_std rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation4/oscillator_no_bounded_retry_3traj.csv",
+   "summary": "results/ablation4/oscillator_no_bounded_retry_3traj_summary.csv",
+   "run_manifest": "results/ablation4/oscillator_no_bounded_retry_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "1513858d42c4fbe9a7359a8d0dc9747152bf5f0d4131b52b0d936aec0cababb3"
+   }
+  },
+  {
+   "set": "ablation4",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/ablation4 --tag no_intercept_vs_std_3traj --bacon-fixes sign_aware bounded_retry rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation4/oscillator_no_intercept_vs_std_3traj.csv",
+   "summary": "results/ablation4/oscillator_no_intercept_vs_std_3traj_summary.csv",
+   "run_manifest": "results/ablation4/oscillator_no_intercept_vs_std_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "01a43e5c9606d53eb2a19559b1f0906e651b963de9d87f68281c8af33bd1ccdc"
+   }
+  },
+  {
+   "set": "ablation4",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/ablation4 --tag no_rate_seed_3traj --bacon-fixes sign_aware bounded_retry intercept_vs_std robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation4/oscillator_no_rate_seed_3traj.csv",
+   "summary": "results/ablation4/oscillator_no_rate_seed_3traj_summary.csv",
+   "run_manifest": "results/ablation4/oscillator_no_rate_seed_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "e87dbdb37a6c28b8f15553809868a602f9b222cc110ad9f9c8dfb29f1f7240e6"
+   }
+  },
+  {
+   "set": "ablation4",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/ablation4 --tag no_sign_aware --bacon-fixes bounded_retry intercept_vs_std rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation4/powerdecay_no_sign_aware.csv",
+   "summary": "results/ablation4/powerdecay_no_sign_aware_summary.csv",
+   "run_manifest": "results/ablation4/powerdecay_no_sign_aware_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "8e838eca77f71b0d7d5bce8d52ab14a18828d334a98bc4a69fcdf19afc41cc50"
+   }
+  },
+  {
+   "set": "ablation4",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/ablation4 --tag no_bounded_retry --bacon-fixes sign_aware intercept_vs_std rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation4/powerdecay_no_bounded_retry.csv",
+   "summary": "results/ablation4/powerdecay_no_bounded_retry_summary.csv",
+   "run_manifest": "results/ablation4/powerdecay_no_bounded_retry_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "622f2cf93a81fe011133fccce7cbb4d4118046e03592442493a6914ab5b848cf"
+   }
+  },
+  {
+   "set": "ablation4",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/ablation4 --tag no_intercept_vs_std --bacon-fixes sign_aware bounded_retry rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation4/powerdecay_no_intercept_vs_std.csv",
+   "summary": "results/ablation4/powerdecay_no_intercept_vs_std_summary.csv",
+   "run_manifest": "results/ablation4/powerdecay_no_intercept_vs_std_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "1510b9a4a35f2192851c36fc77681df3c50a79f4ccbda8e6b33a96db016b5953"
+   }
+  },
+  {
+   "set": "ablation4",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/ablation4 --tag no_rate_seed --bacon-fixes sign_aware bounded_retry intercept_vs_std robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation4/powerdecay_no_rate_seed.csv",
+   "summary": "results/ablation4/powerdecay_no_rate_seed_summary.csv",
+   "run_manifest": "results/ablation4/powerdecay_no_rate_seed_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "3c669a3d0e54695cb151a43c7e1a459153a6ee706548bb8622f85d45038bd4ba"
+   }
+  },
+  {
+   "set": "rerun5",
+   "command": ".venv/bin/python run_test.py --system decay --out results/rerun5  --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun5/decay.csv",
+   "summary": "results/rerun5/decay_summary.csv",
+   "run_manifest": "results/rerun5/decay_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "938bd5d82f55b769f24711c89da6f53a1dceb6e7699c996225d9ee7a88fc140a"
+   }
+  },
+  {
+   "set": "rerun5",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/rerun5  --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun5/logistic.csv",
+   "summary": "results/rerun5/logistic_summary.csv",
+   "run_manifest": "results/rerun5/logistic_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "b6cf642dcd2d5fb8cc0e1b44de51c55cbc42c5b2101923a3d910d0b12a595779"
+   }
+  },
+  {
+   "set": "rerun5",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/rerun5  --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun5/oscillator.csv",
+   "summary": "results/rerun5/oscillator_summary.csv",
+   "run_manifest": "results/rerun5/oscillator_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "09134f814bee6138cb6e1011b98abe549b6dacd7b188050463e9481e91aa0b74"
+   }
+  },
+  {
+   "set": "rerun5",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/rerun5 --tag 3traj --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun5/oscillator_3traj.csv",
+   "summary": "results/rerun5/oscillator_3traj_summary.csv",
+   "run_manifest": "results/rerun5/oscillator_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "01a43e5c9606d53eb2a19559b1f0906e651b963de9d87f68281c8af33bd1ccdc"
+   }
+  },
+  {
+   "set": "rerun5",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/rerun5  --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun5/powerdecay.csv",
+   "summary": "results/rerun5/powerdecay_summary.csv",
+   "run_manifest": "results/rerun5/powerdecay_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "1510b9a4a35f2192851c36fc77681df3c50a79f4ccbda8e6b33a96db016b5953"
+   }
+  },
+  {
+   "set": "rerun5",
+   "command": ".venv/bin/python run_test.py --system lotka_volterra --out results/rerun5  --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun5/lotka_volterra.csv",
+   "summary": "results/rerun5/lotka_volterra_summary.csv",
+   "run_manifest": "results/rerun5/lotka_volterra_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "4671c26450a235879a032d2d5561bcd89eb991083c10df09358079f46e43ee9b"
+   }
+  },
+  {
+   "set": "rerun5",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/rerun5 --tag halfpowers --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-library poly+halfpowers --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/rerun5/powerdecay_halfpowers.csv",
+   "summary": "results/rerun5/powerdecay_halfpowers_summary.csv",
+   "run_manifest": "results/rerun5/powerdecay_halfpowers_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "598f02c0f453ad47d208cc35c20e61ace0bfac47c2862d4b7f134716006701d5"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system decay --out results/ablation5 --tag no_sign_aware --bacon-fixes bounded_retry rate_seed robust_line own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/decay_no_sign_aware.csv",
+   "summary": "results/ablation5/decay_no_sign_aware_summary.csv",
+   "run_manifest": "results/ablation5/decay_no_sign_aware_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "c193cf456b85bcd4930c66d0a95b9016351debd02e5a70c73c95a88c2fc30c29"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system decay --out results/ablation5 --tag no_bounded_retry --bacon-fixes sign_aware rate_seed robust_line own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/decay_no_bounded_retry.csv",
+   "summary": "results/ablation5/decay_no_bounded_retry_summary.csv",
+   "run_manifest": "results/ablation5/decay_no_bounded_retry_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "72a264f9217f98a9e5cfb8a134d2430b7be2ea7394a5758647e2b7c4dbe4326c"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system decay --out results/ablation5 --tag no_rate_seed --bacon-fixes sign_aware bounded_retry robust_line own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/decay_no_rate_seed.csv",
+   "summary": "results/ablation5/decay_no_rate_seed_summary.csv",
+   "run_manifest": "results/ablation5/decay_no_rate_seed_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "b11433624702324d38e1e00d897ca79a3d2ec186bea301003134a1eea950e83d"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system decay --out results/ablation5 --tag no_robust_line --bacon-fixes sign_aware bounded_retry rate_seed own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/decay_no_robust_line.csv",
+   "summary": "results/ablation5/decay_no_robust_line_summary.csv",
+   "run_manifest": "results/ablation5/decay_no_robust_line_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "fed82a76f1dd0aefe4a744318918a7539da0b98afb8ec3125b53b476b324de51"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system decay --out results/ablation5 --tag no_own_rate_seed --bacon-fixes sign_aware bounded_retry rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/decay_no_own_rate_seed.csv",
+   "summary": "results/ablation5/decay_no_own_rate_seed_summary.csv",
+   "run_manifest": "results/ablation5/decay_no_own_rate_seed_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "938bd5d82f55b769f24711c89da6f53a1dceb6e7699c996225d9ee7a88fc140a"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/ablation5 --tag no_sign_aware --bacon-fixes bounded_retry rate_seed robust_line own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/logistic_no_sign_aware.csv",
+   "summary": "results/ablation5/logistic_no_sign_aware_summary.csv",
+   "run_manifest": "results/ablation5/logistic_no_sign_aware_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "b6cf642dcd2d5fb8cc0e1b44de51c55cbc42c5b2101923a3d910d0b12a595779"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/ablation5 --tag no_bounded_retry --bacon-fixes sign_aware rate_seed robust_line own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/logistic_no_bounded_retry.csv",
+   "summary": "results/ablation5/logistic_no_bounded_retry_summary.csv",
+   "run_manifest": "results/ablation5/logistic_no_bounded_retry_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "1b7b5b08f9ed5bfa49b4f0f64b933af0e5698d55d1d908541e80e85fc511be35"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/ablation5 --tag no_rate_seed --bacon-fixes sign_aware bounded_retry robust_line own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/logistic_no_rate_seed.csv",
+   "summary": "results/ablation5/logistic_no_rate_seed_summary.csv",
+   "run_manifest": "results/ablation5/logistic_no_rate_seed_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "311a81802c6694f00036bab882121ea7b9c0f97e1151c9e9f5d22b020d9b9540"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/ablation5 --tag no_robust_line --bacon-fixes sign_aware bounded_retry rate_seed own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/logistic_no_robust_line.csv",
+   "summary": "results/ablation5/logistic_no_robust_line_summary.csv",
+   "run_manifest": "results/ablation5/logistic_no_robust_line_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "8b97688fdbc9c0580f450458eb2e76521d7c7fafeddd62332c10d7568f3d8242"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/ablation5 --tag no_own_rate_seed --bacon-fixes sign_aware bounded_retry rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/logistic_no_own_rate_seed.csv",
+   "summary": "results/ablation5/logistic_no_own_rate_seed_summary.csv",
+   "run_manifest": "results/ablation5/logistic_no_own_rate_seed_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "b6cf642dcd2d5fb8cc0e1b44de51c55cbc42c5b2101923a3d910d0b12a595779"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/ablation5 --tag no_sign_aware --bacon-fixes bounded_retry rate_seed robust_line own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/oscillator_no_sign_aware.csv",
+   "summary": "results/ablation5/oscillator_no_sign_aware_summary.csv",
+   "run_manifest": "results/ablation5/oscillator_no_sign_aware_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "b7aafb8fef7b194886e6d45b6542b7d1df39ed4ab1a8d112d1c3fb0276ded04c"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/ablation5 --tag no_bounded_retry --bacon-fixes sign_aware rate_seed robust_line own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/oscillator_no_bounded_retry.csv",
+   "summary": "results/ablation5/oscillator_no_bounded_retry_summary.csv",
+   "run_manifest": "results/ablation5/oscillator_no_bounded_retry_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "f31366c187ef58c8ac13fb2dd0dc38994a933a39a80c87ef267903d28c663e71"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/ablation5 --tag no_rate_seed --bacon-fixes sign_aware bounded_retry robust_line own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/oscillator_no_rate_seed.csv",
+   "summary": "results/ablation5/oscillator_no_rate_seed_summary.csv",
+   "run_manifest": "results/ablation5/oscillator_no_rate_seed_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "926b9ea2ff6d1a3bed7de3e8d40591bb5c599934aadb150485c97f79a317e812"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/ablation5 --tag no_robust_line --bacon-fixes sign_aware bounded_retry rate_seed own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/oscillator_no_robust_line.csv",
+   "summary": "results/ablation5/oscillator_no_robust_line_summary.csv",
+   "run_manifest": "results/ablation5/oscillator_no_robust_line_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "d8a4bd8d5334397acd69c6029156159a4f4cab935194537d79afafdf80d5a8f2"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/ablation5 --tag no_own_rate_seed --bacon-fixes sign_aware bounded_retry rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/oscillator_no_own_rate_seed.csv",
+   "summary": "results/ablation5/oscillator_no_own_rate_seed_summary.csv",
+   "run_manifest": "results/ablation5/oscillator_no_own_rate_seed_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "09134f814bee6138cb6e1011b98abe549b6dacd7b188050463e9481e91aa0b74"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/ablation5 --tag no_sign_aware_3traj --bacon-fixes bounded_retry rate_seed robust_line own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/oscillator_no_sign_aware_3traj.csv",
+   "summary": "results/ablation5/oscillator_no_sign_aware_3traj_summary.csv",
+   "run_manifest": "results/ablation5/oscillator_no_sign_aware_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "8292dbe0a80500aa1c324b73362be0c590c426006f7fc134bde6850e99b529a0"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/ablation5 --tag no_bounded_retry_3traj --bacon-fixes sign_aware rate_seed robust_line own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/oscillator_no_bounded_retry_3traj.csv",
+   "summary": "results/ablation5/oscillator_no_bounded_retry_3traj_summary.csv",
+   "run_manifest": "results/ablation5/oscillator_no_bounded_retry_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "1513858d42c4fbe9a7359a8d0dc9747152bf5f0d4131b52b0d936aec0cababb3"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/ablation5 --tag no_rate_seed_3traj --bacon-fixes sign_aware bounded_retry robust_line own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/oscillator_no_rate_seed_3traj.csv",
+   "summary": "results/ablation5/oscillator_no_rate_seed_3traj_summary.csv",
+   "run_manifest": "results/ablation5/oscillator_no_rate_seed_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "e87dbdb37a6c28b8f15553809868a602f9b222cc110ad9f9c8dfb29f1f7240e6"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/ablation5 --tag no_robust_line_3traj --bacon-fixes sign_aware bounded_retry rate_seed own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/oscillator_no_robust_line_3traj.csv",
+   "summary": "results/ablation5/oscillator_no_robust_line_3traj_summary.csv",
+   "run_manifest": "results/ablation5/oscillator_no_robust_line_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "436fdfa41f1a0ab74fecea7661db0ddaf1fb553175b08708d7ffeb22cf6fc65e"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/ablation5 --tag no_own_rate_seed_3traj --bacon-fixes sign_aware bounded_retry rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/oscillator_no_own_rate_seed_3traj.csv",
+   "summary": "results/ablation5/oscillator_no_own_rate_seed_3traj_summary.csv",
+   "run_manifest": "results/ablation5/oscillator_no_own_rate_seed_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "01a43e5c9606d53eb2a19559b1f0906e651b963de9d87f68281c8af33bd1ccdc"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/ablation5 --tag no_sign_aware --bacon-fixes bounded_retry rate_seed robust_line own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/powerdecay_no_sign_aware.csv",
+   "summary": "results/ablation5/powerdecay_no_sign_aware_summary.csv",
+   "run_manifest": "results/ablation5/powerdecay_no_sign_aware_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "8e838eca77f71b0d7d5bce8d52ab14a18828d334a98bc4a69fcdf19afc41cc50"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/ablation5 --tag no_bounded_retry --bacon-fixes sign_aware rate_seed robust_line own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/powerdecay_no_bounded_retry.csv",
+   "summary": "results/ablation5/powerdecay_no_bounded_retry_summary.csv",
+   "run_manifest": "results/ablation5/powerdecay_no_bounded_retry_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "622f2cf93a81fe011133fccce7cbb4d4118046e03592442493a6914ab5b848cf"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/ablation5 --tag no_rate_seed --bacon-fixes sign_aware bounded_retry robust_line own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/powerdecay_no_rate_seed.csv",
+   "summary": "results/ablation5/powerdecay_no_rate_seed_summary.csv",
+   "run_manifest": "results/ablation5/powerdecay_no_rate_seed_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "3c669a3d0e54695cb151a43c7e1a459153a6ee706548bb8622f85d45038bd4ba"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/ablation5 --tag no_robust_line --bacon-fixes sign_aware bounded_retry rate_seed own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/powerdecay_no_robust_line.csv",
+   "summary": "results/ablation5/powerdecay_no_robust_line_summary.csv",
+   "run_manifest": "results/ablation5/powerdecay_no_robust_line_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "0b9c3f174a1cfd305b9d7fa16e2fe3f4fbd4e45f8afe3fa73981f7bfe9c270c0"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/ablation5 --tag no_own_rate_seed --bacon-fixes sign_aware bounded_retry rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/powerdecay_no_own_rate_seed.csv",
+   "summary": "results/ablation5/powerdecay_no_own_rate_seed_summary.csv",
+   "run_manifest": "results/ablation5/powerdecay_no_own_rate_seed_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "1510b9a4a35f2192851c36fc77681df3c50a79f4ccbda8e6b33a96db016b5953"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system lotka_volterra --out results/ablation5 --tag no_sign_aware --bacon-fixes bounded_retry rate_seed robust_line own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/lotka_volterra_no_sign_aware.csv",
+   "summary": "results/ablation5/lotka_volterra_no_sign_aware_summary.csv",
+   "run_manifest": "results/ablation5/lotka_volterra_no_sign_aware_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "4671c26450a235879a032d2d5561bcd89eb991083c10df09358079f46e43ee9b"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system lotka_volterra --out results/ablation5 --tag no_bounded_retry --bacon-fixes sign_aware rate_seed robust_line own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/lotka_volterra_no_bounded_retry.csv",
+   "summary": "results/ablation5/lotka_volterra_no_bounded_retry_summary.csv",
+   "run_manifest": "results/ablation5/lotka_volterra_no_bounded_retry_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "18b08dd8bf91d86e1b0af922086378c17af0e459bce69a762e16b5805e7fdf71"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system lotka_volterra --out results/ablation5 --tag no_rate_seed --bacon-fixes sign_aware bounded_retry robust_line own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/lotka_volterra_no_rate_seed.csv",
+   "summary": "results/ablation5/lotka_volterra_no_rate_seed_summary.csv",
+   "run_manifest": "results/ablation5/lotka_volterra_no_rate_seed_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "40be3e46dc0009766dd0f2db2470134ebe83e425dafcb27a6b9ae9d36bc501eb"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system lotka_volterra --out results/ablation5 --tag no_robust_line --bacon-fixes sign_aware bounded_retry rate_seed own_rate_seed  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/lotka_volterra_no_robust_line.csv",
+   "summary": "results/ablation5/lotka_volterra_no_robust_line_summary.csv",
+   "run_manifest": "results/ablation5/lotka_volterra_no_robust_line_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "d58f20e24ffb793b4442a8bccaed014fd5e82d14d772bcc65569e2011e8bf60d"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system lotka_volterra --out results/ablation5 --tag no_own_rate_seed --bacon-fixes sign_aware bounded_retry rate_seed robust_line  --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/lotka_volterra_no_own_rate_seed.csv",
+   "summary": "results/ablation5/lotka_volterra_no_own_rate_seed_summary.csv",
+   "run_manifest": "results/ablation5/lotka_volterra_no_own_rate_seed_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "7fa1b6f707e65d70ad1a63338655b232d82d098055e7b96d2a535a6ab74603ec"
+   }
+  },
+  {
+   "set": "ablation5",
+   "command": ".venv/bin/python run_test.py --system lotka_volterra --out results/ablation5 --tag original --bacon-fixes none --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+   "results": "results/ablation5/lotka_volterra_original.csv",
+   "summary": "results/ablation5/lotka_volterra_original_summary.csv",
+   "run_manifest": "results/ablation5/lotka_volterra_original_manifest.json",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "97a96f2d24c2f30403b4c66727e35b7a3cf8befcffdc52c5839520eceac9b1cd"
+   }
+  },
+  {
+   "set": "rerun6",
+   "command": ".venv/bin/python run_test.py --system decay --out results/rerun6  --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0.05",
+   "results": "results/rerun6/decay.csv",
+   "summary": "results/rerun6/decay_summary.csv",
+   "run_manifest": "results/rerun6/decay_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "fd7948ed5944c2b7347452bc5a6f1d7d39b28bbd189ddb5cc251d23021e49c36"
+   }
+  },
+  {
+   "set": "rerun6",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/rerun6  --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0.05",
+   "results": "results/rerun6/logistic.csv",
+   "summary": "results/rerun6/logistic_summary.csv",
+   "run_manifest": "results/rerun6/logistic_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "3efce0572a5bca3fe1f54370a420107e3cc3672886609e95f5f70d5151f44541"
+   }
+  },
+  {
+   "set": "rerun6",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/rerun6  --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0.05",
+   "results": "results/rerun6/oscillator.csv",
+   "summary": "results/rerun6/oscillator_summary.csv",
+   "run_manifest": "results/rerun6/oscillator_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "9573d647ff83be073cca6ad13282a964262fe658fb85717697d72f8e0f458c0e"
+   }
+  },
+  {
+   "set": "rerun6",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/rerun6 --tag 3traj --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0.05",
+   "results": "results/rerun6/oscillator_3traj.csv",
+   "summary": "results/rerun6/oscillator_3traj_summary.csv",
+   "run_manifest": "results/rerun6/oscillator_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "01a43e5c9606d53eb2a19559b1f0906e651b963de9d87f68281c8af33bd1ccdc"
+   }
+  },
+  {
+   "set": "rerun6",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/rerun6  --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0.05",
+   "results": "results/rerun6/powerdecay.csv",
+   "summary": "results/rerun6/powerdecay_summary.csv",
+   "run_manifest": "results/rerun6/powerdecay_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "e1d0b2bb5190b0567199b6181a6ee6c56e68292789253b7700d59e1423b380f5"
+   }
+  },
+  {
+   "set": "rerun6",
+   "command": ".venv/bin/python run_test.py --system lotka_volterra --out results/rerun6  --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0.05",
+   "results": "results/rerun6/lotka_volterra.csv",
+   "summary": "results/rerun6/lotka_volterra_summary.csv",
+   "run_manifest": "results/rerun6/lotka_volterra_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "8744de12124300fcd3f5b39ac1898b3567b5cf12cc24b78997e3d3d266ee367e"
+   }
+  },
+  {
+   "set": "rerun6",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/rerun6 --tag halfpowers --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-library poly+halfpowers --sindy-normalize on --sindy-alpha 0.05",
+   "results": "results/rerun6/powerdecay_halfpowers.csv",
+   "summary": "results/rerun6/powerdecay_halfpowers_summary.csv",
+   "run_manifest": "results/rerun6/powerdecay_halfpowers_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "e3590a28d06391723994badaf023b90f81b09b2339f4b5a495d6e3ab04e4736a"
+   }
+  },
+  {
+   "set": "rerun6b",
+   "command": ".venv/bin/python run_test.py --system decay --out results/rerun6b  --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/rerun6b/decay.csv",
+   "summary": "results/rerun6b/decay_summary.csv",
+   "run_manifest": "results/rerun6b/decay_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "e48a868153ab51b4178f0f777d2341dfdf498b70fb27ffdd1251852b5067612b"
+   }
+  },
+  {
+   "set": "rerun6b",
+   "command": ".venv/bin/python run_test.py --system logistic --out results/rerun6b  --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/rerun6b/logistic.csv",
+   "summary": "results/rerun6b/logistic_summary.csv",
+   "run_manifest": "results/rerun6b/logistic_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "c2c4add7c264f93154f15279cf471524c4162d6aef955ec285e0e3b3a7dacaf4"
+   }
+  },
+  {
+   "set": "rerun6b",
+   "command": ".venv/bin/python run_test.py --system oscillator --out results/rerun6b  --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/rerun6b/oscillator.csv",
+   "summary": "results/rerun6b/oscillator_summary.csv",
+   "run_manifest": "results/rerun6b/oscillator_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "27b966d542b4dfac325c1446fc4067230ea2bd0eba6a6870540fdcd1a650d1d8"
+   }
+  },
+  {
+   "set": "rerun6b",
+   "command": ".venv/bin/python run_test.py --system oscillator --n-traj 3 --out results/rerun6b --tag 3traj --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/rerun6b/oscillator_3traj.csv",
+   "summary": "results/rerun6b/oscillator_3traj_summary.csv",
+   "run_manifest": "results/rerun6b/oscillator_3traj_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "01a43e5c9606d53eb2a19559b1f0906e651b963de9d87f68281c8af33bd1ccdc"
+   }
+  },
+  {
+   "set": "rerun6b",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/rerun6b  --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/rerun6b/powerdecay.csv",
+   "summary": "results/rerun6b/powerdecay_summary.csv",
+   "run_manifest": "results/rerun6b/powerdecay_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "2816825642700d0821ecaa85226fc9fb87137ed189c2f60870ce48d7f7efcc81"
+   }
+  },
+  {
+   "set": "rerun6b",
+   "command": ".venv/bin/python run_test.py --system lotka_volterra --out results/rerun6b  --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/rerun6b/lotka_volterra.csv",
+   "summary": "results/rerun6b/lotka_volterra_summary.csv",
+   "run_manifest": "results/rerun6b/lotka_volterra_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "14264274da59776c5089e91bfe1c1b006450f64541abe3ca33659db6077942ef"
+   }
+  },
+  {
+   "set": "rerun6b",
+   "command": ".venv/bin/python run_test.py --system powerdecay --out results/rerun6b --tag halfpowers --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-library poly+halfpowers --sindy-normalize on --sindy-alpha 0",
+   "results": "results/rerun6b/powerdecay_halfpowers.csv",
+   "summary": "results/rerun6b/powerdecay_halfpowers_summary.csv",
+   "run_manifest": "results/rerun6b/powerdecay_halfpowers_manifest.json",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "ab21bf48353f23cdd520005e8248e01ca48612d962ca9c320f5dd5f7c389cf02"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode62_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode62_start1.csv",
+   "summary": "results/test10/ode62_start1_summary.csv",
+   "run_manifest": "results/test10/ode62_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "00828eeceb583cbdb5d1a1abeb9c17cd8f7291754edde33f2941ae4a3aeb84c1"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode62_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode62_start2.csv",
+   "summary": "results/test10/ode62_start2_summary.csv",
+   "run_manifest": "results/test10/ode62_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "fe865016057a488bd8be17b1a0bd789f20b8f5d8f1b8c48ae6e6b317f821a354"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode63_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode63_start1.csv",
+   "summary": "results/test10/ode63_start1_summary.csv",
+   "run_manifest": "results/test10/ode63_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "d7f17cdbcd5e1a05f7ca4bc603faef44b7de35abad854dcda3b22846cae228ca"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode63_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode63_start2.csv",
+   "summary": "results/test10/ode63_start2_summary.csv",
+   "run_manifest": "results/test10/ode63_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "732e7bd000e0221cf3283e715882807eb6dce886cbddccacac358c9d6dc479b3"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode52_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode52_start1.csv",
+   "summary": "results/test10/ode52_start1_summary.csv",
+   "run_manifest": "results/test10/ode52_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "23ace722bf314970458930bd257e32e4ea92be589875d6b555dcb89bc4a66bac"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode52_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode52_start2.csv",
+   "summary": "results/test10/ode52_start2_summary.csv",
+   "run_manifest": "results/test10/ode52_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "94594200ea23fb93a8822561884b1e35b764bf2593eeeb38ed725703e7287fbc"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode53_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode53_start1.csv",
+   "summary": "results/test10/ode53_start1_summary.csv",
+   "run_manifest": "results/test10/ode53_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "1fa7be8f47aa07addbcddc8afdddb00b215674d0de2e7d6826508bda128417b3"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode53_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode53_start2.csv",
+   "summary": "results/test10/ode53_start2_summary.csv",
+   "run_manifest": "results/test10/ode53_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "515c41c42918ecd56b01f815e7eda70dea65a39761472b1a94d3f7c5b8ef267e"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode54_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode54_start1.csv",
+   "summary": "results/test10/ode54_start1_summary.csv",
+   "run_manifest": "results/test10/ode54_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "bdb288b54604a609d0e55b8478c64936f31d9a4ba6c4d6c51edb9997a052880e"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode54_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode54_start2.csv",
+   "summary": "results/test10/ode54_start2_summary.csv",
+   "run_manifest": "results/test10/ode54_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "492c2ae477bc23ea108fe0d18a050843a7ea5e0bf584d4792916f4d5185778b7"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode55_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode55_start1.csv",
+   "summary": "results/test10/ode55_start1_summary.csv",
+   "run_manifest": "results/test10/ode55_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "6249cadc0c4d924d24bcc01b3ce6bed1302afdfd5fea91f4149d601808d8a34d"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode55_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode55_start2.csv",
+   "summary": "results/test10/ode55_start2_summary.csv",
+   "run_manifest": "results/test10/ode55_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "847e9969848c9c3e51a5b08228e040ffc03605310883678cc6e3ffcd39d3534a"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode56_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode56_start1.csv",
+   "summary": "results/test10/ode56_start1_summary.csv",
+   "run_manifest": "results/test10/ode56_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "1549b37920c43e9338491738d15c2a72dedd3de8d018afa9ca7b36ad69ed81ec"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode56_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode56_start2.csv",
+   "summary": "results/test10/ode56_start2_summary.csv",
+   "run_manifest": "results/test10/ode56_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "bcecb45a41116e9c8a7176d0efd4f47caacfe21afda174a23cd4dd6c83982e64"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode57_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode57_start1.csv",
+   "summary": "results/test10/ode57_start1_summary.csv",
+   "run_manifest": "results/test10/ode57_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "acab7edeb84e2c4f94619c6f395ab6e2151070d96ac3241b6edc5bebfce2c33b"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode57_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode57_start2.csv",
+   "summary": "results/test10/ode57_start2_summary.csv",
+   "run_manifest": "results/test10/ode57_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "6bca2a36456a972e1e0877e4374228a018a20418ebc9dea6ad44643a606de739"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode58_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode58_start1.csv",
+   "summary": "results/test10/ode58_start1_summary.csv",
+   "run_manifest": "results/test10/ode58_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "e738283f6f28284db0870b1509e1bbcf6faa3e88d180767a45cbcda1889fd6cc"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode58_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode58_start2.csv",
+   "summary": "results/test10/ode58_start2_summary.csv",
+   "run_manifest": "results/test10/ode58_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "9f7452d455dfc91cc9a8880e3314f5ffe03fc47aa71ffc96d6468eb6e822f920"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode59_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode59_start1.csv",
+   "summary": "results/test10/ode59_start1_summary.csv",
+   "run_manifest": "results/test10/ode59_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "85ea38e4a4376723d2d8d06aa3abe4d0ab0f59bd1ec148d2587b77401eccd0bb"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode59_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode59_start2.csv",
+   "summary": "results/test10/ode59_start2_summary.csv",
+   "run_manifest": "results/test10/ode59_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "9db28e6daeb059c4f14af1647527a1daf930e6dc55df4b95eec8bd8355916871"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode60_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode60_start1.csv",
+   "summary": "results/test10/ode60_start1_summary.csv",
+   "run_manifest": "results/test10/ode60_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "464a18d95db95f4018550d6245d4d8792b1944505fba456b9ca0457f9d8a5582"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode60_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode60_start2.csv",
+   "summary": "results/test10/ode60_start2_summary.csv",
+   "run_manifest": "results/test10/ode60_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "0c0d145abdd965211dad6e0d37bdfe45373a09ccca4baa801d0af709282599df"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode61_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode61_start1.csv",
+   "summary": "results/test10/ode61_start1_summary.csv",
+   "run_manifest": "results/test10/ode61_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "1cc05235af93b52c80ac84a9ba03324d0ddac6179808bc2c867bf2b1cb5daf3f"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode61_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode61_start2.csv",
+   "summary": "results/test10/ode61_start2_summary.csv",
+   "run_manifest": "results/test10/ode61_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "10f3e716b089d32bfe9555b079aa65d81475435774edcccd9d693ccffc79f831"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode24_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode24_start1.csv",
+   "summary": "results/test10/ode24_start1_summary.csv",
+   "run_manifest": "results/test10/ode24_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "f97c55554841a61ea5c63c96e67a42fd661ef21849a5e27f6d450cf93fc03176"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode24_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode24_start2.csv",
+   "summary": "results/test10/ode24_start2_summary.csv",
+   "run_manifest": "results/test10/ode24_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "1047b8bbfb939265287cad6412728636df3c26acf1448162ba14fb2f811c6a8d"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode25_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode25_start1.csv",
+   "summary": "results/test10/ode25_start1_summary.csv",
+   "run_manifest": "results/test10/ode25_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "27922243c49206a1c92c9ac8b4acde338759573c7ae311bab0e9bb28be1f6d70"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode25_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode25_start2.csv",
+   "summary": "results/test10/ode25_start2_summary.csv",
+   "run_manifest": "results/test10/ode25_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "7dd0f92ef5edb93642c8e359a47b734b7ed363e4c8877969df2faf19a9ab8441"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode26_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode26_start1.csv",
+   "summary": "results/test10/ode26_start1_summary.csv",
+   "run_manifest": "results/test10/ode26_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "18e1221054665baf754591080c54f89e0ed1d0fc842f97dd799d893b6304b5ac"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode26_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode26_start2.csv",
+   "summary": "results/test10/ode26_start2_summary.csv",
+   "run_manifest": "results/test10/ode26_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "d707fb4fe94d666a41fa62cc56d3972c0a07fb31e1be27657d4f3489738d57af"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode27_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode27_start1.csv",
+   "summary": "results/test10/ode27_start1_summary.csv",
+   "run_manifest": "results/test10/ode27_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "777d6dda8141db324cbaedaef82dfbde36cd96eceea40f4b03ec7f2be40fcfe9"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode27_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode27_start2.csv",
+   "summary": "results/test10/ode27_start2_summary.csv",
+   "run_manifest": "results/test10/ode27_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "9508a0627e50cde8d0a8ededfb89bbe54461593e7978a8e3e9cf208ee611151e"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode28_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode28_start1.csv",
+   "summary": "results/test10/ode28_start1_summary.csv",
+   "run_manifest": "results/test10/ode28_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "91165717546b283bf026dcf0632f4c353864da5d32e1851095488bc70cdc3c29"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode28_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode28_start2.csv",
+   "summary": "results/test10/ode28_start2_summary.csv",
+   "run_manifest": "results/test10/ode28_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "0b1a721d805661bc82d9b2850ebbb1dbf9d5329642df1953322f13e0bc5647c6"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode29_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode29_start1.csv",
+   "summary": "results/test10/ode29_start1_summary.csv",
+   "run_manifest": "results/test10/ode29_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "272c697b0b9af562d5c5c14069099c99808a0d870bd100717bae577bc61afeba"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode29_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode29_start2.csv",
+   "summary": "results/test10/ode29_start2_summary.csv",
+   "run_manifest": "results/test10/ode29_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "64afcbe4e926edb724322322ccaaaaaa03e81170e4edeae5873a40cec8128c1f"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode30_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode30_start1.csv",
+   "summary": "results/test10/ode30_start1_summary.csv",
+   "run_manifest": "results/test10/ode30_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "3978d569241aadf3a98244e8376e37dabf6ed3c3f0bfda2d92ae1d2b4a197f91"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode30_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode30_start2.csv",
+   "summary": "results/test10/ode30_start2_summary.csv",
+   "run_manifest": "results/test10/ode30_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "eaa138618cea2996aa924e139837bc17665f7b7ba2eed40bd01f1cd8616751f2"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode31_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode31_start1.csv",
+   "summary": "results/test10/ode31_start1_summary.csv",
+   "run_manifest": "results/test10/ode31_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "21b4e149e2650a3b39f9c297af9616157a6dc9fb1360c5afbb797fb6d2dd22c3"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode31_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode31_start2.csv",
+   "summary": "results/test10/ode31_start2_summary.csv",
+   "run_manifest": "results/test10/ode31_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "aa0b77f9da4b871caa0c9c0734ff520137d6d85c89ea67dcda3ba9b7a8169344"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode32_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode32_start1.csv",
+   "summary": "results/test10/ode32_start1_summary.csv",
+   "run_manifest": "results/test10/ode32_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "05b67ccb031cb14765687766a669319619019391db7eb0486db4accc1cd0315f"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode32_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode32_start2.csv",
+   "summary": "results/test10/ode32_start2_summary.csv",
+   "run_manifest": "results/test10/ode32_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "797e076ee30504bf4be8276dfe88709235219277452ad0df37457b6c5eacf153"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode33_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode33_start1.csv",
+   "summary": "results/test10/ode33_start1_summary.csv",
+   "run_manifest": "results/test10/ode33_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "7f4309fb80014db2627162a9aea1db3ad6a7836586fa605751f73d1a8746433f"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode33_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode33_start2.csv",
+   "summary": "results/test10/ode33_start2_summary.csv",
+   "run_manifest": "results/test10/ode33_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "8d9878b779189327851b0f705907b39756a7390638a306550ff8ee3238cb1d33"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode34_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode34_start1.csv",
+   "summary": "results/test10/ode34_start1_summary.csv",
+   "run_manifest": "results/test10/ode34_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "cf2acf8deb1564da237e9b196b7139b085bd060227b58abad4f1eaad225aeb84"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode34_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode34_start2.csv",
+   "summary": "results/test10/ode34_start2_summary.csv",
+   "run_manifest": "results/test10/ode34_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "0696e23ecb975f13e9fdd4af8d4cae3902688459709cdf158f529a89f26dba68"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode35_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode35_start1.csv",
+   "summary": "results/test10/ode35_start1_summary.csv",
+   "run_manifest": "results/test10/ode35_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "982a8a5634ae66711d78041e787563e5790df367916173f0466ca9e4a1b79e01"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode35_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode35_start2.csv",
+   "summary": "results/test10/ode35_start2_summary.csv",
+   "run_manifest": "results/test10/ode35_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "73e2125e27d5611577f3e8252f3b41e80fe20a91687920313696faee78794ded"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode36_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode36_start1.csv",
+   "summary": "results/test10/ode36_start1_summary.csv",
+   "run_manifest": "results/test10/ode36_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "30d8178c206b2d2491feaee0faab6ed2c2bbc78fcef4f487cac0145981b63d5b"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode36_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode36_start2.csv",
+   "summary": "results/test10/ode36_start2_summary.csv",
+   "run_manifest": "results/test10/ode36_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "31583f825fcbb1fa65fe7ee01e1351a6e70a6f3eda4556c95319f82a2f9767a2"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode37_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode37_start1.csv",
+   "summary": "results/test10/ode37_start1_summary.csv",
+   "run_manifest": "results/test10/ode37_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "c2da5faec19a318d50d207e9cc9889133ef44adfa4550012898d7aff6d0af9d2"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode37_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode37_start2.csv",
+   "summary": "results/test10/ode37_start2_summary.csv",
+   "run_manifest": "results/test10/ode37_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "f2a19aff765cc9050f2758e8830b1ff813bd909dd3ef7fc86177617b1081e177"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode38_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode38_start1.csv",
+   "summary": "results/test10/ode38_start1_summary.csv",
+   "run_manifest": "results/test10/ode38_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "4a737f72f690cd1379bdb177ba4ecebfdd92b773631453561b8adb33a1bdf92c"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode38_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode38_start2.csv",
+   "summary": "results/test10/ode38_start2_summary.csv",
+   "run_manifest": "results/test10/ode38_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "ef69d0fc5770066f3e84bd03066f625782ddd87a24f42785b4afc9e9694687a8"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode39_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode39_start1.csv",
+   "summary": "results/test10/ode39_start1_summary.csv",
+   "run_manifest": "results/test10/ode39_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "96deb4c2acd6cc83b59e7fb10f7ab01d23ef7097c9f0c027f02d03ebc0957c07"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode39_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode39_start2.csv",
+   "summary": "results/test10/ode39_start2_summary.csv",
+   "run_manifest": "results/test10/ode39_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "f5c53c55fea36ba99d3504351f94d184f8376a02990478b2f21ef1584afd990a"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode40_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode40_start1.csv",
+   "summary": "results/test10/ode40_start1_summary.csv",
+   "run_manifest": "results/test10/ode40_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "1fb95e471232e44038bb410a8825bf6f2c0cf19976c44deee948c07d7696fc38"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode40_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode40_start2.csv",
+   "summary": "results/test10/ode40_start2_summary.csv",
+   "run_manifest": "results/test10/ode40_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "6c5ada482eb2d3c4a8b35a5f0065cb0e9ecd97d8d033a83c1f19ffb007ac0f9a"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode41_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode41_start1.csv",
+   "summary": "results/test10/ode41_start1_summary.csv",
+   "run_manifest": "results/test10/ode41_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "45fb2156c45865940e579908a939179a4906e2ed4c0ab8080c84c1f553b86a8b"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode41_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode41_start2.csv",
+   "summary": "results/test10/ode41_start2_summary.csv",
+   "run_manifest": "results/test10/ode41_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "98c9d33c30b76215b2d1f2e3c18e666b2bc6109a010dddcf2e65f1f96f5a6ad4"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode42_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode42_start1.csv",
+   "summary": "results/test10/ode42_start1_summary.csv",
+   "run_manifest": "results/test10/ode42_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "1e3b805a5d60669952d072a65272089721bfe082abd9b1b630c1367c1e098b52"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode42_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode42_start2.csv",
+   "summary": "results/test10/ode42_start2_summary.csv",
+   "run_manifest": "results/test10/ode42_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "5b149603c61a28488d45634e2dda28270b5035a3c3420a4f659d4077a00ba89b"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode43_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode43_start1.csv",
+   "summary": "results/test10/ode43_start1_summary.csv",
+   "run_manifest": "results/test10/ode43_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "2c14842555295a863a52b0f19f6f9dbf4ae9fde6dd146227b87b8d601e1bd37d"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode43_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode43_start2.csv",
+   "summary": "results/test10/ode43_start2_summary.csv",
+   "run_manifest": "results/test10/ode43_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "55eae3cf6a4b6493a92cb6dc0f42a6fb59cf4889350991bfaf975513cec0b6e6"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode44_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode44_start1.csv",
+   "summary": "results/test10/ode44_start1_summary.csv",
+   "run_manifest": "results/test10/ode44_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "d2870dc2a464b3ae4c25c052646e55a285f5254480a8285bcc848d91fb11740e"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode44_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode44_start2.csv",
+   "summary": "results/test10/ode44_start2_summary.csv",
+   "run_manifest": "results/test10/ode44_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "4622353e30de0263c3ab723a42d07eed948bdda845acd0df3bda7426c8e3480f"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode45_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode45_start1.csv",
+   "summary": "results/test10/ode45_start1_summary.csv",
+   "run_manifest": "results/test10/ode45_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "400f1ab9aba73526925b506190feb85848b0eee9eb1c70670c666356e78f10be"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode45_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode45_start2.csv",
+   "summary": "results/test10/ode45_start2_summary.csv",
+   "run_manifest": "results/test10/ode45_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "f2cac762fe5571b4f26b2f67bdd7d46be95710d487575bef69682ecfb398f284"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode46_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode46_start1.csv",
+   "summary": "results/test10/ode46_start1_summary.csv",
+   "run_manifest": "results/test10/ode46_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "f8f65c9d84f25d47cc6b49a6b503ef7a617073e6366848057bba61839a397ab6"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode46_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode46_start2.csv",
+   "summary": "results/test10/ode46_start2_summary.csv",
+   "run_manifest": "results/test10/ode46_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "20446b7e42c8991e34bbfcb59a3fa59feb79fd3a0161369902f7f900abc859a2"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode47_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode47_start1.csv",
+   "summary": "results/test10/ode47_start1_summary.csv",
+   "run_manifest": "results/test10/ode47_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "de79eec5baba22276d437455e5ac768b36354699e2a5bcf0f6dfedbf34cc4f92"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode47_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode47_start2.csv",
+   "summary": "results/test10/ode47_start2_summary.csv",
+   "run_manifest": "results/test10/ode47_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "b14bcd0738da81043c54acdcf4abf2ce6515bfa4c00baee152739b56ad1da9a8"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode48_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode48_start1.csv",
+   "summary": "results/test10/ode48_start1_summary.csv",
+   "run_manifest": "results/test10/ode48_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "a003799505c89efd6cd4666bb2837a9a63e3b50e59120f24f99c293f03fd5d4a"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode48_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode48_start2.csv",
+   "summary": "results/test10/ode48_start2_summary.csv",
+   "run_manifest": "results/test10/ode48_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "aeae3953aeb7c0011e271b52fc41a4332e79ffec823f98f0b364c35ba7bae0d4"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode49_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode49_start1.csv",
+   "summary": "results/test10/ode49_start1_summary.csv",
+   "run_manifest": "results/test10/ode49_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "66170b08e6041f2bd5f31f5137e9728e3365693f6a9f76224bea4a2ad641c02a"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode49_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode49_start2.csv",
+   "summary": "results/test10/ode49_start2_summary.csv",
+   "run_manifest": "results/test10/ode49_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "a313c77a3e2b524b169b01c228dfa527cae7583c31d81279fdf3c4447d46b8e5"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode50_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode50_start1.csv",
+   "summary": "results/test10/ode50_start1_summary.csv",
+   "run_manifest": "results/test10/ode50_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "596a5da057761fa84627d0b9acac38d3e0595e051e95a5d3ca1c5873b4f939ed"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode50_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode50_start2.csv",
+   "summary": "results/test10/ode50_start2_summary.csv",
+   "run_manifest": "results/test10/ode50_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "dc6f9a518b1154b3bc8cb6e1ade6db9b1cf48471bca662789f418c38cf5b478b"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode51_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode51_start1.csv",
+   "summary": "results/test10/ode51_start1_summary.csv",
+   "run_manifest": "results/test10/ode51_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "ada899a36bc25963057414e82feb137751b7a3abc81f38c098dd93bc3fbf8a0a"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode51_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode51_start2.csv",
+   "summary": "results/test10/ode51_start2_summary.csv",
+   "run_manifest": "results/test10/ode51_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "7065b61cfd5b715d381621b36ad498335ebf30c0b624349a3b606b15c0526aad"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode01_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode01_start1.csv",
+   "summary": "results/test10/ode01_start1_summary.csv",
+   "run_manifest": "results/test10/ode01_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "1574919fe3e1847137fd0e65e8e8e0080690528ce94fa91eaaaf8d8c7ab610f2"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode01_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode01_start2.csv",
+   "summary": "results/test10/ode01_start2_summary.csv",
+   "run_manifest": "results/test10/ode01_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "f0a89b88af008f7c508bafc2835c31751c4fdf95fbbfdf7be299e075367a6243"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode02_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode02_start1.csv",
+   "summary": "results/test10/ode02_start1_summary.csv",
+   "run_manifest": "results/test10/ode02_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "b590474b174bad500c5723e2b17d6e484b8151750cc72f62044d3f511ebf0f73"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode02_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode02_start2.csv",
+   "summary": "results/test10/ode02_start2_summary.csv",
+   "run_manifest": "results/test10/ode02_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "4aa32497736bd53ac306ce9de752396c44fb67296fc99e2daff69177477d6e62"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode03_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode03_start1.csv",
+   "summary": "results/test10/ode03_start1_summary.csv",
+   "run_manifest": "results/test10/ode03_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "c1e6a4c547306dad4683aa7e518bb31c7123e97a4bc19affecb650185fe203f2"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode03_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode03_start2.csv",
+   "summary": "results/test10/ode03_start2_summary.csv",
+   "run_manifest": "results/test10/ode03_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "2350031e8e2d7226d83362e81a947def4a9edaaf426104ac75e55fbeaed0e5a1"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode04_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode04_start1.csv",
+   "summary": "results/test10/ode04_start1_summary.csv",
+   "run_manifest": "results/test10/ode04_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "c30b692d804c2ef0510a78959254dd7035dae583a70f827b3a27abe19d243423"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode04_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode04_start2.csv",
+   "summary": "results/test10/ode04_start2_summary.csv",
+   "run_manifest": "results/test10/ode04_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "bbef88524e3e9dc9fe8984d1a974482da97ab15449f532551c35c66fa5623f63"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode05_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode05_start1.csv",
+   "summary": "results/test10/ode05_start1_summary.csv",
+   "run_manifest": "results/test10/ode05_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "1c5bdd18e03eebe06096a3dcacfe090833479939cb09bf74d1199ad3090bed9b"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode05_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode05_start2.csv",
+   "summary": "results/test10/ode05_start2_summary.csv",
+   "run_manifest": "results/test10/ode05_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "be0bec33317dc332c69768254cc02b9706930a7af54f2dfe258bb3d8346abcf8"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode06_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode06_start1.csv",
+   "summary": "results/test10/ode06_start1_summary.csv",
+   "run_manifest": "results/test10/ode06_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "d8a797c5eb5ffced5733b0d04aedfaecfae38c36059a9e6840595b3ac0778cf1"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode06_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode06_start2.csv",
+   "summary": "results/test10/ode06_start2_summary.csv",
+   "run_manifest": "results/test10/ode06_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "fcf5578c2e1aeea35c6e7b3f49ac8b6282d4d568995becd74dc62f1ac9ca38d4"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode07_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode07_start1.csv",
+   "summary": "results/test10/ode07_start1_summary.csv",
+   "run_manifest": "results/test10/ode07_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "3dff854c1f7db7fb01f292d5683b7615dbf3e82d5218f230fc2b020b13e6f2f2"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode07_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode07_start2.csv",
+   "summary": "results/test10/ode07_start2_summary.csv",
+   "run_manifest": "results/test10/ode07_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "bfadbd8c8d1bf44a0ac2074e39ebb85e444eb68ba6454c9aa42b8a4459b0c1be"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode08_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode08_start1.csv",
+   "summary": "results/test10/ode08_start1_summary.csv",
+   "run_manifest": "results/test10/ode08_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "9ab17a7997c9a74c2c272b3cab2bfb3a5360033497166c6e092aa8108cda2963"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode08_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode08_start2.csv",
+   "summary": "results/test10/ode08_start2_summary.csv",
+   "run_manifest": "results/test10/ode08_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "cbc84b94affe683591827409dfb7ffdae6c8a3dd190eb914b37be23591d61270"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode09_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode09_start1.csv",
+   "summary": "results/test10/ode09_start1_summary.csv",
+   "run_manifest": "results/test10/ode09_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "bc4a6dac4c819cf01991b5293aedc2ea2d764685bc9149d51afaabfd65b39f1f"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode09_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode09_start2.csv",
+   "summary": "results/test10/ode09_start2_summary.csv",
+   "run_manifest": "results/test10/ode09_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "7f1999e1c87036ffcb124e7459533d7a3ce0112d896bcd7af418e041d1bbd0e4"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode10_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode10_start1.csv",
+   "summary": "results/test10/ode10_start1_summary.csv",
+   "run_manifest": "results/test10/ode10_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "0f6192d9dc57f03fa68a560fd88130d7d9100b710c8f84fa8060c63691dcfb81"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode10_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode10_start2.csv",
+   "summary": "results/test10/ode10_start2_summary.csv",
+   "run_manifest": "results/test10/ode10_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "731cebf54be49b55ce777793d752d7b9286340e3a82f0fcce1492047ca3b56c3"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode11_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode11_start1.csv",
+   "summary": "results/test10/ode11_start1_summary.csv",
+   "run_manifest": "results/test10/ode11_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "b51131497681a0d3ecab0fb58966632ceeee2ef6ccc2dbe84349013fd2b2dc0d"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode11_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode11_start2.csv",
+   "summary": "results/test10/ode11_start2_summary.csv",
+   "run_manifest": "results/test10/ode11_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "296808c09e2697fa08490c34d5cd66dda4acc553e9a544687653fae51be639d5"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode12_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode12_start1.csv",
+   "summary": "results/test10/ode12_start1_summary.csv",
+   "run_manifest": "results/test10/ode12_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "52ff1f12ea3e322a804d37e1dae43a26353d95f5edea9ac5ea3d022ebbc6960f"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode12_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode12_start2.csv",
+   "summary": "results/test10/ode12_start2_summary.csv",
+   "run_manifest": "results/test10/ode12_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "3ba55b3e6a053c235996cad35d9e10b1eb8f706b8d8e33df6ed62650e88366b6"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode13_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode13_start1.csv",
+   "summary": "results/test10/ode13_start1_summary.csv",
+   "run_manifest": "results/test10/ode13_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "96f71664022c49b86b56d2e22b3657e564daa9cc97c929ff38bb4f358d9d551c"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode13_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode13_start2.csv",
+   "summary": "results/test10/ode13_start2_summary.csv",
+   "run_manifest": "results/test10/ode13_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "4033158928c655b4eb419b614186c015cdbe44c77661964696ff7517c19037e1"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode14_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode14_start1.csv",
+   "summary": "results/test10/ode14_start1_summary.csv",
+   "run_manifest": "results/test10/ode14_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "0102f24171e4f62f4cce91bec4beaddfaa31b6c5939f81f597fdabc010871aa9"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode14_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode14_start2.csv",
+   "summary": "results/test10/ode14_start2_summary.csv",
+   "run_manifest": "results/test10/ode14_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "189220c7d758b2513995a08d73aa2e66825ee83d1f33c9079eeebca49f41b743"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode15_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode15_start1.csv",
+   "summary": "results/test10/ode15_start1_summary.csv",
+   "run_manifest": "results/test10/ode15_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "49933e843643013ed53a760d19411213024ec16e80a4366ce83f832f8d89223c"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode15_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode15_start2.csv",
+   "summary": "results/test10/ode15_start2_summary.csv",
+   "run_manifest": "results/test10/ode15_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "4409b85cd0292db23819bfe68f11f3b0e5b7031d3376ef6d1c64d9fff8f428a0"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode16_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode16_start1.csv",
+   "summary": "results/test10/ode16_start1_summary.csv",
+   "run_manifest": "results/test10/ode16_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "62ac1d6922d61add349b5ff02d07ba56ea1ddfd53c64297bef33c042b20217ff"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode16_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode16_start2.csv",
+   "summary": "results/test10/ode16_start2_summary.csv",
+   "run_manifest": "results/test10/ode16_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "983f6e47cd2d20a5e32617dd2ad8066af312820158a9f96013ac5c9f08051f1f"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode17_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode17_start1.csv",
+   "summary": "results/test10/ode17_start1_summary.csv",
+   "run_manifest": "results/test10/ode17_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "61c84f97e183d70b5b8ee33d584344049bf7439f98c0f353edbb2b22642fef5e"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode17_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode17_start2.csv",
+   "summary": "results/test10/ode17_start2_summary.csv",
+   "run_manifest": "results/test10/ode17_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "26fdebc130ab439ca0fe561735b28d9733370d90636dc52688697d0f5301aaab"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode18_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode18_start1.csv",
+   "summary": "results/test10/ode18_start1_summary.csv",
+   "run_manifest": "results/test10/ode18_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "d3960df29331b4e8852c90888dba004cf0b1ee7b8560b53a6ce232dde9405573"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode18_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode18_start2.csv",
+   "summary": "results/test10/ode18_start2_summary.csv",
+   "run_manifest": "results/test10/ode18_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "184adb0267f05b96f7052563be1888b5b1acfc2e364669ed4860bd36ec98b50f"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode19_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode19_start1.csv",
+   "summary": "results/test10/ode19_start1_summary.csv",
+   "run_manifest": "results/test10/ode19_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "9f34c287414985d8e8f39cd22478edbd3988a51a8904ffee8174dd8f2bb3f99e"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode19_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode19_start2.csv",
+   "summary": "results/test10/ode19_start2_summary.csv",
+   "run_manifest": "results/test10/ode19_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "4106d2e7b9f28835ac89141cbf5fd88a6c8c4825e61d8147146573ab741dff65"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode20_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode20_start1.csv",
+   "summary": "results/test10/ode20_start1_summary.csv",
+   "run_manifest": "results/test10/ode20_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "bad0f352a835dbf58fdb0ce1decaff9d38d76a8f7f9bca64b2a77a87350df760"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode20_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode20_start2.csv",
+   "summary": "results/test10/ode20_start2_summary.csv",
+   "run_manifest": "results/test10/ode20_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "d847e22afe1cf8fdfd68912961b7fbf45e738f33b2d913c09b3587f17982051f"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode21_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode21_start1.csv",
+   "summary": "results/test10/ode21_start1_summary.csv",
+   "run_manifest": "results/test10/ode21_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "12b806159906817ab89fcbadaccae7f21e5801cae8d78b1a5bab6c840b7eed6c"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode21_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode21_start2.csv",
+   "summary": "results/test10/ode21_start2_summary.csv",
+   "run_manifest": "results/test10/ode21_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "68925dd0764252281039f6c6c9301ea4bb1cae85af439ad7c7258112c9877501"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode22_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode22_start1.csv",
+   "summary": "results/test10/ode22_start1_summary.csv",
+   "run_manifest": "results/test10/ode22_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "53ef01105252fbf4f087044cda35986cd2fbedb5171ef08a0a4e6362fda54b4a"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode22_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode22_start2.csv",
+   "summary": "results/test10/ode22_start2_summary.csv",
+   "run_manifest": "results/test10/ode22_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "48c271b1c6dcd6c7c4c03afe701879ccdf56df9e9700d2479699345e46578ff5"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode23_start1 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode23_start1.csv",
+   "summary": "results/test10/ode23_start1_summary.csv",
+   "run_manifest": "results/test10/ode23_start1_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "888973e2dd7cb99af1c96525cb5444305de64c9165dbcdf6c1b723c96cf3123b"
+   }
+  },
+  {
+   "set": "test10",
+   "command": ".venv/bin/python run_test.py --system ode23_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test10/ode23_start2.csv",
+   "summary": "results/test10/ode23_start2_summary.csv",
+   "run_manifest": "results/test10/ode23_start2_manifest.json",
+   "fingerprint": {
+    "rows": 244,
+    "sha256": "965244acdc73be2f1ab789ad7733a6228214362d5e6ed0aa25e54459d34f5af9"
+   }
+  }
+ ],
+ "original_runs_tests_1_to_4": {
+  "results/decay.csv": {
+   "reproduced_by": "results/repro/decay_test1.csv",
+   "fingerprint": {
+    "rows": 64,
+    "sha256": "5ecbdeb52ce369f974880b4de42b2419b210c1e28830fea864f6a954dfeba661"
+   }
+  },
+  "results/logistic.csv": {
+   "reproduced_by": "results/repro/logistic_test2.csv",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "6458af25e8c700aa320935c18e9089d134acc3f457dd621c39bbf8b8c531e0f5"
+   }
+  },
+  "results/oscillator.csv": {
+   "reproduced_by": "results/repro/oscillator_test3.csv",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "da9361bfe3ca9959b955b39c9941555892e06b853505700f25a8bbbe3654c5d6"
+   }
+  },
+  "results/oscillator_test4_1traj.csv": {
+   "reproduced_by": "results/repro/oscillator_test4_1traj.csv",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "c916136ff99888e372254412b313581dc1cd0600d8047c6a9578dfaa6ba9f3de"
+   }
+  },
+  "results/oscillator_test4_3traj.csv": {
+   "reproduced_by": "results/repro/oscillator_test4_3traj.csv",
+   "fingerprint": {
+    "rows": 96,
+    "sha256": "5da99dff9e57f11b13ffca9384e67530a24f366adf597aa30bb118c90dfc009a"
+   }
+  }
+ }
+}
