@@ -14,4 +14,4 @@ noise,deriv,method,recovered,coef_err_median,sim_err_median,runs
 0.1,fd,BACON-dt-robust,0.0,,,5
 0.1,fd,PySINDy,0.0,1.8793140259485248,0.029438143181961095,5
 0.1,sfd,BACON-dt-robust,0.0,,,5
-0.1,sfd,PySINDy,0.2,2.633267490153229,0.01640690438202684,5
+0.1,sfd,PySINDy,0.2,2.6332674901532287,0.01640690438202684,5

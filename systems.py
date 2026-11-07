@@ -118,3 +118,53 @@ SYSTEMS = {
     "powerdecay": powerdecay,
     "lotka_volterra": lotka_volterra,
 }
+
+
+# --- ODEBench (Test 10): all 63 systems, each starting point as its own setup ----------
+# Equations, constants and starting points exactly as in ODEBench (see import_odebench.py);
+# time grid as ODEBench's own trajectories: t = 0..10, 150 samples.
+import json as _json
+import os as _os
+
+ODEBENCH_FILE = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)),
+                              "data", "odebench_equations.json")
+
+
+def _odebench_system(eq, start, time):
+    n = eq["dim"]
+    names = [f"x{i}" for i in range(n)]
+    syms = sp.symbols(" ".join(names), real=True)
+    syms = [syms] if n == 1 else list(syms)
+    local = {f"x_{i}": s for i, s in enumerate(syms)}
+    local.update({f"c_{i}": sp.Float(c) for i, c in enumerate(eq["consts"][0])})
+    local.update({"sin": sp.sin, "cos": sp.cos, "exp": sp.exp, "log": sp.log,
+                  "cot": sp.cot, "abs": sp.Abs})
+    rhs = [sp.sympify(part.strip().replace("^", "**"), locals=local)
+           for part in eq["eq"].split("|")]
+    f_np = sp.lambdify(syms, rhs, "numpy")
+    return System(
+        name=f"ode{eq['id']:02d}_start{start + 1}",
+        names=names,
+        f=lambda t, s, f_np=f_np: np.asarray(f_np(*s), dtype=float).ravel(),
+        true_rhs=rhs,
+        x0=[float(v) for v in eq["init"][start]],
+        t=np.linspace(time["t_start"], time["t_end"], time["n_samples"]),
+        description=f"ODEBench #{eq['id']} ({eq['eq_description']}), start {start + 1}: "
+                    + " | ".join(f"D{n_} = {r}" for n_, r in zip(names, rhs)),
+    )
+
+
+def odebench_systems():
+    with open(ODEBENCH_FILE) as fh:
+        data = _json.load(fh)
+    out = {}
+    for eq in data["equations"]:
+        for start in range(len(eq["init"])):
+            name = f"ode{eq['id']:02d}_start{start + 1}"
+            out[name] = (lambda eq=eq, start=start, time=data["time"]:
+                         _odebench_system(eq, start, time))
+    return out
+
+
+ODEBENCH = odebench_systems() if _os.path.exists(ODEBENCH_FILE) else {}
+SYSTEMS.update(ODEBENCH)

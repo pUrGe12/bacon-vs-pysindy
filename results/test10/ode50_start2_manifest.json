@@ -1,0 +1,130 @@
+{
+  "command": "python run_test.py --system ode50_start2 --out results/test10 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+  "started": "2026-11-07T22:46:20",
+  "this_repo": {
+    "path": "/home/purge/Desktop/bacon-vs-pysindy",
+    "commit": "60f467531e2c021dca47287851bfceed659df51b",
+    "uncommitted_changes": true
+  },
+  "source_sha256": {
+    "bacon_dt.py": "b448c4e13a85194b",
+    "check_original.py": "37a92a08ad899d05",
+    "derivatives.py": "2f740ff77cae128e",
+    "import_odebench.py": "b0febfa24e9c7085",
+    "run_test.py": "96971415c4237cb9",
+    "scoring.py": "0fe01e06e354c373",
+    "sindy_runner.py": "f84d9ae6a5c67258",
+    "summarize.py": "e9851cd96b9e7fcc",
+    "systems.py": "425b2083fdf38193",
+    "../BACON/space_of_laws/laws_methods/bacon1.py": "9e7593bddadfaa19",
+    "data/odebench_equations.json": "627508d4b95e5873"
+  },
+  "bacon_repo": {
+    "path": "/home/purge/Desktop/BACON",
+    "commit": "4dbdc957b6409fce57b3dae621cac3c9fb69ccd0",
+    "uncommitted_changes": false
+  },
+  "packages": {
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "sympy": "1.14.0",
+    "pandas": "2.3.3",
+    "pysindy": "2.1.0"
+  },
+  "python": "3.10.12",
+  "system": {
+    "name": "ode50_start2",
+    "description": "ODEBench #50 (Chemical oscillator model by Schnackenberg 1979 (dimensionless)), start 2: Dx0 = x0**2*x1 - x0 + 0.24 | Dx1 = -x0**2*x1 + 1.43",
+    "true_rhs": [
+      "x0**2*x1 - x0 + 0.24",
+      "-x0**2*x1 + 1.43"
+    ],
+    "initial_conditions": [
+      [
+        1.5,
+        0.9
+      ]
+    ],
+    "t_start": 0.0,
+    "t_end": 10.0,
+    "samples_per_trajectory": 150
+  },
+  "bacon": {
+    "variants": [
+      "BACON-dt-robust"
+    ],
+    "fixes_on": [
+      "sign_aware",
+      "bounded_retry",
+      "rate_seed",
+      "robust_line",
+      "own_rate_seed"
+    ],
+    "fixes_off": [
+      "signed_constancy",
+      "intercept_vs_std"
+    ],
+    "params": {
+      "epsilon": 0.001,
+      "delta": 0.01,
+      "epsilon_scale": 1.5,
+      "delta_scale": 1.5,
+      "c_val": 0.02,
+      "max_delta": 0.3
+    }
+  },
+  "pysindy": {
+    "poly_degree": 3,
+    "optimizer": "STLSQ",
+    "threshold": "sweep",
+    "library_kind": "poly",
+    "normalize_columns": true,
+    "ridge_alpha": 0.0,
+    "sweep_grid": [
+      0.001,
+      0.0017782794100389228,
+      0.0031622776601683794,
+      0.005623413251903491,
+      0.01,
+      0.01778279410038923,
+      0.03162277660168379,
+      0.05623413251903491,
+      0.1,
+      0.1778279410038923,
+      0.31622776601683794,
+      0.5623413251903491,
+      1.0,
+      1.7782794100389228,
+      3.1622776601683795,
+      5.623413251903491,
+      10.0,
+      17.78279410038923,
+      31.622776601683793,
+      56.23413251903491,
+      100.0,
+      177.82794100389228,
+      316.22776601683796,
+      562.341325190349,
+      1000.0
+    ],
+    "r2_tol": 0.01
+  },
+  "harness": {
+    "noise_levels": [
+      0,
+      0.01,
+      0.05,
+      0.1
+    ],
+    "seeds": 20,
+    "n_traj": 1,
+    "derivatives": [
+      "fd",
+      "sfd"
+    ],
+    "edge_trim": 2,
+    "success_coef_err": 0.05,
+    "sim_solver": "RK45"
+  },
+  "finished": "2026-11-07T23:12:14"
+}

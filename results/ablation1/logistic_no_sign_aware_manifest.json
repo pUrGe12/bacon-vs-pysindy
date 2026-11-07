@@ -1,19 +1,20 @@
 {
-  "command": "python run_test.py --system logistic --out results/ablation --tag no_sign_aware --bacon-fixes signed_constancy bounded_retry intercept_vs_std",
-  "started": "2026-11-07T14:24:24",
+  "command": "python run_test.py --system logistic --out results/ablation1 --tag no_sign_aware --bacon-fixes signed_constancy bounded_retry intercept_vs_std --bacon-variants strict robust --sindy-normalize off --sindy-alpha 0.05",
+  "started": "2026-11-07T18:53:30",
   "this_repo": {
     "path": "/home/purge/Desktop/bacon-vs-pysindy",
-    "commit": "da80a770d4e33bf76c896172a098857e7b5908dd",
+    "commit": "60f467531e2c021dca47287851bfceed659df51b",
     "uncommitted_changes": true
   },
   "source_sha256": {
-    "bacon_dt.py": "c09871c46777d35d",
-    "check_original.py": "48c8bbaa9bb8b38f",
+    "bacon_dt.py": "b448c4e13a85194b",
+    "check_original.py": "37a92a08ad899d05",
     "derivatives.py": "2f740ff77cae128e",
-    "run_test.py": "44ed62ee8c89e786",
-    "scoring.py": "9b147daada15097f",
-    "sindy_runner.py": "10ab37920ef95382",
-    "systems.py": "69c22b937ac32713",
+    "run_test.py": "e992cf5329be500a",
+    "scoring.py": "0fe01e06e354c373",
+    "sindy_runner.py": "f84d9ae6a5c67258",
+    "summarize.py": "975228b2435811e7",
+    "systems.py": "0e9c8900f85e74ed",
     "../BACON/space_of_laws/laws_methods/bacon1.py": "9e7593bddadfaa19"
   },
   "bacon_repo": {
@@ -55,7 +56,10 @@
       "intercept_vs_std"
     ],
     "fixes_off": [
-      "sign_aware"
+      "sign_aware",
+      "rate_seed",
+      "robust_line",
+      "own_rate_seed"
     ],
     "params": {
       "epsilon": 0.001,
@@ -67,9 +71,12 @@
     }
   },
   "pysindy": {
-    "library": "polynomial degree 3",
+    "poly_degree": 3,
     "optimizer": "STLSQ",
     "threshold": "sweep",
+    "library_kind": "poly",
+    "normalize_columns": false,
+    "ridge_alpha": 0.05,
     "sweep_grid": [
       0.001,
       0.0017782794100389228,
@@ -104,5 +111,5 @@
     "success_coef_err": 0.05,
     "sim_solver": "RK45"
   },
-  "finished": "2026-11-07T14:24:34"
+  "finished": "2026-11-07T18:53:49"
 }

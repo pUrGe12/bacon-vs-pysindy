@@ -78,62 +78,326 @@ with B1, B3–B6.
 Each fix switched off on its own, plus all off (= original BACON.1), on every system.
 Made by `./experiments.sh run 8 ablation1`; tables from `.venv/bin/python summarize.py ablation1`.
 
-Each cell: runs with the right law · runs that returned a wrong law, out of 32 (clean + noisy, fd and sfd pooled). The rest returned nothing.
+Each cell counts runs that found the exact law ("right") and runs that returned some other law ("wrong"); the remaining runs at that noise level found no law for at least one variable.
 
+<!-- tables:ablation1 -->
 
-**BACON-dt**
+**Exponential decay, `x' = -0.5x` — BACON-dt (strict)**
 
-| config | decay | logistic | oscillator | oscillator 3traj |
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
 |---|---|---|---|---|
-| all fixes B1-B4 (rerun 1) | 2 right · 4 wrong | 0 right · 0 wrong | 2 right · 0 wrong | 2 right · 0 wrong |
-| no fixes (original BACON.1) | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong |
-| without sign_aware | 0 right · 0 wrong | 0 right · 0 wrong | 0 right · 0 wrong | 0 right · 0 wrong |
-| without signed_constancy | 2 right · 4 wrong | 0 right · 0 wrong | 2 right · 0 wrong | 2 right · 0 wrong |
-| without bounded_retry | 3 right · 29 wrong | 0 right · 32 wrong | 10 right · 22 wrong | 4 right · 28 wrong |
-| without intercept_vs_std | 2 right · 3 wrong | 0 right · 0 wrong | 2 right · 13 wrong | 2 right · 14 wrong |
+| all fixes B1-B4 (rerun 1) | 1 right, 0 wrong | 0 right, 4 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B2 signed_constancy | 1 right, 0 wrong | 0 right, 4 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 1 right, 4 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 3 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
 
-**BACON-dt-robust**
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
 
-| config | decay | logistic | oscillator | oscillator 3traj |
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
 |---|---|---|---|---|
-| all fixes B1-B4 (rerun 1) | 16 right · 1 wrong | 0 right · 0 wrong | 20 right · 3 wrong | 22 right · 0 wrong |
-| no fixes (original BACON.1) | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong |
-| without sign_aware | 0 right · 0 wrong | 0 right · 0 wrong | 0 right · 0 wrong | 0 right · 0 wrong |
-| without signed_constancy | 16 right · 1 wrong | 0 right · 0 wrong | 20 right · 4 wrong | 22 right · 0 wrong |
-| without bounded_retry | 16 right · 16 wrong | 0 right · 32 wrong | 22 right · 10 wrong | 22 right · 10 wrong |
-| without intercept_vs_std | 16 right · 1 wrong | 0 right · 0 wrong | 3 right · 20 wrong | 2 right · 20 wrong |
+| all fixes B1-B4 (rerun 1) | 1 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B2 signed_constancy | 1 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+**Exponential decay, `x' = -0.5x` — BACON-dt-robust**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| all fixes B1-B4 (rerun 1) | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B2 signed_constancy | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 0 right, 0 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| all fixes B1-B4 (rerun 1) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B2 signed_constancy | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+**Logistic growth, `x' = x - 0.1x²` — BACON-dt (strict)**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| all fixes B1-B4 (rerun 1) | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B2 signed_constancy | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| all fixes B1-B4 (rerun 1) | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B2 signed_constancy | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+**Logistic growth, `x' = x - 0.1x²` — BACON-dt-robust**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| all fixes B1-B4 (rerun 1) | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B2 signed_constancy | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| all fixes B1-B4 (rerun 1) | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B2 signed_constancy | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+**Harmonic oscillator, one trajectory, `x' = v`, `v' = -4x` — BACON-dt (strict)**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| all fixes B1-B4 (rerun 1) | 1 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B2 signed_constancy | 1 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 4 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 4 wrong | 0 right, 3 wrong | 0 right, 3 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| all fixes B1-B4 (rerun 1) | 1 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B2 signed_constancy | 1 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 2 right, 3 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 3 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+**Harmonic oscillator, one trajectory, `x' = v`, `v' = -4x` — BACON-dt-robust**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| all fixes B1-B4 (rerun 1) | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 3 right, 2 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B2 signed_constancy | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 3 right, 2 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 3 right, 2 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 1 right, 4 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| all fixes B1-B4 (rerun 1) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 1 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B2 signed_constancy | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 2 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 2 right, 3 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 1 wrong | 0 right, 0 wrong |
+
+**Harmonic oscillator, three trajectories pooled — BACON-dt (strict)**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| all fixes B1-B4 (rerun 1) | 1 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B2 signed_constancy | 1 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 2 right, 3 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 4 wrong | 0 right, 3 wrong | 0 right, 3 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| all fixes B1-B4 (rerun 1) | 1 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B2 signed_constancy | 1 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 4 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+**Harmonic oscillator, three trajectories pooled — BACON-dt-robust**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| all fixes B1-B4 (rerun 1) | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B2 signed_constancy | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| all fixes B1-B4 (rerun 1) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B2 signed_constancy | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+<!-- /tables -->
 
 What each fix is worth (ablation 1):
 - **B1 is essential.** Without it nothing is found on any system, clean data included.
-- **B2 has almost no effect:** without it, one extra wrong law in 128 robust runs
-  (oscillator), nothing else changes. A candidate for removal, to stay closer to the original.
-- **B3 trades a little recall for honesty.** Without the cap BACON always returns a law:
-  slightly more right ones (oscillator strict 2 → 10), but far more wrong ones (0 → 22).
-  The original BACON returns a wrong law in every single run.
-- **B4 matters only for oscillating signals,** where it is decisive: robust on the
-  oscillator goes from 3 right · 20 wrong without it to 20 right · 3 wrong with it.
+- **B2 has almost no effect:** without it, exactly one cell changes (robust, oscillator,
+  raw derivatives, 5% noise: 1 wrong → 2 wrong). A candidate for removal, to stay closer
+  to the original.
+- **B3 trades a little recall for honesty.** Without the cap BACON returns a law in almost
+  every run. A few more are right (strict, oscillator, smoothed, 1% noise: 0 → 5 of 5
+  right), but most extra laws are wrong: at 5% and 10% noise, cells go from "0 right,
+  0 wrong" to "0 right, 5 wrong" on every system. The original BACON returns a wrong law
+  in every single run.
+- **B4 matters only for oscillating signals,** where it is decisive. Robust, oscillator,
+  smoothed derivatives without → with B4: 1% noise 0 → 5 right, 5% noise 0 → 5 right,
+  10% noise 1 → 3 right; with three trajectories, 0 → 5 right at every noise level.
 
 ### Ablation 2: from the rerun-2 defaults (B1, B3, B4, robust variant)
 
 Made by `./experiments.sh run 12 ablation2`; tables from `.venv/bin/python summarize.py ablation2`.
 "No fixes" reuses ablation 1; "plus B2" is rerun 1.
 
-Each cell: runs with the right law · runs that returned a wrong law, out of 32 (clean + noisy, fd and sfd pooled). The rest returned nothing.
+Each cell counts runs that found the exact law ("right") and runs that returned some other law ("wrong"); the remaining runs at that noise level found no law for at least one variable.
 
+<!-- tables:ablation2 -->
 
-**BACON-dt-robust**
+**Exponential decay, `x' = -0.5x`**
 
-| config | decay | logistic | oscillator | oscillator 3traj |
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
 |---|---|---|---|---|
-| defaults B1, B3, B4 (rerun 2) | 16 right · 1 wrong | 0 right · 0 wrong | 20 right · 4 wrong | 22 right · 0 wrong |
-| no fixes (original BACON.1) | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong |
-| without B1 sign_aware | 0 right · 0 wrong | 0 right · 0 wrong | 0 right · 0 wrong | 0 right · 0 wrong |
-| without B3 bounded_retry | 16 right · 16 wrong | 0 right · 32 wrong | 22 right · 10 wrong | 22 right · 10 wrong |
-| without B4 intercept_vs_std | 16 right · 1 wrong | 0 right · 0 wrong | 4 right · 20 wrong | 2 right · 20 wrong |
-| plus B2 signed_constancy (rerun 1) | 16 right · 1 wrong | 0 right · 0 wrong | 20 right · 3 wrong | 22 right · 0 wrong |
+| defaults B1, B3, B4 (rerun 2) | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 0 right, 0 wrong |
+| plus B2 signed_constancy (rerun 1) | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 0 right, 0 wrong |
 
-- **Dropping B2 changes 4 of 128 runs,** all at 5% noise with raw derivatives on the
-  oscillator, all accepted only at a loose tolerance (δ = 0.26). Before, they returned
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B4 (rerun 2) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| plus B2 signed_constancy (rerun 1) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+**Logistic growth, `x' = x - 0.1x²`**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B4 (rerun 2) | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| plus B2 signed_constancy (rerun 1) | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B4 (rerun 2) | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| plus B2 signed_constancy (rerun 1) | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+**Harmonic oscillator, one trajectory, `x' = v`, `v' = -4x`**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B4 (rerun 2) | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 3 right, 2 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 3 right, 2 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 2 right, 3 wrong |
+| plus B2 signed_constancy (rerun 1) | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 3 right, 2 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B4 (rerun 2) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 2 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 2 right, 3 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 2 wrong | 0 right, 0 wrong |
+| plus B2 signed_constancy (rerun 1) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 1 wrong | 0 right, 0 wrong |
+
+**Harmonic oscillator, three trajectories pooled**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B4 (rerun 2) | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| plus B2 signed_constancy (rerun 1) | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B4 (rerun 2) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| plus B2 signed_constancy (rerun 1) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+<!-- /tables -->
+
+- **Dropping B2 changes 4 runs, all in one cell** (oscillator, raw derivatives, 5% noise), all accepted only at a loose tolerance (δ = 0.26). Before, they returned
   nothing; now 3 return a law for `v'` only (`v' ≈ -4.1x`, right form) and 1 returns both
   laws with the right terms but coefficients 6% off (`x' = 1.059v`, `v' = -4.266x`), which
   counts as wrong under the 5% rule. No junk laws.
@@ -145,70 +409,386 @@ Made by `./experiments.sh run 17 ablation3`; tables from `.venv/bin/python summa
 "Without B5" on the old systems is rerun 2; power decay gets its own "all off" and
 "without B5" runs in `results/ablation3/`.
 
-Each cell: runs with the right law · runs that returned a wrong law, out of 32 (clean + noisy, fd and sfd pooled). The rest returned nothing.
+Each cell counts runs that found the exact law ("right") and runs that returned some other law ("wrong"); the remaining runs at that noise level found no law for at least one variable.
 
+<!-- tables:ablation3 -->
 
-**BACON-dt-robust**
+**Exponential decay, `x' = -0.5x`**
 
-| config | decay | logistic | oscillator | oscillator 3traj | powerdecay |
-|---|---|---|---|---|---|
-| defaults B1, B3, B4, B5 (rerun 3) | 17 right · 0 wrong | 7 right · 0 wrong | 21 right · 4 wrong | 22 right · 1 wrong | 7 right · 5 wrong |
-| no fixes (original BACON.1) | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong |
-| without B1 sign_aware | 17 right · 0 wrong | 7 right · 0 wrong | 22 right · 1 wrong | 18 right · 4 wrong | 0 right · 12 wrong |
-| without B3 bounded_retry | 20 right · 12 wrong | 10 right · 22 wrong | 27 right · 5 wrong | 30 right · 2 wrong | 7 right · 25 wrong |
-| without B4 intercept_vs_std | 17 right · 0 wrong | 7 right · 0 wrong | 6 right · 19 wrong | 4 right · 20 wrong | 7 right · 5 wrong |
-| without B5 rate_seed | 16 right · 1 wrong | 0 right · 0 wrong | 20 right · 4 wrong | 22 right · 0 wrong | 2 right · 10 wrong |
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
 
-- **B5 helps everywhere and hurts nowhere.** Logistic 0 → 7 right; power decay 2 → 7 right
-  and 10 → 5 wrong; decay 16 → 17 right and 1 → 0 wrong; oscillator 20 → 21 right.
-- **With B5, B1 is only essential for power decay** (7 → 0 right without it). On decay,
-  logistic and the oscillator, the rate seed hands BACON the right ratio directly, so the
-  up/down heuristic matters less; on the oscillator with 3 trajectories B1 still helps
-  (18 → 22 right).
-- **B3 and B4 behave as in ablations 1–2:** without the cap, BACON returns many more wrong
-  laws (logistic 0 → 22); without B4, the oscillator collapses (21 → 6 right).
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B4, B5 (rerun 3) | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 3 right, 2 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 0 right, 0 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B4, B5 (rerun 3) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+**Logistic growth, `x' = x - 0.1x²`**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B4, B5 (rerun 3) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 4 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B5 rate_seed | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B4, B5 (rerun 3) | 1 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 2 right, 3 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B5 rate_seed | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+**Harmonic oscillator, one trajectory, `x' = v`, `v' = -4x`**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B4, B5 (rerun 3) | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 4 right, 1 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 3 right, 2 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B4, B5 (rerun 3) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 3 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 2 right, 3 wrong | 4 right, 1 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 3 wrong | 0 right, 0 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 2 wrong | 0 right, 0 wrong |
+
+**Harmonic oscillator, three trajectories pooled**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B4, B5 (rerun 3) | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 4 right, 1 wrong | 4 right, 1 wrong | 4 right, 1 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 2 right, 3 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B4, B5 (rerun 3) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 1 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 4 right, 1 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 3 right, 2 wrong | 5 right, 0 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 2 wrong | 0 right, 0 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+**Power decay, `x' = -0.5x^1.5` (PySINDy: plain polynomial terms)**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B4, B5 (rerun 3) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B4, B5 (rerun 3) | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+<!-- /tables -->
+
+- **B5 helps and hurts nowhere** (without → with B5, smoothed unless stated). Logistic:
+  clean data 0 → 1 of 1 (both derivative types) and 1% noise 0 → 5 of 5. Power decay, 1%
+  noise: 0 right, 5 wrong → 5 right, 0 wrong. Decay, 5% noise: 4 → 5 right. Oscillator,
+  10% noise: 3 → 4 right. The only other change is one extra wrong law (oscillator, raw, 5%).
+- **With B5, B1 is only essential for power decay:** without it, clean data 1 → 0 of 1
+  and 1% noise (smoothed) 5 → 0 of 5, all returned as wrong laws. On decay and logistic
+  it changes nothing, because the rate seed hands BACON the right ratio directly. With 3
+  oscillator trajectories it still helps (smoothed, 1/5/10% noise: 4 → 5 right each).
+- **B3 and B4 behave as in ablations 1–2:** without the cap, high-noise cells turn into
+  "5 wrong" (e.g. logistic, raw, 5% and 10% noise); without B4 the oscillator collapses
+  (smoothed, 1% and 5% noise: 5 → 0 right).
 
 ### Ablation 4: from the rerun-4 defaults (B1, B3, B4, B5, B6, robust variant)
 
 Made by `./experiments.sh run 20 ablation4`; tables from `.venv/bin/python summarize.py ablation4`.
 "Without B6" is rerun 3; "no fixes" reuses ablations 1 and 3.
 
-Each cell: runs with the right law · runs that returned a wrong law, out of 32 (clean + noisy, fd and sfd pooled). The rest returned nothing.
+Each cell counts runs that found the exact law ("right") and runs that returned some other law ("wrong"); the remaining runs at that noise level found no law for at least one variable.
 
+<!-- tables:ablation4 -->
 
-**BACON-dt-robust**
+**Exponential decay, `x' = -0.5x`**
 
-| config | decay | logistic | oscillator | oscillator 3traj | powerdecay |
-|---|---|---|---|---|---|
-| defaults B1, B3-B6 (rerun 4) | 14 right · 3 wrong | 18 right · 9 wrong | 22 right · 2 wrong | 22 right · 0 wrong | 6 right · 8 wrong |
-| no fixes (original BACON.1) | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong |
-| without B1 sign_aware | 17 right · 1 wrong | 18 right · 9 wrong | 22 right · 1 wrong | 22 right · 0 wrong | 0 right · 7 wrong |
-| without B3 bounded_retry | 16 right · 16 wrong | 18 right · 14 wrong | 29 right · 3 wrong | 31 right · 1 wrong | 6 right · 26 wrong |
-| without B4 intercept_vs_std | 14 right · 3 wrong | 18 right · 9 wrong | 22 right · 2 wrong | 22 right · 0 wrong | 6 right · 8 wrong |
-| without B5 rate_seed | 12 right · 5 wrong | 0 right · 0 wrong | 20 right · 4 wrong | 22 right · 0 wrong | 5 right · 9 wrong |
-| without B6 robust_line (rerun 3) | 17 right · 0 wrong | 7 right · 0 wrong | 21 right · 4 wrong | 22 right · 1 wrong | 7 right · 5 wrong |
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
 
-Splitting "wrong" into *right form, coefficients more than 5% off* and *wrong form*
-(B6 off = rerun 3 → B6 on = rerun 4, out of 32 runs each):
-
-| system | exact | right form, coef > 5% off | wrong form | nothing |
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
 |---|---|---|---|---|
-| decay | 17 → 14 | 0 → 0 | 0 → 3 | 15 → 15 |
-| logistic | 7 → **18** | 0 → 9 | 0 → 0 | 25 → 5 |
-| oscillator | 21 → 22 | 2 → 2 | 2 → 0 | 7 → 8 |
-| oscillator, 3 traj | 22 → 22 | 0 → 0 | 1 → 0 | 9 → 10 |
-| power decay | 7 → 6 | 0 → 0 | 5 → 8 | 20 → 18 |
+| defaults B1, B3-B6 (rerun 4) | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 0 right, 1 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 2 right, 3 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 0 right, 0 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 2 right, 3 wrong | 0 right, 0 wrong |
+| without B6 robust_line (rerun 3) | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong |
 
-- **B6 does what it was built for:** logistic goes from 7 to 18 exact, and every other
-  logistic law it returns has the right form. The oscillator also loses its wrong-form laws.
-- **Its cost is false lines at loose tolerance:** decay loses 3 exact runs to lines like
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3-B6 (rerun 4) | 1 right, 0 wrong | 3 right, 2 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 3 right, 2 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 3 right, 2 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 3 right, 2 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B6 robust_line (rerun 3) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+**Logistic growth, `x' = x - 0.1x²`**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3-B6 (rerun 4) | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 1 right, 4 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 1 right, 4 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 1 right, 4 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 1 right, 4 wrong |
+| without B5 rate_seed | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B6 robust_line (rerun 3) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3-B6 (rerun 4) | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 4 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 4 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 4 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 4 wrong | 0 right, 0 wrong |
+| without B5 rate_seed | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B6 robust_line (rerun 3) | 1 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+**Harmonic oscillator, one trajectory, `x' = v`, `v' = -4x`**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3-B6 (rerun 4) | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 3 right, 2 wrong |
+| without B6 robust_line (rerun 3) | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3-B6 (rerun 4) | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 1 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 4 right, 1 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 1 wrong | 0 right, 0 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 2 wrong | 0 right, 0 wrong |
+| without B6 robust_line (rerun 3) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 3 wrong | 0 right, 0 wrong |
+
+**Harmonic oscillator, three trajectories pooled**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3-B6 (rerun 4) | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| without B6 robust_line (rerun 3) | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3-B6 (rerun 4) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 5 right, 0 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B6 robust_line (rerun 3) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 1 wrong | 0 right, 0 wrong |
+
+**Power decay, `x' = -0.5x^1.5` (PySINDy: plain polynomial terms)**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3-B6 (rerun 4) | 1 right, 0 wrong | 4 right, 1 wrong | 0 right, 3 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 4 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 4 right, 1 wrong | 0 right, 3 wrong | 0 right, 0 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 3 right, 2 wrong | 0 right, 3 wrong | 0 right, 0 wrong |
+| without B6 robust_line (rerun 3) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3-B6 (rerun 4) | 1 right, 0 wrong | 0 right, 4 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 1 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B4 intercept_vs_std | 1 right, 0 wrong | 0 right, 4 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 0 right, 4 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B6 robust_line (rerun 3) | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+<!-- /tables -->
+
+What B6 changed, run by run (rerun 3 = B6 off, rerun 4 = B6 on, BACON-dt-robust). Each cell: runs with the exact law / the right terms but a coefficient more than 5% off / wrong terms / no law.
+
+<!-- tables:ablation4_b6 -->
+
+**Exponential decay, `x' = -0.5x`**
+
+Smoothed derivatives: exact law / right terms but a coefficient more than 5% off / wrong terms / no law
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| B6 off (rerun 3) | 1 / 0 / 0 / 0 | 5 / 0 / 0 / 0 | 5 / 0 / 0 / 0 | 0 / 0 / 0 / 5 |
+| B6 on (rerun 4) | 1 / 0 / 0 / 0 | 5 / 0 / 0 / 0 | 4 / 0 / 1 / 0 | 0 / 0 / 0 / 5 |
+
+Raw derivatives: exact law / right terms but a coefficient more than 5% off / wrong terms / no law
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| B6 off (rerun 3) | 1 / 0 / 0 / 0 | 5 / 0 / 0 / 0 | 0 / 0 / 0 / 5 | 0 / 0 / 0 / 5 |
+| B6 on (rerun 4) | 1 / 0 / 0 / 0 | 3 / 0 / 2 / 0 | 0 / 0 / 0 / 5 | 0 / 0 / 0 / 5 |
+
+**Logistic growth, `x' = x - 0.1x²`**
+
+Smoothed derivatives: exact law / right terms but a coefficient more than 5% off / wrong terms / no law
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| B6 off (rerun 3) | 1 / 0 / 0 / 0 | 5 / 0 / 0 / 0 | 0 / 0 / 0 / 5 | 0 / 0 / 0 / 5 |
+| B6 on (rerun 4) | 1 / 0 / 0 / 0 | 5 / 0 / 0 / 0 | 4 / 1 / 0 / 0 | 1 / 4 / 0 / 0 |
+
+Raw derivatives: exact law / right terms but a coefficient more than 5% off / wrong terms / no law
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| B6 off (rerun 3) | 1 / 0 / 0 / 0 | 0 / 0 / 0 / 5 | 0 / 0 / 0 / 5 | 0 / 0 / 0 / 5 |
+| B6 on (rerun 4) | 1 / 0 / 0 / 0 | 5 / 0 / 0 / 0 | 1 / 4 / 0 / 0 | 0 / 0 / 0 / 5 |
+
+**Harmonic oscillator, one trajectory, `x' = v`, `v' = -4x`**
+
+Smoothed derivatives: exact law / right terms but a coefficient more than 5% off / wrong terms / no law
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| B6 off (rerun 3) | 1 / 0 / 0 / 0 | 5 / 0 / 0 / 0 | 5 / 0 / 0 / 0 | 4 / 1 / 0 / 0 |
+| B6 on (rerun 4) | 1 / 0 / 0 / 0 | 5 / 0 / 0 / 0 | 5 / 0 / 0 / 0 | 4 / 1 / 0 / 0 |
+
+Raw derivatives: exact law / right terms but a coefficient more than 5% off / wrong terms / no law
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| B6 off (rerun 3) | 1 / 0 / 0 / 0 | 5 / 0 / 0 / 0 | 0 / 1 / 2 / 2 | 0 / 0 / 0 / 5 |
+| B6 on (rerun 4) | 1 / 0 / 0 / 0 | 5 / 0 / 0 / 0 | 1 / 1 / 0 / 3 | 0 / 0 / 0 / 5 |
+
+**Harmonic oscillator, three trajectories pooled**
+
+Smoothed derivatives: exact law / right terms but a coefficient more than 5% off / wrong terms / no law
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| B6 off (rerun 3) | 1 / 0 / 0 / 0 | 5 / 0 / 0 / 0 | 5 / 0 / 0 / 0 | 5 / 0 / 0 / 0 |
+| B6 on (rerun 4) | 1 / 0 / 0 / 0 | 5 / 0 / 0 / 0 | 5 / 0 / 0 / 0 | 5 / 0 / 0 / 0 |
+
+Raw derivatives: exact law / right terms but a coefficient more than 5% off / wrong terms / no law
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| B6 off (rerun 3) | 1 / 0 / 0 / 0 | 5 / 0 / 0 / 0 | 0 / 0 / 1 / 4 | 0 / 0 / 0 / 5 |
+| B6 on (rerun 4) | 1 / 0 / 0 / 0 | 5 / 0 / 0 / 0 | 0 / 0 / 0 / 5 | 0 / 0 / 0 / 5 |
+
+**Power decay, `x' = -0.5x^1.5`**
+
+Smoothed derivatives: exact law / right terms but a coefficient more than 5% off / wrong terms / no law
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| B6 off (rerun 3) | 1 / 0 / 0 / 0 | 5 / 0 / 0 / 0 | 0 / 0 / 0 / 5 | 0 / 0 / 0 / 5 |
+| B6 on (rerun 4) | 1 / 0 / 0 / 0 | 4 / 0 / 1 / 0 | 0 / 0 / 3 / 2 | 0 / 0 / 0 / 5 |
+
+Raw derivatives: exact law / right terms but a coefficient more than 5% off / wrong terms / no law
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| B6 off (rerun 3) | 1 / 0 / 0 / 0 | 0 / 0 / 5 / 0 | 0 / 0 / 0 / 5 | 0 / 0 / 0 / 5 |
+| B6 on (rerun 4) | 1 / 0 / 0 / 0 | 0 / 0 / 4 / 1 | 0 / 0 / 0 / 5 | 0 / 0 / 0 / 5 |
+
+<!-- /tables -->
+
+- **B6 does what it was built for:** logistic with smoothed derivatives goes 0 → 4 of 5
+  exact at 5% noise and 0 → 1 of 5 at 10%; with raw derivatives 0 → 5 of 5 at 1% noise.
+  Every other logistic law it returns has the right terms. The oscillator also loses its wrong-form laws.
+- **Its cost is false lines at loose tolerance:** decay loses 3 exact runs (raw 1% noise
+  5 → 3, smoothed 5% noise 5 → 4) to lines like
   `0.55·Dx + x/Dx = -2.49`, accepted at δ = 0.17 before the true `x/Dx` passes (BACON keeps
-  the law found at the tightest δ). Power decay loses 1 exact run and returns wrong
+  the law found at the tightest δ). Power decay loses 1 exact run (smoothed, 1% noise, 5 → 4) and returns wrong
   rational laws at 5% noise instead of nothing (they simulate within 3–5%).
 - **With B6, B4 no longer changes anything:** an oscillating line `Dx - m·v = c` has `c ≈ 0`,
   so its leftover can never pass the constancy test relative to `|c|`. B4 still matters
   whenever B6 is off. A candidate to drop, as B2 was.
-- **B1 matters only for power decay** (6 → 0 right without it), as in ablation 3.
+- **B1 matters only for power decay:** without it, clean data 1 → 0 of 1 and 1% noise
+  (smoothed) 4 → 0 of 5, as in ablation 3. On decay, switching B1 *off* now slightly helps
+  (raw 1% noise 3 → 5 right, smoothed 5% noise 4 → 5 right), because it avoids the same
+  false lines that cost B6 those runs.
 
 ### Ablation 5: from the current defaults (B1, B3, B5, B6, B7, robust variant)
 
@@ -216,28 +796,189 @@ Made by `./experiments.sh run 20 ablation5`; tables from `.venv/bin/python summa
 "Without B7" is the rerun-4 setting minus B4, so comparing it with rerun 4 (last row)
 measures dropping B4: identical, row for row, on every system.
 
-Each cell: runs with the right law · runs that returned a wrong law, out of 32 (clean + noisy, fd and sfd pooled). The rest returned nothing.
+Each cell counts runs that found the exact law ("right") and runs that returned some other law ("wrong"); the remaining runs at that noise level found no law for at least one variable.
 
+<!-- tables:ablation5 -->
 
-**BACON-dt-robust**
+**Exponential decay, `x' = -0.5x`**
 
-| config | decay | logistic | oscillator | oscillator 3traj | powerdecay | lotka_volterra |
-|---|---|---|---|---|---|---|
-| defaults B1, B3, B5, B6, B7 (rerun 5) | 14 right · 3 wrong | 18 right · 9 wrong | 22 right · 2 wrong | 22 right · 0 wrong | 6 right · 8 wrong | 23 right · 1 wrong |
-| no fixes (original BACON.1) | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong |
-| without B1 sign_aware | 17 right · 1 wrong | 18 right · 9 wrong | 22 right · 1 wrong | 22 right · 0 wrong | 0 right · 7 wrong | 23 right · 1 wrong |
-| without B3 bounded_retry | 16 right · 16 wrong | 18 right · 14 wrong | 29 right · 3 wrong | 31 right · 1 wrong | 6 right · 26 wrong | 26 right · 6 wrong |
-| without B5 rate_seed | 12 right · 5 wrong | 0 right · 0 wrong | 20 right · 4 wrong | 22 right · 0 wrong | 5 right · 9 wrong | 23 right · 0 wrong |
-| without B6 robust_line | 17 right · 0 wrong | 7 right · 0 wrong | 6 right · 19 wrong | 4 right · 20 wrong | 7 right · 5 wrong | 10 right · 0 wrong |
-| without B7 own_rate_seed | 14 right · 3 wrong | 18 right · 9 wrong | 22 right · 2 wrong | 22 right · 0 wrong | 6 right · 8 wrong | 0 right · 4 wrong |
-| B1, B3-B6 with B4 (rerun 4) | 14 right · 3 wrong | 18 right · 9 wrong | 22 right · 2 wrong | 22 right · 0 wrong | 6 right · 8 wrong | missing |
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
 
-- **B7 is what makes Lotka–Volterra work:** 23 right without → 0 right · 4 wrong with it off.
-  On every other system it changes nothing (identical rows).
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B5, B6, B7 (rerun 5) | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 0 right, 1 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 2 right, 3 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 2 right, 3 wrong | 0 right, 0 wrong |
+| without B6 robust_line | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong |
+| without B7 own_rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 0 right, 0 wrong |
+| B1, B3-B6 with B4 (rerun 4) | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 0 right, 0 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B5, B6, B7 (rerun 5) | 1 right, 0 wrong | 3 right, 2 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 3 right, 2 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 3 right, 2 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B6 robust_line | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B7 own_rate_seed | 1 right, 0 wrong | 3 right, 2 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| B1, B3-B6 with B4 (rerun 4) | 1 right, 0 wrong | 3 right, 2 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+**Logistic growth, `x' = x - 0.1x²`**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B5, B6, B7 (rerun 5) | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 1 right, 4 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 1 right, 4 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 1 right, 4 wrong |
+| without B5 rate_seed | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B6 robust_line | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B7 own_rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 1 right, 4 wrong |
+| B1, B3-B6 with B4 (rerun 4) | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 1 right, 4 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B5, B6, B7 (rerun 5) | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 4 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 4 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 4 wrong | 0 right, 5 wrong |
+| without B5 rate_seed | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B6 robust_line | 1 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B7 own_rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 4 wrong | 0 right, 0 wrong |
+| B1, B3-B6 with B4 (rerun 4) | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 4 wrong | 0 right, 0 wrong |
+
+**Harmonic oscillator, one trajectory, `x' = v`, `v' = -4x`**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B5, B6, B7 (rerun 5) | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 3 right, 2 wrong |
+| without B6 robust_line | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 4 right, 1 wrong |
+| without B7 own_rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong |
+| B1, B3-B6 with B4 (rerun 4) | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B5, B6, B7 (rerun 5) | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 1 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 4 right, 1 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 2 wrong | 0 right, 0 wrong |
+| without B6 robust_line | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 3 wrong | 0 right, 0 wrong |
+| without B7 own_rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 1 wrong | 0 right, 0 wrong |
+| B1, B3-B6 with B4 (rerun 4) | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 1 wrong | 0 right, 0 wrong |
+
+**Harmonic oscillator, three trajectories pooled**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B5, B6, B7 (rerun 5) | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| without B6 robust_line | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 2 right, 3 wrong |
+| without B7 own_rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| B1, B3-B6 with B4 (rerun 4) | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B5, B6, B7 (rerun 5) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 5 right, 0 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B6 robust_line | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 2 wrong | 0 right, 0 wrong |
+| without B7 own_rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| B1, B3-B6 with B4 (rerun 4) | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+**Power decay, `x' = -0.5x^1.5` (PySINDy: plain polynomial terms)**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B5, B6, B7 (rerun 5) | 1 right, 0 wrong | 4 right, 1 wrong | 0 right, 3 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 4 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 3 right, 2 wrong | 0 right, 3 wrong | 0 right, 0 wrong |
+| without B6 robust_line | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B7 own_rate_seed | 1 right, 0 wrong | 4 right, 1 wrong | 0 right, 3 wrong | 0 right, 0 wrong |
+| B1, B3-B6 with B4 (rerun 4) | 1 right, 0 wrong | 4 right, 1 wrong | 0 right, 3 wrong | 0 right, 0 wrong |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B5, B6, B7 (rerun 5) | 1 right, 0 wrong | 0 right, 4 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 0 right, 1 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 0 right, 4 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B6 robust_line | 1 right, 0 wrong | 0 right, 5 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B7 own_rate_seed | 1 right, 0 wrong | 0 right, 4 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| B1, B3-B6 with B4 (rerun 4) | 1 right, 0 wrong | 0 right, 4 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+
+**Lotka–Volterra, `x' = x - 0.1xy`, `y' = -1.5y + 0.075xy`**
+
+Smoothed derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B5, B6, B7 (rerun 5) | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong | 5 right, 0 wrong |
+| without B6 robust_line | 1 right, 0 wrong | 5 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B7 own_rate_seed | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 2 wrong | 0 right, 2 wrong |
+| B1, B3-B6 with B4 (rerun 4) | not run | not run | not run | not run |
+
+Raw derivatives: runs that found the exact law (right) or another law (wrong)
+
+| config | no noise (1 run) | 1% noise (5 runs) | 5% noise (5 runs) | 10% noise (5 runs) |
+|---|---|---|---|---|
+| defaults B1, B3, B5, B6, B7 (rerun 5) | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 1 wrong | 0 right, 0 wrong |
+| no fixes (original BACON.1) | 0 right, 1 wrong | 0 right, 5 wrong | 0 right, 5 wrong | 0 right, 5 wrong |
+| without B1 sign_aware | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 1 wrong | 0 right, 0 wrong |
+| without B3 bounded_retry | 1 right, 0 wrong | 5 right, 0 wrong | 4 right, 1 wrong | 0 right, 5 wrong |
+| without B5 rate_seed | 1 right, 0 wrong | 5 right, 0 wrong | 1 right, 0 wrong | 0 right, 0 wrong |
+| without B6 robust_line | 1 right, 0 wrong | 3 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| without B7 own_rate_seed | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong | 0 right, 0 wrong |
+| B1, B3-B6 with B4 (rerun 4) | not run | not run | not run | not run |
+
+<!-- /tables -->
+
+- **B7 is what makes Lotka–Volterra work.** With B7, smoothed derivatives: 5 of 5 right at
+  1%, 5% and 10% noise. Without it: 0 right at every noise level and derivative type
+  (the rest find nothing, or 2 wrong laws at 5% and 10%). On every other system B7
+  changes nothing (identical rows).
 - **Dropping B4 changes nothing** while B6 is on (identical rows on all 5 older setups).
 - **B6 now also carries the oscillator:** without B6 *and* without B4, the oscillator
-  collapses (22 → 6 right). B6 subsumed what B4 did.
-- **B6 is essential for Lotka–Volterra** (23 → 10 right): both laws are straight lines.
+  collapses (smoothed, 1% and 5% noise: 5 → 0 right, all wrong laws). B6 subsumed what B4 did.
+- **B6 is essential for Lotka–Volterra** (smoothed, 5% and 10% noise: 5 → 0 right):
+  both laws are straight lines.
 - **B3** behaves as before: without the cap, more right laws but many more wrong ones.
 
 ---
@@ -250,6 +991,8 @@ Each cell: runs with the right law · runs that returned a wrong law, out of 32 
 | S2 | STLSQ threshold 0.1 | Test 1: fixed 0.1. Test 2+: sweep 13 log-spaced thresholds 0.001–1 and keep the sparsest model whose R² is within 0.01 of the best (`--sindy-threshold`). Reason: a fixed 0.1 deleted the true `-0.1x²` logistic term. AIC/BIC were tried and kept tiny junk terms on clean data. | Test 2 |
 | S3 | Differentiates the data itself (default `FiniteDifference`) | Given the same `x_dot` as BACON. `fd` equals PySINDy's default. | Test 1 |
 | S4 | Multiple trajectories passed as a list | Rows concatenated and fitted with the given `x_dot` (same result, since no differentiation happens inside) | Test 4 |
+| S6 | `normalize_columns=False` | Optional `--sindy-normalize on`: each library column divided by its L2 length before thresholding. The threshold then applies to coefficient × column length, so the sweep grid becomes 25 log-spaced thresholds 0.001–1000 (same density as S2). Default **on** since Test 9 (off before). Effect: Test 9a (with the default ridge penalty, PySINDy collapses: 0/32 on logistic and Lotka–Volterra) and 9b. | Test 9 |
+| S7 | STLSQ ridge penalty `alpha=0.05` | `--sindy-alpha`, default **0** since Test 9 (0.05 before). Test 9b uses 0 (plain least squares inside STLSQ, as in the original SINDy algorithm). Reason: STLSQ thresholds the ridge coefficients; on normalized columns 0.05 is a 5% penalty that keeps correlated junk terms alive. **Chosen after seeing 9a.** Effect with S6, smoothed derivatives (runs with the exact law, out of 5 per noise level, Test 8 setup → 9b): logistic 5% noise 3 → 5, 10% 3 → 4; one-trajectory oscillator 10% 2 → 5; Lotka–Volterra 1% 3 → 5, 5% 0 → 4, 10% 0 → 0; half-power side run 1% 5 → 0, 5% 4 → 0 (cancelling coefficients); decay, three-trajectory oscillator and plain power decay unchanged. Full tables: README, Test 9. | Test 9 |
 | S5 | — | Optional `--sindy-library poly+halfpowers`: polynomial degree 3 plus `|x|^0.5`, `|x|^1.5`, `|x|^2.5` per state. An **informed** baseline (it assumes we already suspect half-integer powers), used only as a labelled side run on power decay. Default stays polynomial. | Test 6 |
 
 ## H. Harness and scoring history
@@ -262,6 +1005,7 @@ Each cell: runs with the right law · runs that returned a wrong law, out of 32 
 | H4 | Noise: Gaussian, std = level × std of each state column. Unchanged throughout. | Test 1 |
 | H5 | Every run writes `<name>_manifest.json`: command, settings, BACON fixes on/off, git commits of both repos (with an "uncommitted changes" flag), a hash of each source file, package versions | after Test 4 |
 | H6 | Term matching merges nested powers as if variables were positive, so `sqrt(x**3)` (how BACON writes it) and `x**(3/2)` count as the same term. Checked: no committed result changed. | Test 6 |
+| H7 | ODEBench setups (Test 10): equations, constants and starting points from ODEBench; time grid t = 0..10 with 150 samples (ODEBench's own); each starting point run as its own one-trajectory setup; 20 noise draws per level. Clean data simulated with our usual LSODA at rtol 1e-10 (ODEBench uses rtol 1e-5). Manifests also hash `data/*.json`. | Test 10 |
 
 ## Configuration of each test
 
@@ -275,7 +1019,10 @@ Each cell: runs with the right law · runs that returned a wrong law, out of 32 
 | rerun 2 | all | B1, B3, B4 | robust | sweep | RK45 | 1 (oscillator also 3) |
 | rerun 3 = Tests 5 & 6 | all + power decay | B1, B3, B4, B5 | robust | sweep (+ half-power side run) | RK45 | 1 (oscillator also 3) |
 | rerun 4 = Test 7 | all + power decay | B1, B3, B4, B5, B6 | robust | sweep (+ half-power side run) | RK45 | 1 (oscillator also 3) |
-| rerun 5 = Test 8 (current defaults) | all + power decay + Lotka–Volterra | B1, B3, B5, B6, B7 | robust | sweep (+ half-power side run) | RK45 | 1 (oscillator also 3) |
+| rerun 5 = Test 8 | all + power decay + Lotka–Volterra | B1, B3, B5, B6, B7 | robust | sweep (+ half-power side run) | RK45 | 1 (oscillator also 3) |
+| rerun 6 = Test 9a | as rerun 5 | B1, B3, B5, B6, B7 | robust | sweep 0.001–1000, normalized columns (S6) | RK45 | 1 (oscillator also 3) |
+| rerun 6b = Test 9b (current defaults) | as rerun 5 | B1, B3, B5, B6, B7 | robust | as 9a, ridge penalty 0 (S7) | RK45 | 1 (oscillator also 3) |
+| Test 10 | ODEBench: 63 systems × 2 starting points, 20 noise draws | B1, B3, B5, B6, B7 | robust | as 9b | RK45 | 1 per setup |
 
 Exact commands for each are in `experiments.sh`. Reproducing Tests 1–4 with those commands
 gives results identical to the original runs (448 of 448 rows; `summarize.py repro`), and

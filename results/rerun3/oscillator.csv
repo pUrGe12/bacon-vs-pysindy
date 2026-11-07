@@ -1,65 +1,65 @@
-system,n_traj,noise,seed,deriv,method,equations,structure_ok,coef_err,sim_err,recovered,seconds,bacon_invariant,bacon_fixes,sindy_threshold,sindy_library
-oscillator,1,0.0,0,fd,BACON-dt-robust,Dx = 0.9983*v | Dv = -3.993*x,True,0.0016658335249274403,0.01965805978549342,True,5.765742144001706,v/Dx = 1.002 (delta 0.010); x/Dv = -0.2504 (delta 0.010),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.0,0,fd,PySINDy,Dx = 0.9983*v | Dv = -0.02787*v**2*x - 0.1115*x**3 - 3.882*x,False,0.04119646019758089,0.019658063199977288,False,0.3187026399973547,,,sweep,poly
-oscillator,1,0.0,0,sfd,BACON-dt-robust,Dx = 0.998*v | Dv = -3.992*x,True,0.001962187535527349,0.023157293261244438,True,5.350755796003796,v/Dx = 1.002 (delta 0.010); x/Dv = -0.2505 (delta 0.010),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.0,0,sfd,PySINDy,Dx = 0.998*v | Dv = -1.244e+5*v**2*x - 4.975e+5*x**3 + 4.975e+5*x,False,178607.21015825827,inf,False,0.35419409799942514,,,sweep,poly
-oscillator,1,0.01,0,fd,BACON-dt-robust,Dx = 0.9997*v | Dv = -3.995*x,True,0.0013291421369272527,0.009846190751620855,True,9.425759626996296,v/Dx = 1 (delta 0.076); x/Dv = -0.2503 (delta 0.076),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.01,0,fd,PySINDy,Dx = 0.9963*v | Dv = -3.999*x,True,0.0037070643169616613,0.023150115621352472,True,0.46388228699652245,,,sweep,poly
-oscillator,1,0.01,0,sfd,BACON-dt-robust,Dx = 0.9988*v | Dv = -4.015*x,True,0.0036965764865866113,0.014881801343721742,True,9.358511778998945,v/Dx = 1.001 (delta 0.022); x/Dv = -0.2491 (delta 0.015),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.01,0,sfd,PySINDy,Dx = 0.9963*v | Dv = -3.998*x,True,0.0037414889846351107,0.025174016101109503,True,0.43867190499440767,,,sweep,poly
-oscillator,1,0.01,1,fd,BACON-dt-robust,Dx = 1.004*v | Dv = -4.004*x,True,0.00397324602882998,0.029945137165270686,True,8.33818646799773,Dx/v = 1.004 (delta 0.076); Dv/x = -4.004 (delta 0.051),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.01,1,fd,PySINDy,Dx = 0.9988*v | Dv = -3.99*x,True,0.0026167350383095034,0.022793632867501537,True,0.32267949700326426,,,sweep,poly
-oscillator,1,0.01,1,sfd,BACON-dt-robust,Dx = 0.9991*v | Dv = -3.991*x,True,0.002186205781223305,0.017973052629526483,True,6.047406027006218,v/Dx = 1.001 (delta 0.022); x/Dv = -0.2505 (delta 0.015),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.01,1,sfd,PySINDy,Dx = 0.9985*v | Dv = -3.991*x,True,0.002217172495981967,0.021727951174112553,True,0.3017465529992478,,,sweep,poly
-oscillator,1,0.01,2,fd,BACON-dt-robust,Dx = 1.001*v | Dv = -3.996*x,True,0.0011641950562488734,0.0011034511842706587,True,7.377452724998875,v/Dx = 0.9988 (delta 0.076); Dv/x = -3.996 (delta 0.076),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.01,2,fd,PySINDy,Dx = 0.9988*v | Dv = -3.989*x,True,0.002676305633103504,0.022898647723117387,True,0.2642765609998605,,,sweep,poly
-oscillator,1,0.01,2,sfd,BACON-dt-robust,Dx = 0.9974*v | Dv = -3.994*x,True,0.0026303964602084617,0.02417790913128005,True,9.330283092000172,v/Dx = 1.003 (delta 0.022); x/Dv = -0.2504 (delta 0.015),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.01,2,sfd,PySINDy,Dx = 0.9986*v | Dv = -3.989*x,True,0.002827757317798163,0.024691813999865274,True,0.5367274390009698,,,sweep,poly
-oscillator,1,0.01,3,fd,BACON-dt-robust,Dx = 1.007*v | Dv = -3.98*x,True,0.00693686091759993,0.012442632272902907,True,17.623987416998716,Dx/v = 1.007 (delta 0.076); x/Dv = -0.2512 (delta 0.076),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.01,3,fd,PySINDy,Dx = 1.0*v | Dv = -3.984*x,True,0.003953064806836215,0.021640299697180825,True,0.9515552209995803,,,sweep,poly
-oscillator,1,0.01,3,sfd,BACON-dt-robust,Dx = 1.003*v | Dv = -3.987*x,True,0.0031298163145286884,0.0032423765816791336,True,15.57753080099792,v/Dx = 0.9972 (delta 0.022); x/Dv = -0.2508 (delta 0.022),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.01,3,sfd,PySINDy,Dx = 1.0*v | Dv = -3.984*x,True,0.003951784228422239,0.022241270971534288,True,0.8650935479963664,,,sweep,poly
-oscillator,1,0.01,4,fd,BACON-dt-robust,Dx = 1.003*v | Dv = -4.0*x,True,0.002719944327020052,0.015302413240218485,True,16.711202402002527,Dx/v = 1.003 (delta 0.076); x/Dv = -0.25 (delta 0.076),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.01,4,fd,PySINDy,Dx = 0.9986*v | Dv = -3.993*x,True,0.0017566502500022674,0.01884657075184677,True,0.9250202580005862,,,sweep,poly
-oscillator,1,0.01,4,sfd,BACON-dt-robust,Dx = 1.0*v | Dv = -3.988*x,True,0.0029162515493657004,0.017415971578187806,True,16.81593480399897,v/Dx = 1 (delta 0.022); x/Dv = -0.2507 (delta 0.022),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.01,4,sfd,PySINDy,Dx = 0.9985*v | Dv = -3.992*x,True,0.002117529361059245,0.021488256805433467,True,0.9794931319993339,,,sweep,poly
-oscillator,1,0.05,0,fd,BACON-dt-robust,Dx = 1.005*v | Dv = -2.814/(313.5*x + 0.5*(3.932e+5*x**2 - 2406.0)**0.5)**0.3333 - 0.3333*(313.5*x + 0.5*(3.932e+5*x**2 - 2406.0)**0.5)**0.3333,False,1.2254784563159664,inf,False,20.009667856000306,Dx/v = 1.005 (delta 0.256); Dv*(Dv**2 - 2.81383155842739)/x = -23.23 (delta 0.256),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.05,0,fd,PySINDy,Dx = 0.9859*v | Dv = -4.014*x,True,0.014061068246900343,0.06337659988862596,True,0.5648795300003258,,,sweep,poly
-oscillator,1,0.05,0,sfd,BACON-dt-robust,Dx = 1.002*v | Dv = -4.094*x,True,0.02362388469028498,0.1492593972343821,True,14.474642093999137,Dx/v = 1.002 (delta 0.114); Dv/x = -4.094 (delta 0.076),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.05,0,sfd,PySINDy,Dx = 0.9873*v | Dv = -4.013*x,True,0.012681101357928215,0.055994326821169366,True,0.3245841340030893,,,sweep,poly
-oscillator,1,0.05,1,fd,BACON-dt-robust,Dx = -5.0e-15*(2.638e+28*v + 1.485e+28)**0.5 - 0.6094 | Dv = -4.02*x,False,1.1710370603862978,inf,False,8.65934985599597,Dx*(Dx + 1.21873343565881)/v = 0.6594 (delta 0.171); Dv/x = -4.02 (delta 0.256),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.05,1,fd,PySINDy,Dx = 0.9974*v | Dv = 1.044*v**2*x + 4.158*x**3 - 8.147*x,False,1.4910102779646726,0.036295380143650656,False,0.27306927899917355,,,sweep,poly
-oscillator,1,0.05,1,sfd,BACON-dt-robust,Dx = 1.003*v | Dv = -3.988*x,True,0.003078519864182505,0.003803388103310291,True,6.096395802000188,Dx/v = 1.003 (delta 0.114); Dv/x = -3.988 (delta 0.076),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.05,1,sfd,PySINDy,Dx = 0.9988*v | Dv = -3.979*x,True,0.005131382004322171,0.03727793042220453,True,0.2601249480067054,,,sweep,poly
-oscillator,1,0.05,2,fd,BACON-dt-robust,Dx = 1.059*v | Dv = -4.266*x,True,0.06638129424441219,0.6931175365704152,False,5.3808986299991375,v/Dx = 0.9445 (delta 0.256); x/Dv = -0.2344 (delta 0.256),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.05,2,fd,PySINDy,Dx = 0.9991*v | Dv = -3.967*x,True,0.00818090764295265,0.05360572961471278,True,0.2661409089996596,,,sweep,poly
-oscillator,1,0.05,2,sfd,BACON-dt-robust,Dx = 1.001*v | Dv = -4.002*x,True,0.0007029843719466022,0.0072329734774840915,True,6.022614084999077,v/Dx = 0.9993 (delta 0.114); Dv/x = -4.002 (delta 0.076),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.05,2,sfd,PySINDy,Dx = 0.9993*v | Dv = -3.968*x,True,0.007951033819895037,0.05103910491367417,True,0.3073085829964839,,,sweep,poly
-oscillator,1,0.05,3,fd,BACON-dt-robust,Dx = — | Dv = -4.075*x,False,,,False,6.116528676000598,no invariant; x/Dv = -0.2454 (delta 0.256),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.05,3,fd,PySINDy,Dx = 1.006*v | Dv = -3.938*x,True,0.015427023146247443,0.0570920358477764,True,0.2745559149989276,,,sweep,poly
-oscillator,1,0.05,3,sfd,BACON-dt-robust,Dx = 1.016*v | Dv = -3.96*x,True,0.015500102190769915,0.03235450667136272,True,6.134703941002954,Dx/v = 1.016 (delta 0.114); Dv/x = -3.96 (delta 0.114),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.05,3,sfd,PySINDy,Dx = 1.007*v | Dv = -3.944*x,True,0.014096570113948048,0.04435355342840683,True,0.27942579499358544,,,sweep,poly
-oscillator,1,0.05,4,fd,BACON-dt-robust,Dx = — | Dv = -4.122*x,False,,,False,5.7589143049990525,no invariant; x/Dv = -0.2426 (delta 0.256),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.05,4,fd,PySINDy,Dx = 0.9961*v | Dv = 1.049*v**2*x + 4.401*x**3 - 8.389*x,False,1.5758283309573533,0.01874815143123765,False,0.2729502260044683,,,sweep,poly
-oscillator,1,0.05,4,sfd,BACON-dt-robust,Dx = 1.006*v | Dv = -3.972*x,True,0.006937204937607522,0.00967970240213566,True,6.616404262997094,Dx/v = 1.006 (delta 0.114); Dv/x = -3.972 (delta 0.114),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.05,4,sfd,PySINDy,Dx = 0.9985*v | Dv = -3.98*x,True,0.004895853105273185,0.038039850631402285,True,0.2954106719989795,,,sweep,poly
-oscillator,1,0.1,0,fd,BACON-dt-robust,Dx = — | Dv = —,False,,,False,6.034583611995913,no invariant; no invariant,"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.1,0,fd,PySINDy,Dx = 0.9683*v | Dv = 0.6811*v**2*x + 3.347*x**3 - 7.252*x,False,1.1791144193429508,0.14769817743818936,False,0.2737570989993401,,,sweep,poly
-oscillator,1,0.1,0,sfd,BACON-dt-robust,Dx = 0.9929*v | Dv = -4.218*x,True,0.054504826515067606,0.2758266866928569,False,6.476349388001836,Dx/v = 0.9929 (delta 0.256); Dv/x = -4.218 (delta 0.171),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.1,0,sfd,PySINDy,Dx = 0.9721*v | Dv = 0.7206*x**3 - 4.565*x,False,0.22896857791662217,0.13786189039900662,False,0.2763000659979298,,,sweep,poly
-oscillator,1,0.1,1,fd,BACON-dt-robust,Dx = — | Dv = —,False,,,False,4.53321931699611,no invariant; no invariant,"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.1,1,fd,PySINDy,Dx = 0.9888*v | Dv = 1.076*v**2*x + 4.212*x**3 - 8.235*x,False,1.517310675526727,0.07989986018086803,False,0.2859658829984255,,,sweep,poly
-oscillator,1,0.1,1,sfd,BACON-dt-robust,Dx = 1.004*v | Dv = -4.002*x,True,0.004253671511170065,0.027910653181318346,True,7.062883416998375,Dx/v = 1.004 (delta 0.171); Dv/x = -4.002 (delta 0.171),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.1,1,sfd,PySINDy,Dx = 0.9953*v | Dv = 0.6888*v**2*x + 2.729*x**3 - 6.75*x,False,0.9837847334445898,0.014880385912959414,False,0.27789166499860585,,,sweep,poly
-oscillator,1,0.1,2,fd,BACON-dt-robust,Dx = — | Dv = —,False,,,False,23.03214174999448,no invariant; no invariant,"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.1,2,fd,PySINDy,Dx = 0.9961*v | Dv = -3.927*x,True,0.018256706074940232,0.13109979267089514,True,1.002129901004082,,,sweep,poly
-oscillator,1,0.1,2,sfd,BACON-dt-robust,Dx = 0.988*v | Dv = -4.012*x,True,0.011985705518682055,0.05427125874210438,True,30.292968086003384,Dx/v = 0.988 (delta 0.256); Dv/x = -4.012 (delta 0.171),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.1,2,sfd,PySINDy,Dx = 0.9962*v | Dv = -3.928*x,True,0.017880487361942254,0.12850144855225948,True,0.8244783189948066,,,sweep,poly
-oscillator,1,0.1,3,fd,BACON-dt-robust,Dx = — | Dv = —,False,,,False,20.418859543002327,no invariant; no invariant,"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.1,3,fd,PySINDy,Dx = 1.008*v | Dv = -3.861*x,True,0.03470752882666739,0.16017577849511738,True,0.8532903329978581,,,sweep,poly
-oscillator,1,0.1,3,sfd,BACON-dt-robust,Dx = 1.031*v | Dv = -3.945*x,True,0.03060865216561992,0.09705589699466705,True,16.712743299998692,Dx/v = 1.031 (delta 0.256); Dv/x = -3.945 (delta 0.171),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.1,3,sfd,PySINDy,Dx = 1.01*v | Dv = -3.875*x,True,0.031316033849755454,0.12632701033900628,True,0.3974905260038213,,,sweep,poly
-oscillator,1,0.1,4,fd,BACON-dt-robust,Dx = — | Dv = —,False,,,False,9.22780445600074,no invariant; no invariant,"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.1,4,fd,PySINDy,Dx = 0.9854*v | Dv = 0.9691*v**2*x + 4.33*x**3 - 8.338*x,False,1.5514212287985387,0.042089100248108344,False,0.7783016210014466,,,sweep,poly
-oscillator,1,0.1,4,sfd,BACON-dt-robust,Dx = 1.013*v | Dv = -3.942*x,True,0.014560207070507536,0.016945737425781357,True,19.535355091000383,Dx/v = 1.013 (delta 0.171); Dv/x = -3.942 (delta 0.171),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,
-oscillator,1,0.1,4,sfd,PySINDy,Dx = 0.9944*v | Dv = 0.7828*x**3 - 4.568*x,False,0.24174865905160198,0.06963088678206147,False,0.641287744998408,,,sweep,poly
+system,n_traj,noise,seed,deriv,method,equations,structure_ok,coef_err,sim_err,recovered,seconds,bacon_invariant,bacon_fixes,sindy_threshold,sindy_library,sindy_normalize,sindy_alpha
+oscillator,1,0.0,0,fd,BACON-dt-robust,Dx = 0.9983*v | Dv = -3.993*x,True,0.0016658335249274403,0.01965805978549342,True,7.916035437000005,v/Dx = 1.002 (delta 0.010); x/Dv = -0.2504 (delta 0.010),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.0,0,fd,PySINDy,Dx = 0.9983*v | Dv = -0.02787*v**2*x - 0.1115*x**3 - 3.882*x,False,0.04119646019758089,0.019658063199977288,False,0.31274862700001904,,,sweep,poly,off,0.05
+oscillator,1,0.0,0,sfd,BACON-dt-robust,Dx = 0.998*v | Dv = -3.992*x,True,0.001962187535527349,0.023157293261244438,True,5.412874748000036,v/Dx = 1.002 (delta 0.010); x/Dv = -0.2505 (delta 0.010),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.0,0,sfd,PySINDy,Dx = 0.998*v | Dv = -1.244e+5*v**2*x - 4.975e+5*x**3 + 4.975e+5*x,False,178607.21015825827,inf,False,0.3123976159999984,,,sweep,poly,off,0.05
+oscillator,1,0.01,0,fd,BACON-dt-robust,Dx = 0.9997*v | Dv = -3.995*x,True,0.0013291421369272527,0.009846190751620855,True,8.44928739300002,v/Dx = 1 (delta 0.076); x/Dv = -0.2503 (delta 0.076),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.01,0,fd,PySINDy,Dx = 0.9963*v | Dv = -3.999*x,True,0.0037070643169616613,0.023150115621352472,True,0.3527429970000071,,,sweep,poly,off,0.05
+oscillator,1,0.01,0,sfd,BACON-dt-robust,Dx = 0.9988*v | Dv = -4.015*x,True,0.0036965764865866113,0.014881801343721742,True,6.403082749000021,v/Dx = 1.001 (delta 0.022); x/Dv = -0.2491 (delta 0.015),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.01,0,sfd,PySINDy,Dx = 0.9963*v | Dv = -3.998*x,True,0.0037414889846351107,0.025174016101109503,True,0.31343502100003207,,,sweep,poly,off,0.05
+oscillator,1,0.01,1,fd,BACON-dt-robust,Dx = 1.004*v | Dv = -4.004*x,True,0.00397324602882998,0.029945137165270686,True,8.34660818499998,Dx/v = 1.004 (delta 0.076); Dv/x = -4.004 (delta 0.051),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.01,1,fd,PySINDy,Dx = 0.9988*v | Dv = -3.99*x,True,0.0026167350383095034,0.022793632867501537,True,0.36051379700001007,,,sweep,poly,off,0.05
+oscillator,1,0.01,1,sfd,BACON-dt-robust,Dx = 0.9991*v | Dv = -3.991*x,True,0.002186205781223305,0.017973052629526483,True,6.501094366000018,v/Dx = 1.001 (delta 0.022); x/Dv = -0.2505 (delta 0.015),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.01,1,sfd,PySINDy,Dx = 0.9985*v | Dv = -3.991*x,True,0.002217172495981967,0.021727951174112553,True,0.3383419159999903,,,sweep,poly,off,0.05
+oscillator,1,0.01,2,fd,BACON-dt-robust,Dx = 1.001*v | Dv = -3.996*x,True,0.0011641950562488734,0.0011034511842706587,True,8.471352706999994,v/Dx = 0.9988 (delta 0.076); Dv/x = -3.996 (delta 0.076),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.01,2,fd,PySINDy,Dx = 0.9988*v | Dv = -3.989*x,True,0.002676305633103504,0.022898647723117387,True,0.31390572200001543,,,sweep,poly,off,0.05
+oscillator,1,0.01,2,sfd,BACON-dt-robust,Dx = 0.9974*v | Dv = -3.994*x,True,0.0026303964602084617,0.02417790913128005,True,6.395834855000032,v/Dx = 1.003 (delta 0.022); x/Dv = -0.2504 (delta 0.015),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.01,2,sfd,PySINDy,Dx = 0.9986*v | Dv = -3.989*x,True,0.002827757317798163,0.024691813999865274,True,0.34951835900000106,,,sweep,poly,off,0.05
+oscillator,1,0.01,3,fd,BACON-dt-robust,Dx = 1.007*v | Dv = -3.98*x,True,0.00693686091759993,0.012442632272902907,True,8.572559195999986,Dx/v = 1.007 (delta 0.076); x/Dv = -0.2512 (delta 0.076),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.01,3,fd,PySINDy,Dx = 1.0*v | Dv = -3.984*x,True,0.003953064806836215,0.021640299697180825,True,0.35648166400000036,,,sweep,poly,off,0.05
+oscillator,1,0.01,3,sfd,BACON-dt-robust,Dx = 1.003*v | Dv = -3.987*x,True,0.0031298163145286884,0.0032423765816791336,True,6.68368093700002,v/Dx = 0.9972 (delta 0.022); x/Dv = -0.2508 (delta 0.022),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.01,3,sfd,PySINDy,Dx = 1.0*v | Dv = -3.984*x,True,0.003951784228422239,0.022241270971534288,True,0.45078193099999453,,,sweep,poly,off,0.05
+oscillator,1,0.01,4,fd,BACON-dt-robust,Dx = 1.003*v | Dv = -4.0*x,True,0.002719944327020052,0.015302413240218485,True,8.449557784000035,Dx/v = 1.003 (delta 0.076); x/Dv = -0.25 (delta 0.076),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.01,4,fd,PySINDy,Dx = 0.9986*v | Dv = -3.993*x,True,0.0017566502500022674,0.01884657075184677,True,0.32014302200002476,,,sweep,poly,off,0.05
+oscillator,1,0.01,4,sfd,BACON-dt-robust,Dx = 1.0*v | Dv = -3.988*x,True,0.0029162515493657004,0.017415971578187806,True,6.819325904999971,v/Dx = 1 (delta 0.022); x/Dv = -0.2507 (delta 0.022),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.01,4,sfd,PySINDy,Dx = 0.9985*v | Dv = -3.992*x,True,0.002117529361059245,0.021488256805433467,True,0.3543902420000222,,,sweep,poly,off,0.05
+oscillator,1,0.05,0,fd,BACON-dt-robust,Dx = 1.005*v | Dv = -2.814/(313.5*x + 0.5*(3.932e+5*x**2 - 2406.0)**0.5)**0.3333 - 0.3333*(313.5*x + 0.5*(3.932e+5*x**2 - 2406.0)**0.5)**0.3333,False,1.2254784563159664,inf,False,10.74072313900001,Dx/v = 1.005 (delta 0.256); Dv*(Dv**2 - 2.81383155842739)/x = -23.23 (delta 0.256),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.05,0,fd,PySINDy,Dx = 0.9859*v | Dv = -4.014*x,True,0.014061068246900343,0.06337659988862596,True,0.35487508099998877,,,sweep,poly,off,0.05
+oscillator,1,0.05,0,sfd,BACON-dt-robust,Dx = 1.002*v | Dv = -4.094*x,True,0.02362388469028498,0.1492593972343821,True,9.049824865000005,Dx/v = 1.002 (delta 0.114); Dv/x = -4.094 (delta 0.076),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.05,0,sfd,PySINDy,Dx = 0.9873*v | Dv = -4.013*x,True,0.012681101357928215,0.055994326821169366,True,0.3450215359999902,,,sweep,poly,off,0.05
+oscillator,1,0.05,1,fd,BACON-dt-robust,Dx = -5.0e-15*(2.638e+28*v + 1.485e+28)**0.5 - 0.6094 | Dv = -4.02*x,False,1.1710370603862978,inf,False,11.429806865999979,Dx*(Dx + 1.21873343565881)/v = 0.6594 (delta 0.171); Dv/x = -4.02 (delta 0.256),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.05,1,fd,PySINDy,Dx = 0.9974*v | Dv = 1.044*v**2*x + 4.158*x**3 - 8.147*x,False,1.4910102779646726,0.036295380143650656,False,0.4456203629999891,,,sweep,poly,off,0.05
+oscillator,1,0.05,1,sfd,BACON-dt-robust,Dx = 1.003*v | Dv = -3.988*x,True,0.003078519864182505,0.003803388103310291,True,9.062093779000008,Dx/v = 1.003 (delta 0.114); Dv/x = -3.988 (delta 0.076),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.05,1,sfd,PySINDy,Dx = 0.9988*v | Dv = -3.979*x,True,0.005131382004322171,0.03727793042220453,True,0.31279269499998463,,,sweep,poly,off,0.05
+oscillator,1,0.05,2,fd,BACON-dt-robust,Dx = 1.059*v | Dv = -4.266*x,True,0.06638129424441219,0.6931175365704152,False,7.15456610199999,v/Dx = 0.9445 (delta 0.256); x/Dv = -0.2344 (delta 0.256),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.05,2,fd,PySINDy,Dx = 0.9991*v | Dv = -3.967*x,True,0.00818090764295265,0.05360572961471278,True,0.34337302599999475,,,sweep,poly,off,0.05
+oscillator,1,0.05,2,sfd,BACON-dt-robust,Dx = 1.001*v | Dv = -4.002*x,True,0.0007029843719466022,0.0072329734774840915,True,8.289853844999982,v/Dx = 0.9993 (delta 0.114); Dv/x = -4.002 (delta 0.076),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.05,2,sfd,PySINDy,Dx = 0.9993*v | Dv = -3.968*x,True,0.007951033819895037,0.05103910491367417,True,0.32171716700003117,,,sweep,poly,off,0.05
+oscillator,1,0.05,3,fd,BACON-dt-robust,Dx = — | Dv = -4.075*x,False,,,False,8.058983565999995,no invariant; x/Dv = -0.2454 (delta 0.256),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.05,3,fd,PySINDy,Dx = 1.006*v | Dv = -3.938*x,True,0.015427023146247443,0.0570920358477764,True,0.3090641549999873,,,sweep,poly,off,0.05
+oscillator,1,0.05,3,sfd,BACON-dt-robust,Dx = 1.016*v | Dv = -3.96*x,True,0.015500102190769915,0.03235450667136272,True,8.554004269000018,Dx/v = 1.016 (delta 0.114); Dv/x = -3.96 (delta 0.114),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.05,3,sfd,PySINDy,Dx = 1.007*v | Dv = -3.944*x,True,0.014096570113948048,0.04435355342840683,True,0.3188207409999677,,,sweep,poly,off,0.05
+oscillator,1,0.05,4,fd,BACON-dt-robust,Dx = — | Dv = -4.122*x,False,,,False,8.015577377,no invariant; x/Dv = -0.2426 (delta 0.256),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.05,4,fd,PySINDy,Dx = 0.9961*v | Dv = 1.049*v**2*x + 4.401*x**3 - 8.389*x,False,1.5758283309573533,0.01874815143123765,False,0.33831741000000193,,,sweep,poly,off,0.05
+oscillator,1,0.05,4,sfd,BACON-dt-robust,Dx = 1.006*v | Dv = -3.972*x,True,0.006937204937607522,0.00967970240213566,True,9.704266692000033,Dx/v = 1.006 (delta 0.114); Dv/x = -3.972 (delta 0.114),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.05,4,sfd,PySINDy,Dx = 0.9985*v | Dv = -3.98*x,True,0.004895853105273185,0.038039850631402285,True,0.3623005960000114,,,sweep,poly,off,0.05
+oscillator,1,0.1,0,fd,BACON-dt-robust,Dx = — | Dv = —,False,,,False,8.315776897999967,no invariant; no invariant,"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.1,0,fd,PySINDy,Dx = 0.9683*v | Dv = 0.6811*v**2*x + 3.347*x**3 - 7.252*x,False,1.1791144193429508,0.14769817743818936,False,0.35053171399999883,,,sweep,poly,off,0.05
+oscillator,1,0.1,0,sfd,BACON-dt-robust,Dx = 0.9929*v | Dv = -4.218*x,True,0.054504826515067606,0.2758266866928569,False,9.576762784999971,Dx/v = 0.9929 (delta 0.256); Dv/x = -4.218 (delta 0.171),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.1,0,sfd,PySINDy,Dx = 0.9721*v | Dv = 0.7206*x**3 - 4.565*x,False,0.22896857791662217,0.13786189039900662,False,0.3325528400000053,,,sweep,poly,off,0.05
+oscillator,1,0.1,1,fd,BACON-dt-robust,Dx = — | Dv = —,False,,,False,6.401756158000069,no invariant; no invariant,"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.1,1,fd,PySINDy,Dx = 0.9888*v | Dv = 1.076*v**2*x + 4.212*x**3 - 8.235*x,False,1.517310675526727,0.07989986018086803,False,0.35254618000010396,,,sweep,poly,off,0.05
+oscillator,1,0.1,1,sfd,BACON-dt-robust,Dx = 1.004*v | Dv = -4.002*x,True,0.004253671511170065,0.027910653181318346,True,10.650691646000041,Dx/v = 1.004 (delta 0.171); Dv/x = -4.002 (delta 0.171),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.1,1,sfd,PySINDy,Dx = 0.9953*v | Dv = 0.6888*v**2*x + 2.729*x**3 - 6.75*x,False,0.9837847334445898,0.014880385912959414,False,0.3412169800000129,,,sweep,poly,off,0.05
+oscillator,1,0.1,2,fd,BACON-dt-robust,Dx = — | Dv = —,False,,,False,6.826121245000081,no invariant; no invariant,"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.1,2,fd,PySINDy,Dx = 0.9961*v | Dv = -3.927*x,True,0.018256706074940232,0.13109979267089514,True,0.2369935719999603,,,sweep,poly,off,0.05
+oscillator,1,0.1,2,sfd,BACON-dt-robust,Dx = 0.988*v | Dv = -4.012*x,True,0.011985705518682055,0.05427125874210438,True,8.118332951999946,Dx/v = 0.988 (delta 0.256); Dv/x = -4.012 (delta 0.171),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.1,2,sfd,PySINDy,Dx = 0.9962*v | Dv = -3.928*x,True,0.017880487361942254,0.12850144855225948,True,0.2534986340000387,,,sweep,poly,off,0.05
+oscillator,1,0.1,3,fd,BACON-dt-robust,Dx = — | Dv = —,False,,,False,9.907687911000039,no invariant; no invariant,"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.1,3,fd,PySINDy,Dx = 1.008*v | Dv = -3.861*x,True,0.03470752882666739,0.16017577849511738,True,0.38773777900007644,,,sweep,poly,off,0.05
+oscillator,1,0.1,3,sfd,BACON-dt-robust,Dx = 1.031*v | Dv = -3.945*x,True,0.03060865216561992,0.09705589699466705,True,7.166780182999901,Dx/v = 1.031 (delta 0.256); Dv/x = -3.945 (delta 0.171),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.1,3,sfd,PySINDy,Dx = 1.01*v | Dv = -3.875*x,True,0.031316033849755454,0.12632701033900628,True,0.24704814999995506,,,sweep,poly,off,0.05
+oscillator,1,0.1,4,fd,BACON-dt-robust,Dx = — | Dv = —,False,,,False,4.296409683999968,no invariant; no invariant,"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.1,4,fd,PySINDy,Dx = 0.9854*v | Dv = 0.9691*v**2*x + 4.33*x**3 - 8.338*x,False,1.5514212287985387,0.042089100248108344,False,0.23564411799998197,,,sweep,poly,off,0.05
+oscillator,1,0.1,4,sfd,BACON-dt-robust,Dx = 1.013*v | Dv = -3.942*x,True,0.014560207070507536,0.016945737425781357,True,6.868594823999956,Dx/v = 1.013 (delta 0.171); Dv/x = -3.942 (delta 0.171),"sign_aware,bounded_retry,intercept_vs_std,rate_seed",,,,
+oscillator,1,0.1,4,sfd,PySINDy,Dx = 0.9944*v | Dv = 0.7828*x**3 - 4.568*x,False,0.24174865905160198,0.06963088678206147,False,0.2489771660000315,,,sweep,poly,off,0.05

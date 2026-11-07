@@ -102,6 +102,28 @@ for s in "${SYSTEMS5[@]}"; do
 done
 cmds+=("$PY run_test.py --system lotka_volterra --out results/ablation5 --tag original --bacon-fixes none --bacon-variants strict robust")
 
+# PySINDy defaults changed after Test 9 (normalize on, ridge penalty 0). Pin the old ones
+# on every earlier command so they still reproduce exactly.
+for i in "${!cmds[@]}"; do cmds[$i]="${cmds[$i]} --sindy-normalize off --sindy-alpha 0.05"; done
+
+# --- Rerun 6 = Test 9a: BACON as rerun 5; PySINDy with normalize_columns (S6) on --------
+for s in "${SYSTEMS5[@]}"; do
+  t=$(sfx "$s"); cmds+=("$PY run_test.py --system $s --out results/rerun6 ${t:+--tag ${t#_}} --bacon-fixes $B13567 --bacon-variants robust --sindy-normalize on --sindy-alpha 0.05")
+done
+cmds+=("$PY run_test.py --system powerdecay --out results/rerun6 --tag halfpowers --bacon-fixes $B13567 --bacon-variants robust --sindy-library poly+halfpowers --sindy-normalize on --sindy-alpha 0.05")
+# --- Rerun 6b = Test 9b: as rerun 6, plus STLSQ ridge penalty alpha = 0 (S7) ------------
+for s in "${SYSTEMS5[@]}"; do
+  t=$(sfx "$s"); cmds+=("$PY run_test.py --system $s --out results/rerun6b ${t:+--tag ${t#_}} --bacon-fixes $B13567 --bacon-variants robust --sindy-normalize on --sindy-alpha 0")
+done
+cmds+=("$PY run_test.py --system powerdecay --out results/rerun6b --tag halfpowers --bacon-fixes $B13567 --bacon-variants robust --sindy-library poly+halfpowers --sindy-normalize on --sindy-alpha 0")
+
+# --- Test 10: ODEBench, all 63 systems x 2 starting points; both methods frozen ---------
+# BACON: current defaults. PySINDy: Test 9b setup. 20 noise draws per level.
+# Largest systems first, so the slow runs start early.
+for s in $($PY -c "from systems import ODEBENCH as O; print(' '.join(sorted(O, key=lambda n: (-len(O[n]().names), n))))"); do
+  cmds+=("$PY run_test.py --system $s --out results/test10 --seeds 20 --bacon-fixes $B13567 --bacon-variants robust --sindy-normalize on --sindy-alpha 0")
+done
+
 if [ "$MODE" = "run" ]; then
   mkdir -p results/logs
   printf '%s\n' "${cmds[@]}" | { [ -n "$ONLY" ] && grep -- "--out results/$ONLY " || cat; } |

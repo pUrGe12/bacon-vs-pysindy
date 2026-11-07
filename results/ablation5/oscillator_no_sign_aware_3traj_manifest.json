@@ -1,19 +1,19 @@
 {
-  "command": "python run_test.py --system oscillator --n-traj 3 --out results/ablation5 --tag no_sign_aware_3traj --bacon-fixes bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust",
-  "started": "2026-11-07T16:04:38",
+  "command": "python run_test.py --system oscillator --n-traj 3 --out results/ablation5 --tag no_sign_aware_3traj --bacon-fixes bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize off --sindy-alpha 0.05",
+  "started": "2026-11-07T19:08:24",
   "this_repo": {
     "path": "/home/purge/Desktop/bacon-vs-pysindy",
-    "commit": "ad2508e3c3f860bcc8117f388db35cb4c8e13206",
+    "commit": "60f467531e2c021dca47287851bfceed659df51b",
     "uncommitted_changes": true
   },
   "source_sha256": {
     "bacon_dt.py": "b448c4e13a85194b",
     "check_original.py": "37a92a08ad899d05",
     "derivatives.py": "2f740ff77cae128e",
-    "run_test.py": "8e2b82b1ec13e6fc",
+    "run_test.py": "e992cf5329be500a",
     "scoring.py": "0fe01e06e354c373",
-    "sindy_runner.py": "a71b33657f0c0d8f",
-    "summarize.py": "11ef9dda0381b3be",
+    "sindy_runner.py": "f84d9ae6a5c67258",
+    "summarize.py": "975228b2435811e7",
     "systems.py": "0e9c8900f85e74ed",
     "../BACON/space_of_laws/laws_methods/bacon1.py": "9e7593bddadfaa19"
   },
@@ -84,6 +84,8 @@
     "optimizer": "STLSQ",
     "threshold": "sweep",
     "library_kind": "poly",
+    "normalize_columns": false,
+    "ridge_alpha": 0.05,
     "sweep_grid": [
       0.001,
       0.0017782794100389228,
@@ -118,5 +120,5 @@
     "success_coef_err": 0.05,
     "sim_solver": "RK45"
   },
-  "finished": "2026-11-07T16:23:33"
+  "finished": "2026-11-07T19:31:22"
 }
