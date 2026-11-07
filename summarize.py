@@ -6,6 +6,7 @@
     .venv/bin/python summarize.py ablation2           # each fix off, from rerun 2 (B1, B3, B4)
     .venv/bin/python summarize.py ablation3           # each fix off, from rerun 3 (B1, B3-B5)
     .venv/bin/python summarize.py ablation4           # each fix off, from rerun 4 (B1, B3-B6)
+    .venv/bin/python summarize.py ablation5           # each fix off, from rerun 5 (B1, B3, B5-B7)
     .venv/bin/python summarize.py verify              # regenerated results == committed ones?
 """
 import io
@@ -39,6 +40,16 @@ ABLATION_ROWS = {
         ("without B2 signed_constancy", "results/ablation1/{s}_no_signed_constancy{x}.csv"),
         ("without B3 bounded_retry", "results/ablation1/{s}_no_bounded_retry{x}.csv"),
         ("without B4 intercept_vs_std", "results/ablation1/{s}_no_intercept_vs_std{x}.csv"),
+    ],
+    "ablation5": [
+        ("defaults B1, B3, B5, B6, B7 (rerun 5)", "results/rerun5/{s}{x}.csv"),
+        ("no fixes (original BACON.1)", "results/{orig}/{s}_original{x}.csv"),
+        ("without B1 sign_aware", "results/ablation5/{s}_no_sign_aware{x}.csv"),
+        ("without B3 bounded_retry", "results/ablation5/{s}_no_bounded_retry{x}.csv"),
+        ("without B5 rate_seed", "results/ablation5/{s}_no_rate_seed{x}.csv"),
+        ("without B6 robust_line", "results/ablation5/{s}_no_robust_line{x}.csv"),
+        ("without B7 own_rate_seed", "results/ablation5/{s}_no_own_rate_seed{x}.csv"),
+        ("B1, B3-B6 with B4 (rerun 4)", "results/rerun4/{s}{x}.csv"),
     ],
     "ablation4": [
         ("defaults B1, B3-B6 (rerun 4)", "results/rerun4/{s}{x}.csv"),
@@ -120,7 +131,7 @@ def _counts(df, method):
 
 
 def current(folder):
-    systems = SYSTEMS + [("powerdecay", ""), ("powerdecay", "_halfpowers")]
+    systems = SYSTEMS + [("powerdecay", ""), ("powerdecay", "_halfpowers"), ("lotka_volterra", "")]
     for system, sfx in systems:
         if not os.path.exists(f"results/{folder}/{system}{sfx}.csv"):
             continue
@@ -144,7 +155,8 @@ def _total(df, method):
 def ablation(which):
     print("Each cell: runs with the right law · runs that returned a wrong law, "
           "out of 32 (clean + noisy, fd and sfd pooled). The rest returned nothing.\n")
-    systems = SYSTEMS + ([("powerdecay", "")] if which in ("ablation3", "ablation4") else [])
+    systems = SYSTEMS + ([("powerdecay", "")] if which in ("ablation3", "ablation4", "ablation5") else [])
+    systems += [("lotka_volterra", "")] if which == "ablation5" else []
     cols = [f"{s}{' 3traj' if x else ''}" for s, x in systems]
     methods = ("BACON-dt", "BACON-dt-robust") if which == "ablation1" else ("BACON-dt-robust",)
     for method in methods:
@@ -155,7 +167,8 @@ def ablation(which):
             cells = []
             for s, x in systems:
                 new = s == "powerdecay"   # first run in rerun 3: its ablations live in ablation3
-                path = pattern.format(s=s, x=x, orig="ablation3" if new else "ablation1",
+                orig = {"powerdecay": "ablation3", "lotka_volterra": "ablation5"}.get(s, "ablation1")
+                path = pattern.format(s=s, x=x, orig=orig,
                                       norate="ablation3" if new else "rerun2")
                 if new and "{norate}" in pattern:
                     path = "results/ablation3/powerdecay_no_rate_seed.csv"

@@ -96,9 +96,25 @@ def powerdecay():
     )
 
 
+def lotka_volterra():
+    a, b, c, d = 1.0, 0.1, 1.5, 0.075
+    x, y = sp.symbols("x y", real=True)
+    return System(
+        name="lotka_volterra",
+        names=["x", "y"],
+        f=lambda t, s: [a * s[0] - b * s[0] * s[1], -c * s[1] + d * s[0] * s[1]],
+        true_rhs=[a * x - b * x * y, -c * y + d * x * y],
+        x0=[10.0, 5.0],
+        extra_x0s=[[5.0, 5.0], [15.0, 8.0]],
+        t=np.linspace(0, 15, 301),  # period ~5, so ~3 cycles; dt = 0.05
+        description="Lotka-Volterra  x' = x - 0.1xy,  y' = -1.5y + 0.075xy",
+    )
+
+
 SYSTEMS = {
     "decay": decay,
     "logistic": logistic,
     "oscillator": oscillator,
     "powerdecay": powerdecay,
+    "lotka_volterra": lotka_volterra,
 }

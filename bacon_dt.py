@@ -16,10 +16,14 @@ test can be rerun exactly as it was. CHANGES_FROM_BACON.md documents each one
                          trend left over (thirds-of-the-data check: a trend counts if
                          it is significant, z > TREND_Z, and bigger than delta/2)
                          (original: least-squares slope, accepted if 1 - |r| < epsilon)
+    B7 own_rate_seed     also pair each variable's own per-capita rate D(x_i)/x_i with
+                         every *other* variable x_j (B5 only pairs D(x_i)/x_j with x_j)
+                         (applied in discover(), not inside BACON.1)
 
-Defaults (DEFAULT_FIXES): B1, B3, B4, B5, B6. B2 was on in Tests 1-4 and the first rerun,
-then switched off by default: the ablation showed no benefit, so it is one less change
-from the original. It stays available so those runs can be reproduced.
+Defaults (DEFAULT_FIXES): B1, B3, B5, B6, B7. B2 (on in Tests 1-4) and B4 (on in Tests 4-7)
+were switched off by default once ablations showed they no longer changed anything,
+so they are two fewer changes from the original. Both stay available so earlier runs
+can be reproduced.
 
 With every fix switched off, SignedBACON1 makes the same decisions as BACON_1
 (apart from a hard stop after HARD_STOP loosenings, so a run can't hang).
@@ -41,8 +45,8 @@ sys.path.append(BACON_PATH)
 from space_of_laws.laws_methods.bacon1 import BACON_1, nu, eta, dummies  # noqa: E402
 
 ALL_FIXES = ("sign_aware", "signed_constancy", "bounded_retry", "intercept_vs_std", "rate_seed",
-             "robust_line")
-DEFAULT_FIXES = ("sign_aware", "bounded_retry", "intercept_vs_std", "rate_seed", "robust_line")
+             "robust_line", "own_rate_seed")
+DEFAULT_FIXES = ("sign_aware", "bounded_retry", "rate_seed", "robust_line", "own_rate_seed")
 HARD_STOP = 200
 TREND_Z = 3.0   # B6: a leftover trend this many standard errors from zero rejects a line...
 TREND_MIN = 0.5  # ...if it is also bigger than TREND_MIN * delta (relative to the intercept)
@@ -227,6 +231,12 @@ def discover(X, Xdot, symbols, robust=True, fixes=DEFAULT_FIXES, verbose=False):
             with np.errstate(divide="ignore", invalid="ignore"):
                 starts += [(xj, D / xj, y / cols[xj]) for xj in symbols
                            if np.all(np.isfinite(y / cols[xj]))]
+        if "own_rate_seed" in fixes:
+            # B7: e.g. Lotka-Volterra, where Dx/x = a - b*y is a straight line in y.
+            with np.errstate(divide="ignore", invalid="ignore"):
+                own = y / cols[xi]
+            if np.all(np.isfinite(own)):
+                starts += [(xj, D / xi, own) for xj in symbols if xj != xi]
         for xj, target, target_data in starts:
             df = pd.DataFrame({xj: cols[xj], target: target_data})
             bacon = SignedBACON1(df, [xj, D], robust=robust, fixes=fixes,

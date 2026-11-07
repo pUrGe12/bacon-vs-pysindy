@@ -1,0 +1,114 @@
+{
+  "command": "python run_test.py --system lotka_volterra --out results/ablation5 --tag original --bacon-fixes none --bacon-variants strict robust",
+  "started": "2026-11-07T16:11:41",
+  "this_repo": {
+    "path": "/home/purge/Desktop/bacon-vs-pysindy",
+    "commit": "ad2508e3c3f860bcc8117f388db35cb4c8e13206",
+    "uncommitted_changes": true
+  },
+  "source_sha256": {
+    "bacon_dt.py": "b448c4e13a85194b",
+    "check_original.py": "37a92a08ad899d05",
+    "derivatives.py": "2f740ff77cae128e",
+    "run_test.py": "8e2b82b1ec13e6fc",
+    "scoring.py": "0fe01e06e354c373",
+    "sindy_runner.py": "a71b33657f0c0d8f",
+    "summarize.py": "11ef9dda0381b3be",
+    "systems.py": "0e9c8900f85e74ed",
+    "../BACON/space_of_laws/laws_methods/bacon1.py": "9e7593bddadfaa19"
+  },
+  "bacon_repo": {
+    "path": "/home/purge/Desktop/BACON",
+    "commit": "4dbdc957b6409fce57b3dae621cac3c9fb69ccd0",
+    "uncommitted_changes": false
+  },
+  "packages": {
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "sympy": "1.14.0",
+    "pandas": "2.3.3",
+    "pysindy": "2.1.0"
+  },
+  "python": "3.10.12",
+  "system": {
+    "name": "lotka_volterra",
+    "description": "Lotka-Volterra  x' = x - 0.1xy,  y' = -1.5y + 0.075xy",
+    "true_rhs": [
+      "-0.1*x*y + 1.0*x",
+      "0.075*x*y - 1.5*y"
+    ],
+    "initial_conditions": [
+      [
+        10.0,
+        5.0
+      ]
+    ],
+    "t_start": 0.0,
+    "t_end": 15.0,
+    "samples_per_trajectory": 301
+  },
+  "bacon": {
+    "variants": [
+      "BACON-dt",
+      "BACON-dt-robust"
+    ],
+    "fixes_on": [],
+    "fixes_off": [
+      "sign_aware",
+      "signed_constancy",
+      "bounded_retry",
+      "intercept_vs_std",
+      "rate_seed",
+      "robust_line",
+      "own_rate_seed"
+    ],
+    "params": {
+      "epsilon": 0.001,
+      "delta": 0.01,
+      "epsilon_scale": 1.5,
+      "delta_scale": 1.5,
+      "c_val": 0.02,
+      "max_delta": 0.3
+    }
+  },
+  "pysindy": {
+    "poly_degree": 3,
+    "optimizer": "STLSQ",
+    "threshold": "sweep",
+    "library_kind": "poly",
+    "sweep_grid": [
+      0.001,
+      0.0017782794100389228,
+      0.0031622776601683794,
+      0.005623413251903491,
+      0.01,
+      0.01778279410038923,
+      0.03162277660168379,
+      0.05623413251903491,
+      0.1,
+      0.1778279410038923,
+      0.31622776601683794,
+      0.5623413251903491,
+      1.0
+    ],
+    "r2_tol": 0.01
+  },
+  "harness": {
+    "noise_levels": [
+      0,
+      0.01,
+      0.05,
+      0.1
+    ],
+    "seeds": 5,
+    "n_traj": 1,
+    "derivatives": [
+      "fd",
+      "sfd"
+    ],
+    "edge_trim": 2,
+    "success_coef_err": 0.05,
+    "sim_solver": "RK45"
+  },
+  "finished": "2026-11-07T16:21:43"
+}

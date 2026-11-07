@@ -41,18 +41,20 @@ oscillator, `v' = -ω²x - γv`) are out of reach unless the linear step happens
 
 ## B. Fixes to BACON.1 (switchable: `--bacon-fixes`)
 
-Default (since rerun 4 / Test 7): **B1, B3, B4, B5, B6 on, B2 off.** `--bacon-fixes none`
+Default (since rerun 5 / Test 8): **B1, B3, B5, B6, B7 on; B2 and B4 off.** `--bacon-fixes none`
 gives the original BACON.1 decisions. Tests 1–3 ran with B1–B3, Test 4 and rerun 1 with
-B1–B4, rerun 2 with B1, B3, B4, rerun 3 (Tests 5–6) with B1, B3, B4, B5.
+B1–B4, rerun 2 with B1, B3, B4, rerun 3 (Tests 5–6) with B1, B3, B4, B5, rerun 4 (Test 7)
+with B1, B3–B6.
 
 | ID | Flag | Original BACON.1 | BACON-dt | Why | Since |
 |---|---|---|---|---|---|
 | B1 | `sign_aware` | Ratio if `r > 0`, product if `r < 0`, where `r` = correlation of `a`, `b` | Same rule on the correlation of `|a|`, `|b|` | For `Dx = -kx` the correlation is negative, so the original multiplies (`Dx·x`, `Dx·x²`, …) and never tries the ratio `x/Dx` | Test 1 |
 | B2 | `signed_constancy` | `check_constant(b_, abs(b))`, then every `v` in `M(1-δ) < v < M(1+δ)`, i.e. on **absolute values** | Every `v` within `|v - M| < δ|M|`, on **signed values** | Stops a quantity that flips sign (e.g. ±2) from counting as constant. **Off by default since rerun 2:** the ablation showed no benefit, so we keep the original behaviour. *Correction:* Tests 1–4 described this as "the original fails when `M < 0`". That was wrong: the original passes `abs(b)`, so negative constants already worked. | Test 1 |
 | B3 | `bounded_retry` | If nothing is found, build a new `BACON_1` with `ε × epsilon_scale`, `δ × delta_scale` and recurse, **without limit** | Stop once `δ > 0.3` and report "no invariant" | Without a cap, BACON always returns *something* once the tolerance is loose enough. With the cap off, a hard stop at 200 loosenings keeps runs from hanging. | Test 1 |
-| B4 | `intercept_vs_std` | Take the linear branch if `1 - |r| < ε` and `|c / mean(b)| > c_val` | `... and |c| > c_val · std(b)` | Oscillating signals have mean ≈ 0, so any noise-level intercept passes and BACON writes `Dx - m·v = c` instead of the ratio `v/Dx` | Test 4 |
+| B4 | `intercept_vs_std` | Take the linear branch if `1 - |r| < ε` and `|c / mean(b)| > c_val` | `... and |c| > c_val · std(b)` | Oscillating signals have mean ≈ 0, so any noise-level intercept passes and BACON writes `Dx - m·v = c` instead of the ratio `v/Dx`. **Off by default since rerun 5:** with B6 on it changes nothing (ablation 4; rerun 5 confirms every result row is identical without it). | Test 4 |
 | B5 | `rate_seed` | The search starts from the two input columns `(x_j, D(x_i))` only | Also run BACON.1 from `(x_j, D(x_i)/x_j)`, the per-unit rate (skipped where `x_j` has zeros). Implemented in `discover()` (the pairing layer, A2), not inside BACON.1; all candidates compete under the same rule (tightest δ, then best R²). | BACON.1 picks its next term from whether one variable goes up or down with the other. In logistic growth `Dx` rises, then falls as `x` grows, so BACON never proposes `Dx/x`, although `Dx/x = r - (r/K)x` is a straight line in `x`. Per-unit rates are a standard building block of ODE models, not a logistic-specific trick. | Test 5 |
 | B6 | `robust_line` | Straight-line law `b - m·a = c`: least-squares slope `m`, accepted if `1 - |r| < ε` (ε ≤ 0.026 at the loosest tolerance) and the intercept is significant (B4). The leftover `b - m·a` is never tested for constancy. | Slope by **Theil–Sen** (median of pairwise slopes). Accepted if the leftover `b - m·a` passes **the same constancy test as every other law** at the current δ, **and** shows no leftover trend: split the data into thirds by `a`; a trend counts if some third's median leftover is more than 3 standard errors (z, from the leftover's own spread) from the overall median **and** more than δ/2 of it. Intercept check (B4) still applies. ε is no longer used. | With noise, `1 - |r|` collapses (logistic `Dx/x` vs `x` at 5% noise: 0.07–0.28, limit 0.026), mostly because noise is larger where `x` is small, although the line is clearly there. The trend check stops the robust test from accepting a curve as a line (first version without it turned power decay's `x/Dx` curve into a false line at 1% noise); the δ/2 floor stops it from rejecting true lines on noise-free data, where tiny finite-difference errors are statistically "significant". | Test 7 |
+| B7 | `own_rate_seed` | (as B5) | Also run BACON.1 from `(x_j, D(x_i)/x_i)`: each variable's own per-capita rate, paired with every *other* variable `x_j` (skipped where `x_i` has zeros). In `discover()`, like B5. | In Lotka–Volterra the law is `Dx/x = a - b·y`: the prey's per-capita rate is a straight line in the *predator*. B5 divides by the partner (`Dx/y` vs `y`), so it never builds that pair. Per-capita rates against other species are the textbook form of interaction models. Has no effect on one-variable systems; on the oscillator, every result row is identical with and without it. | Test 8 |
 
 ### R. Robust variant (BACON-dt-robust, since Test 2; the only default variant since rerun 2)
 
@@ -166,7 +168,7 @@ Each cell: runs with the right law · runs that returned a wrong law, out of 32 
 - **B3 and B4 behave as in ablations 1–2:** without the cap, BACON returns many more wrong
   laws (logistic 0 → 22); without B4, the oscillator collapses (21 → 6 right).
 
-### Ablation 4: from the current defaults (B1, B3, B4, B5, B6, robust variant)
+### Ablation 4: from the rerun-4 defaults (B1, B3, B4, B5, B6, robust variant)
 
 Made by `./experiments.sh run 20 ablation4`; tables from `.venv/bin/python summarize.py ablation4`.
 "Without B6" is rerun 3; "no fixes" reuses ablations 1 and 3.
@@ -208,6 +210,36 @@ Splitting "wrong" into *right form, coefficients more than 5% off* and *wrong fo
   whenever B6 is off. A candidate to drop, as B2 was.
 - **B1 matters only for power decay** (6 → 0 right without it), as in ablation 3.
 
+### Ablation 5: from the current defaults (B1, B3, B5, B6, B7, robust variant)
+
+Made by `./experiments.sh run 20 ablation5`; tables from `.venv/bin/python summarize.py ablation5`.
+"Without B7" is the rerun-4 setting minus B4, so comparing it with rerun 4 (last row)
+measures dropping B4: identical, row for row, on every system.
+
+Each cell: runs with the right law · runs that returned a wrong law, out of 32 (clean + noisy, fd and sfd pooled). The rest returned nothing.
+
+
+**BACON-dt-robust**
+
+| config | decay | logistic | oscillator | oscillator 3traj | powerdecay | lotka_volterra |
+|---|---|---|---|---|---|---|
+| defaults B1, B3, B5, B6, B7 (rerun 5) | 14 right · 3 wrong | 18 right · 9 wrong | 22 right · 2 wrong | 22 right · 0 wrong | 6 right · 8 wrong | 23 right · 1 wrong |
+| no fixes (original BACON.1) | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong | 0 right · 32 wrong |
+| without B1 sign_aware | 17 right · 1 wrong | 18 right · 9 wrong | 22 right · 1 wrong | 22 right · 0 wrong | 0 right · 7 wrong | 23 right · 1 wrong |
+| without B3 bounded_retry | 16 right · 16 wrong | 18 right · 14 wrong | 29 right · 3 wrong | 31 right · 1 wrong | 6 right · 26 wrong | 26 right · 6 wrong |
+| without B5 rate_seed | 12 right · 5 wrong | 0 right · 0 wrong | 20 right · 4 wrong | 22 right · 0 wrong | 5 right · 9 wrong | 23 right · 0 wrong |
+| without B6 robust_line | 17 right · 0 wrong | 7 right · 0 wrong | 6 right · 19 wrong | 4 right · 20 wrong | 7 right · 5 wrong | 10 right · 0 wrong |
+| without B7 own_rate_seed | 14 right · 3 wrong | 18 right · 9 wrong | 22 right · 2 wrong | 22 right · 0 wrong | 6 right · 8 wrong | 0 right · 4 wrong |
+| B1, B3-B6 with B4 (rerun 4) | 14 right · 3 wrong | 18 right · 9 wrong | 22 right · 2 wrong | 22 right · 0 wrong | 6 right · 8 wrong | missing |
+
+- **B7 is what makes Lotka–Volterra work:** 23 right without → 0 right · 4 wrong with it off.
+  On every other system it changes nothing (identical rows).
+- **Dropping B4 changes nothing** while B6 is on (identical rows on all 5 older setups).
+- **B6 now also carries the oscillator:** without B6 *and* without B4, the oscillator
+  collapses (22 → 6 right). B6 subsumed what B4 did.
+- **B6 is essential for Lotka–Volterra** (23 → 10 right): both laws are straight lines.
+- **B3** behaves as before: without the cap, more right laws but many more wrong ones.
+
 ---
 
 ## S. PySINDy configuration (differences from PySINDy defaults)
@@ -242,10 +274,12 @@ Splitting "wrong" into *right form, coefficients more than 5% off* and *wrong fo
 | rerun 1 | all | B1–B4 | strict, robust | sweep | RK45 | 1 (oscillator also 3) |
 | rerun 2 | all | B1, B3, B4 | robust | sweep | RK45 | 1 (oscillator also 3) |
 | rerun 3 = Tests 5 & 6 | all + power decay | B1, B3, B4, B5 | robust | sweep (+ half-power side run) | RK45 | 1 (oscillator also 3) |
-| rerun 4 = Test 7 (current defaults) | all + power decay | B1, B3, B4, B5, B6 | robust | sweep (+ half-power side run) | RK45 | 1 (oscillator also 3) |
+| rerun 4 = Test 7 | all + power decay | B1, B3, B4, B5, B6 | robust | sweep (+ half-power side run) | RK45 | 1 (oscillator also 3) |
+| rerun 5 = Test 8 (current defaults) | all + power decay + Lotka–Volterra | B1, B3, B5, B6, B7 | robust | sweep (+ half-power side run) | RK45 | 1 (oscillator also 3) |
 
 Exact commands for each are in `experiments.sh`. Reproducing Tests 1–4 with those commands
 gives results identical to the original runs (448 of 448 rows; `summarize.py repro`), and
 still does after the default changes of reruns 2 and 3, because every old command spells
 out its settings. `summarize.py verify` regenerates-and-compares every committed results
-file: after Test 6, all 50 were identical (timing columns aside); after Test 7, all 73.
+file: after Test 6, all 50 were identical (timing columns aside); after Test 7, all 73;
+after Test 8, all 99.

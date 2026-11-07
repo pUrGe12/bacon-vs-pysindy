@@ -85,6 +85,23 @@ for s in "${SYSTEMS3[@]}"; do
   done
 done
 
+# --- Rerun 5 = Test 8 (current defaults): fixes B1, B3, B5, B6, B7 (B4 dropped); + LV --
+B13567="sign_aware bounded_retry rate_seed robust_line own_rate_seed"
+SYSTEMS5=("${SYSTEMS3[@]}" "lotka_volterra")
+for s in "${SYSTEMS5[@]}"; do
+  t=$(sfx "$s"); cmds+=("$PY run_test.py --system $s --out results/rerun5 ${t:+--tag ${t#_}} --bacon-fixes $B13567 --bacon-variants robust")
+done
+cmds+=("$PY run_test.py --system powerdecay --out results/rerun5 --tag halfpowers --bacon-fixes $B13567 --bacon-variants robust --sindy-library poly+halfpowers")
+# --- Ablation 5: each of B1, B3, B5, B6, B7 off from rerun 5, every system; LV "all off" --
+# ("without B7" = rerun 4 minus B4, so comparing it with rerun 4 measures dropping B4)
+for s in "${SYSTEMS5[@]}"; do
+  t=$(sfx "$s")
+  for off in sign_aware bounded_retry rate_seed robust_line own_rate_seed; do
+    cmds+=("$PY run_test.py --system $s --out results/ablation5 --tag no_$off$t --bacon-fixes $(without "$B13567" $off) --bacon-variants robust")
+  done
+done
+cmds+=("$PY run_test.py --system lotka_volterra --out results/ablation5 --tag original --bacon-fixes none --bacon-variants strict robust")
+
 if [ "$MODE" = "run" ]; then
   mkdir -p results/logs
   printf '%s\n' "${cmds[@]}" | { [ -n "$ONLY" ] && grep -- "--out results/$ONLY " || cat; } |

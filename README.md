@@ -29,11 +29,13 @@ adjacent samples, and pair it with each state variable. If BACON finds an invari
   comparison is between their search methods.
 - BACON.1 needed fixes for ODE data (negative derivatives, oscillating signals, a retry
   loop that always "finds" something). Each one is a named switch (`--bacon-fixes`), and
-  `--bacon-fixes none` runs the original algorithm. Current defaults: B1, B3, B4, B5, B6.
+  `--bacon-fixes none` runs the original algorithm. Current defaults: B1, B3, B5, B6, B7.
 - B5 also starts BACON's search from per-unit rates (`Dx_i/x_j`), because BACON.1's
   up/down heuristic never proposes them when a derivative rises and then falls.
 - B6 makes BACON's straight-line test robust: a Theil–Sen slope, and the line must pass the
   same constancy test as every other law, with no leftover trend.
+- B7 also pairs each variable's own per-capita rate (`Dx/x`) with every *other* variable,
+  the form of interaction laws like Lotka–Volterra (`Dx/x = a - b·y`).
 - The default BACON variant is **BACON-dt-robust**: a law counts as constant when the
   *typical* point is within tolerance (median-based), not *every* point. The strict
   variant (`--bacon-variants strict`) is BACON's original test; it only ever worked on
@@ -51,9 +53,9 @@ the comparison fair in both directions.
 
 | File | What it does |
 |---|---|
-| `systems.py` | Ground-truth ODEs (decay, logistic, oscillator, power decay), clean trajectories, noise (std = level × std of each state) |
+| `systems.py` | Ground-truth ODEs (decay, logistic, oscillator, power decay, Lotka–Volterra), clean trajectories, noise (std = level × std of each state) |
 | `derivatives.py` | Derivative estimates given to **both** methods: `fd` (central differences, PySINDy's default) and `sfd` (Savitzky–Golay smoothed, window 11) |
-| `bacon_dt.py` | BACON.1 subclass with derivative columns, switchable fixes B1–B6 (default B1, B3–B6) and the robust variant (default) |
+| `bacon_dt.py` | BACON.1 subclass with derivative columns, switchable fixes B1–B7 (default B1, B3, B5–B7) and the robust variant (default) |
 | `sindy_runner.py` | PySINDy: polynomial library degree 3, STLSQ, threshold chosen by a sweep |
 | `scoring.py` | Term structure match, coefficient error, error when simulating the learned ODE |
 | `run_test.py` | Runs one system across noise levels × seeds × derivative methods; writes results + manifest |
@@ -82,7 +84,8 @@ the comparison fair in both directions.
 | rerun 1 | as Test 4, every system | see `experiments.sh` (`results/rerun1/`) |
 | rerun 2 | fixes B1, B3, B4, robust only | see `experiments.sh` (`results/rerun2/`) |
 | 5, 6 (rerun 3) | fixes B1, B3, B4, B5, robust only | see `experiments.sh` (`results/rerun3/`) |
-| 7 (rerun 4) | current defaults: fixes B1, B3–B6, robust only | `run_test.py --system <name>` (`results/rerun4/`); PySINDy side run: `--system powerdecay --sindy-library poly+halfpowers` |
+| 7 (rerun 4) | fixes B1, B3–B6, robust only | see `experiments.sh` (`results/rerun4/`) |
+| 8 (rerun 5) | current defaults: fixes B1, B3, B5, B6, B7, robust only | `run_test.py --system <name>` (`results/rerun5/`); PySINDy side run: `--system powerdecay --sindy-library poly+halfpowers` |
 
 "Recovered" = exactly the right terms **and** coefficients within 5%.
 
@@ -522,3 +525,46 @@ runs, fd · sfd. (The PySINDy half-power side run on power decay is unchanged fr
    them on fit, not just on the δ at which they passed.
 2. Drop B4 (no effect with B6).
 3. Next system: Lotka–Volterra.
+
+### Test 8: Lotka–Volterra (and B4 dropped)
+Predator–prey: `x' = x - 0.1xy` (prey), `y' = -1.5y + 0.075xy` (predators). x0 = 10, y0 = 5,
+t ∈ [0, 15] (~3 cycles), 301 samples, one trajectory, 5 noise seeds.
+
+Two changes:
+- **B4 dropped** from the defaults (no effect with B6; confirmed row for row on every
+  older system).
+- **New fix B7 `own_rate_seed`:** pair each variable's own per-capita rate `Dx_i/x_i` with
+  every *other* variable. The prey law is `Dx/x = 1 - 0.1y`, a straight line in the
+  *predator*; B5 only ever divides by the partner variable, so it never built that pair.
+
+Config: fixes B1, B3, B5, B6, B7, robust variant, PySINDy threshold sweep, RK45.
+`./experiments.sh run 8 rerun5`, results in `results/rerun5/`. The other systems are
+unchanged from Test 7 (identical rows), so only Lotka–Volterra is shown. Cells: exactly
+recovered / runs, fd · sfd.
+
+**lotka_volterra** (fd · sfd)
+
+| method | 0% | 1% | 5% | 10% |
+|---|---|---|---|---|
+| BACON-dt-robust | 1/1 · 1/1 | 5/5 · 5/5 | 1/5 · 5/5 | 0/5 · 5/5 |
+| PySINDy | 1/1 · 0/1 | 4/5 · 3/5 | 1/5 · 0/5 | 0/5 · 0/5 |
+
+**Takeaways**
+- **BACON wins Lotka–Volterra clearly.** With smoothed derivatives it finds both laws
+  exactly at every noise level, 10% included: `Dx/x + 0.100y = 1.0` and
+  `Dy/y - 0.075x = -1.5`. With raw derivatives it holds up to 1% noise.
+- **PySINDy gets the right terms every time but keeps junk.** Every miss is the true
+  `x`, `xy`, `y` terms plus a small constant (0.03–0.25) or a small `y` term in the prey
+  equation. Simulated, they stay within 0.2–21% of the data (median 4%), but fail the exact check. Likely cause: its
+  threshold applies to raw coefficients, and with `x` reaching 40 the smallest true
+  coefficient (0.075) is no bigger than the junk. PySINDy's `normalize_columns` option
+  exists for exactly this; we haven't used it so far.
+- **Ablation 5:** B7 is what makes it work (23 → 0 right without it), B6 is essential
+  (23 → 10), and B7 changes nothing on any other system.
+- **Check:** all 99 committed results files regenerate identically.
+
+**Next steps to try**
+1. **Fairness for PySINDy:** add `normalize_columns` as a PySINDy switch and rerun every
+   system. Lotka–Volterra suggests our PySINDy setup, not PySINDy itself, may be what loses.
+2. Stop false lines winning on tolerance alone (decay and power decay regressions from Test 7).
+3. Next system: damped oscillator (`v' = -ω²x - γv`, three terms; BACON compares two at a time).
