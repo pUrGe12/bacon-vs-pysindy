@@ -22,7 +22,8 @@ import pandas as pd
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 KEYS = ["n_traj", "noise", "seed", "deriv", "method"]
-OUTCOME = ["equations", "structure_ok", "recovered", "coef_err", "sim_err", "bacon_invariant"]
+OUTCOME = ["equations", "structure_ok", "recovered", "coef_err", "sim_err", "bacon_invariant",
+           "pred_err", "status"]  # last two: static laws (Test 12) only
 # Results written by the original runs of Tests 1-4; experiments.sh reproduces each into
 # results/repro/ and `summarize.py repro` compares them row by row.
 ORIGINALS = {
@@ -74,7 +75,9 @@ def _git_head():
 def make():
     exps = experiments()
     for e in exps:
-        e["fingerprint"] = fingerprint(os.path.join(HERE, e["results"]))
+        full = os.path.join(HERE, e["results"])
+        # A set defined in experiments.sh but never run (Test 11, stopped) has no results.
+        e["fingerprint"] = fingerprint(full) if os.path.exists(full) else "not run"
     originals = {f: {"reproduced_by": r, "fingerprint": fingerprint(os.path.join(HERE, f))}
                  for f, r in ORIGINALS.items()}
     lock = open(os.path.join(HERE, "requirements.lock"), "rb").read()
@@ -102,7 +105,7 @@ def make():
 def check(only=None):
     man = json.load(open(os.path.join(HERE, "MANIFEST.json")))
     items = [(e["results"], e["fingerprint"]) for e in man["experiments"]
-             if only is None or e["set"] == only]
+             if (only is None or e["set"] == only) and e["fingerprint"] != "not run"]
     if only is None:
         items += [(f, o["fingerprint"]) for f, o in man["original_runs_tests_1_to_4"].items()]
     same, differ, missing = 0, [], []

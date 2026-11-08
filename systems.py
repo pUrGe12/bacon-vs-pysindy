@@ -130,7 +130,7 @@ ODEBENCH_FILE = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)),
                               "data", "odebench_equations.json")
 
 
-def _odebench_system(eq, start, time):
+def _odebench_system(eq, start, time, pooled=False):
     n = eq["dim"]
     names = [f"x{i}" for i in range(n)]
     syms = sp.symbols(" ".join(names), real=True)
@@ -142,14 +142,18 @@ def _odebench_system(eq, start, time):
     rhs = [sp.sympify(part.strip().replace("^", "**"), locals=local)
            for part in eq["eq"].split("|")]
     f_np = sp.lambdify(syms, rhs, "numpy")
+    tag = "both" if pooled else f"start{start + 1}"
     return System(
-        name=f"ode{eq['id']:02d}_start{start + 1}",
+        name=f"ode{eq['id']:02d}_{tag}",
         names=names,
         f=lambda t, s, f_np=f_np: np.asarray(f_np(*s), dtype=float).ravel(),
         true_rhs=rhs,
         x0=[float(v) for v in eq["init"][start]],
+        # Test 11: both starting points, pooled with --n-traj 2
+        extra_x0s=[[float(v) for v in eq["init"][1]]] if pooled else [],
         t=np.linspace(time["t_start"], time["t_end"], time["n_samples"]),
-        description=f"ODEBench #{eq['id']} ({eq['eq_description']}), start {start + 1}: "
+        description=f"ODEBench #{eq['id']} ({eq['eq_description']}), "
+                    + ("both starts pooled" if pooled else f"start {start + 1}") + ": "
                     + " | ".join(f"D{n_} = {r}" for n_, r in zip(names, rhs)),
     )
 
@@ -166,5 +170,16 @@ def odebench_systems():
     return out
 
 
+def odebench_pooled():
+    """Test 11: one setup per system, fitted on both of its starting points at once."""
+    with open(ODEBENCH_FILE) as fh:
+        data = _json.load(fh)
+    return {f"ode{eq['id']:02d}_both": (lambda eq=eq, time=data["time"]:
+                                        _odebench_system(eq, 0, time, pooled=True))
+            for eq in data["equations"]}
+
+
 ODEBENCH = odebench_systems() if _os.path.exists(ODEBENCH_FILE) else {}
+ODEBENCH_POOLED = odebench_pooled() if _os.path.exists(ODEBENCH_FILE) else {}
 SYSTEMS.update(ODEBENCH)
+SYSTEMS.update(ODEBENCH_POOLED)

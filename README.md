@@ -4,6 +4,11 @@ Can BACON (Langley's heuristic law finder, as rebuilt in
 [Miller & Banerjee 2025](https://www.researchgate.net/publication/389562521)) discover
 ODEs if we give it a notion of derivatives? We compare it against PySINDy.
 
+**Conclusions so far: [ANALYSIS.md](ANALYSIS.md).** On ODE time series PySINDy is the better
+tool; BACON is competitive only on laws where a derivative depends on one variable. On
+BACON's own static laws (Test 12) BACON finds laws PySINDy cannot express, but its
+multi-variable search fails under 1% noise.
+
 ## Setup
 
 ```
@@ -43,6 +48,12 @@ scores, errors to 6 significant digits; run times left out). Rerunning on the sa
 platform reproduces it exactly. On a different CPU or operating system, floating-point
 details can in rare cases change a borderline run; `manifest.py check` names any file that
 differs, and `summarize.py verify` compares row by row with a numeric tolerance.
+
+**Checked (2026-11-08):** a fresh clone from GitHub (commit `8abd3ba`) on the original
+machine: `setup.sh`, then every experiment except Test 10 (146 runs) plus 6 Test 10
+setups (1-, 2- and 3-variable systems), rerun from scratch in 47 minutes. All 152 result
+files match `MANIFEST.json`, the Tests 1–4 reproductions match the original runs row for
+row (448 of 448), and `check_original.py` confirms "all fixes off" is the original BACON.1.
 
 ## How BACON was adapted to time series
 
@@ -119,6 +130,7 @@ the comparison fair in both directions.
 | 8 (rerun 5) | fixes B1, B3, B5, B6, B7, robust only; PySINDy defaults | `run_test.py --system <name> --sindy-normalize off --sindy-alpha 0.05` (`results/rerun5/`); PySINDy side run: add `--system powerdecay --sindy-library poly+halfpowers` |
 | 9a (rerun 6) | BACON as Test 8; PySINDy `normalize_columns` on (S6) | `run_test.py --system <name> --sindy-normalize on --sindy-alpha 0.05` (`results/rerun6/`) |
 | 10 | ODEBench, 63 systems × 2 starting points, 20 noise draws; current defaults | `./experiments.sh run 20 test10` (`results/test10/`) |
+| 11 (stopped, not run) | ODEBench, 63 systems, both starting points pooled, 20 noise draws; current defaults | `./experiments.sh run 20 test11` (`results/test11/`) |
 | 9b (rerun 6b) | **current defaults**: BACON as Test 8; PySINDy `normalize_columns` on, ridge penalty 0 (S6, S7) | `run_test.py --system <name>` (`results/rerun6b/`) |
 
 ### How to read the results
@@ -1409,3 +1421,360 @@ derivative types. No run failed.
 1. Pool ODEBench's two starting points into one fit (like Test 4), which removes PySINDy's
    single-trajectory trap; same frozen methods.
 2. The reverse comparison: PySINDy on BACON's home turf (static laws like Kepler's).
+
+### Test 11: ODEBench with both starting points pooled (stopped, not run)
+
+> **Stopped on 2026-11-08, 00:45, about 8 minutes in, before any setup finished; there are
+> no results.** Tests 1–10 already answer the main question (see [ANALYSIS.md](ANALYSIS.md)),
+> and Test 11 would most likely only shrink BACON's few wins further. The rules and
+> commands below are kept so it can still be run as written.
+
+Test 10 fitted each starting point on its own. One clean trajectory is PySINDy's known weak
+spot: along a single orbit its candidate terms can be exact combinations of each other
+(Test 3), and in Test 10 that cost it e.g. the undamped oscillator on clean data. The
+standard remedy is data from several starting points (Test 4). ODEBench gives two per
+system, so this test fits each system on both at once.
+
+**Rules, written down before running** (every run's manifest records when it started):
+1. **Same 63 systems, constants, time grid, noise levels and 20 noise draws as Test 10.**
+2. **One setup per system (63 setups):** both of ODEBench's starting points, each
+   trajectory differentiated on its own, rows pooled, and both methods given the same pool
+   (as in Test 4). Noise for both trajectories comes from one random generator seeded
+   by the noise-draw number; each trajectory's noise is scaled to its own spread.
+3. **Both methods frozen, exactly as in Test 10.** Same scoring. The simulation check
+   starts the learned law from each starting point and averages the two errors.
+4. **Reported the same way as Test 10**, plus a side-by-side with Test 10 for each method.
+
+Command: `./experiments.sh run 20 test11` (results in `results/test11/`).
+
+### Test 12: BACON's home turf, its own static-law datasets
+
+Tests 1–11 were PySINDy's home turf (time series and derivatives). BACON was built for
+something else: tables from controlled experiments, where each variable is set to a few
+values in every combination and one quantity is measured, with no time involved. Test 12
+runs both methods there, on the laws BACON's own repo ships with.
+
+**Rules, written down before running** (every run's manifest records when it started):
+1. **Laws:** BACON's own datasets (`datasets.py` in the BACON repo), same variables,
+   levels and constants: ideal gas `V = M(T + 273)/P`, Ohm's law for a wire
+   `I = T·D²/(2(L + 3))`, Black's law of mixtures `T_f = (M₁T₁ + M₂T₂)/(M₁ + M₂)`, Kepler's
+   third law `D³ = P²`, and BACON's synthetic `Y = 3/(X + 2)`. Left out: `birthday` (no
+   closed-form law) and `lv` (a time series). Code: `static_laws.py`.
+2. **Two designs per law, so 10 setups.** *Given:* exactly the authors' data (3 levels per
+   variable, so 27 rows, or 81 for Black; Kepler 6 points, synthetic 5); the runner checks
+   it matches BACON's `datasets.py` value for value. *Dense:* the same ranges with 6 levels
+   per variable (216 rows, Black 1296), or 12 points when there is one input. The dense
+   design is there because PySINDy has more candidate terms than the given design has rows.
+3. **Noise:** as in BACON's `datasets.py`: Gaussian on the measured quantity only, standard
+   deviation = level × its value. 0%, 1%, 5% and 10%, with **20 noise draws** per level.
+4. **BACON:** the original pipeline (BACON.3 layers over BACON.1, `data_space`), code
+   unchanged, none of our time-series fixes. **One frozen setting for every law, design and
+   noise level: the code's own defaults** (what `main.py` runs with no args file). Only
+   wrapping: the final law is captured instead of printed, and the unused PySR/GPy imports
+   are stubbed (`bacon_static.py`). A run that raises or exceeds 300 s counts as "no law".
+5. **BACON with the authors' tuned settings, a labelled side run:** the authors' own args
+   file for that dataset and noise level (`args/ideal/ideal00.json` for 0%,
+   `ideal10.json` for 1%, same for Ohm and Black; `synthetic.json` for synthetic). Given
+   design only, 0% and 1% noise only (the authors have none for 5% or 10%). Not Kepler: its
+   only file is BACON.6 with the answer's form written in.
+6. **PySINDy, frozen:** STLSQ exactly as in Test 10 (normalized columns, no ridge penalty,
+   same threshold sweep and selection rule), fitting the measured quantity directly as a
+   sparse sum of candidate terms. Terms: every product of integer powers of the inputs
+   with total degree ≤ 3, negative powers included (`1, M, 1/P, M·T/P, 1/P³, …`): 7 terms
+   for one input, 63 for three, 129 for four.
+   **Known before running:** of the five laws, only the ideal gas law can be written in
+   these terms (`M·T/P + 273·M/P`). Ohm, Black and synthetic have a sum in the
+   denominator, and Kepler needs the power 2/3. As in Test 10, they stay in, and results
+   are also shown for the laws inside PySINDy's terms.
+7. **Scoring:** both answers are solved for the measured quantity and written over a
+   common denominator. Exact law = the same terms on top and bottom as the true law, and
+   every coefficient within 5% (after scaling top and bottom together). Also recorded:
+   `pred_err`, the relative error against the true law at 200 random points inside the
+   ranges (between the grid points).
+8. **Reporting:** per law, per design, per noise level, with run counts.
+
+Before writing these rules, a smoke test ran BACON once on each law's clean given data to
+check the wrapper. It showed that the frozen default setting misses `T` in the ideal gas
+law (`V = 293·M/P`): BACON's 10% "is this constant?" tolerance accepts `T + 273`, which
+varies only ±3.5% over the authors' range. The setting was not changed. The scoring code
+was checked on hand-written expressions only.
+
+The first launch was stopped after about 10 minutes, before any setup had written results,
+because scoring PySINDy's long answers in sympy was very slow. A fast path for answers
+that are plain sums of power products was added (same verdict as the slow path on 35
+test answers) and the run restarted, rules unchanged.
+
+Command: `./experiments.sh run 10 test12` (results in `results/test12/`).
+
+#### Results, per law, design and noise level
+
+Runs per cell: 1 on clean data, 20 per noisy level. The authors' side run exists only for
+the given design at 0% and 1% noise.
+
+<!-- tables:test12 -->
+
+#### Ideal gas law, `V = M(T + 273)/P` (inside PySINDy's terms)
+
+**Given design (27 rows)**: runs that found the exact law
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 0 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+| BACON, authors' tuned settings (side run) | 1 of 1 | 6 of 20 | not run | not run |
+| PySINDy, frozen | 0 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+
+Given design: exact law / right terms but a coefficient more than 5% off / wrong terms / no law
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 0 / 0 / 1 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 17 / 3 | 0 / 0 / 4 / 16 |
+| BACON, authors' tuned settings (side run) | 1 / 0 / 0 / 0 | 6 / 5 / 9 / 0 | not run | not run |
+| PySINDy, frozen | 0 / 0 / 1 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 |
+
+Given design: runs whose law is within 5% of the true law between the grid points (relative RMS error at 200 random points)
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 of 1 | 20 of 20 | 17 of 20 | 4 of 20 |
+| BACON, authors' tuned settings (side run) | 1 of 1 | 16 of 20 | not run | not run |
+| PySINDy, frozen | 1 of 1 | 12 of 20 | 2 of 20 | 0 of 20 |
+
+**Dense design (216 rows)**: runs that found the exact law
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 0 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+| PySINDy, frozen | 0 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+
+Dense design: exact law / right terms but a coefficient more than 5% off / wrong terms / no law
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 0 / 0 / 1 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 19 / 1 | 0 / 0 / 17 / 3 |
+| PySINDy, frozen | 0 / 0 / 1 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 |
+
+Dense design: runs whose law is within 5% of the true law between the grid points (relative RMS error at 200 random points)
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 of 1 | 20 of 20 | 19 of 20 | 17 of 20 |
+| PySINDy, frozen | 1 of 1 | 20 of 20 | 16 of 20 | 1 of 20 |
+
+#### Ohm's law for a wire, `I = T·D²/(2(L + 3))` (outside PySINDy's terms)
+
+**Given design (27 rows)**: runs that found the exact law
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+| BACON, authors' tuned settings (side run) | 1 of 1 | 7 of 20 | not run | not run |
+| PySINDy, frozen | 0 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+
+Given design: exact law / right terms but a coefficient more than 5% off / wrong terms / no law
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 / 0 / 0 / 0 | 0 / 0 / 0 / 20 | 0 / 0 / 0 / 20 | 0 / 0 / 0 / 20 |
+| BACON, authors' tuned settings (side run) | 1 / 0 / 0 / 0 | 7 / 0 / 13 / 0 | not run | not run |
+| PySINDy, frozen | 0 / 0 / 1 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 |
+
+Given design: runs whose law is within 5% of the true law between the grid points (relative RMS error at 200 random points)
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+| BACON, authors' tuned settings (side run) | 1 of 1 | 10 of 20 | not run | not run |
+| PySINDy, frozen | 0 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+
+**Dense design (216 rows)**: runs that found the exact law
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+| PySINDy, frozen | 0 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+
+Dense design: exact law / right terms but a coefficient more than 5% off / wrong terms / no law
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 / 0 / 0 / 0 | 0 / 0 / 0 / 20 | 0 / 0 / 0 / 20 | 0 / 0 / 1 / 19 |
+| PySINDy, frozen | 0 / 0 / 1 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 |
+
+Dense design: runs whose law is within 5% of the true law between the grid points (relative RMS error at 200 random points)
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+| PySINDy, frozen | 1 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+
+#### Black's law of mixtures, `T_f = (M₁T₁ + M₂T₂)/(M₁ + M₂)` (outside PySINDy's terms)
+
+**Given design (81 rows)**: runs that found the exact law
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+| BACON, authors' tuned settings (side run) | 1 of 1 | 0 of 20 | not run | not run |
+| PySINDy, frozen | 0 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+
+Given design: exact law / right terms but a coefficient more than 5% off / wrong terms / no law
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 / 0 / 0 / 0 | 0 / 0 / 0 / 20 | 0 / 0 / 0 / 20 | 0 / 0 / 0 / 20 |
+| BACON, authors' tuned settings (side run) | 1 / 0 / 0 / 0 | 0 / 0 / 20 / 0 | not run | not run |
+| PySINDy, frozen | 0 / 0 / 1 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 |
+
+Given design: runs whose law is within 5% of the true law between the grid points (relative RMS error at 200 random points)
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+| BACON, authors' tuned settings (side run) | 1 of 1 | 13 of 20 | not run | not run |
+| PySINDy, frozen | 1 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+
+**Dense design (1296 rows)**: runs that found the exact law
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+| PySINDy, frozen | 0 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+
+Dense design: exact law / right terms but a coefficient more than 5% off / wrong terms / no law
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 / 0 / 0 / 0 | 0 / 0 / 0 / 20 | 0 / 0 / 0 / 20 | 0 / 0 / 0 / 20 |
+| PySINDy, frozen | 0 / 0 / 1 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 |
+
+Dense design: runs whose law is within 5% of the true law between the grid points (relative RMS error at 200 random points)
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+| PySINDy, frozen | 1 of 1 | 12 of 20 | 1 of 20 | 0 of 20 |
+
+#### Kepler's third law, `D³ = P²`, i.e. `D = P^(2/3)` (outside PySINDy's terms)
+
+**Given design (6 rows)**: runs that found the exact law
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 of 1 | 18 of 20 | 13 of 20 | 5 of 20 |
+| PySINDy, frozen | 0 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+
+Given design: exact law / right terms but a coefficient more than 5% off / wrong terms / no law
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 / 0 / 0 / 0 | 18 / 0 / 2 / 0 | 13 / 1 / 6 / 0 | 5 / 2 / 13 / 0 |
+| PySINDy, frozen | 0 / 0 / 1 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 |
+
+Given design: runs whose law is within 5% of the true law between the grid points (relative RMS error at 200 random points)
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 of 1 | 19 of 20 | 14 of 20 | 5 of 20 |
+| PySINDy, frozen | 0 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+
+**Dense design (12 rows)**: runs that found the exact law
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 of 1 | 20 of 20 | 15 of 20 | 4 of 20 |
+| PySINDy, frozen | 0 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+
+Dense design: exact law / right terms but a coefficient more than 5% off / wrong terms / no law
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 / 0 / 0 / 0 | 20 / 0 / 0 / 0 | 15 / 0 / 5 / 0 | 4 / 0 / 16 / 0 |
+| PySINDy, frozen | 0 / 0 / 1 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 |
+
+Dense design: runs whose law is within 5% of the true law between the grid points (relative RMS error at 200 random points)
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 of 1 | 20 of 20 | 15 of 20 | 4 of 20 |
+| PySINDy, frozen | 0 of 1 | 1 of 20 | 0 of 20 | 0 of 20 |
+
+#### BACON's synthetic law, `Y = 3/(X + 2)` (outside PySINDy's terms)
+
+**Given design (5 rows)**: runs that found the exact law
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 of 1 | 8 of 20 | 0 of 20 | 0 of 20 |
+| BACON, authors' tuned settings (side run) | 1 of 1 | 0 of 20 | not run | not run |
+| PySINDy, frozen | 0 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+
+Given design: exact law / right terms but a coefficient more than 5% off / wrong terms / no law
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 / 0 / 0 / 0 | 8 / 2 / 10 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 |
+| BACON, authors' tuned settings (side run) | 1 / 0 / 0 / 0 | 0 / 1 / 19 / 0 | not run | not run |
+| PySINDy, frozen | 0 / 0 / 1 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 |
+
+Given design: runs whose law is within 5% of the true law between the grid points (relative RMS error at 200 random points)
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 of 1 | 20 of 20 | 18 of 20 | 9 of 20 |
+| BACON, authors' tuned settings (side run) | 1 of 1 | 2 of 20 | not run | not run |
+| PySINDy, frozen | 1 of 1 | 20 of 20 | 7 of 20 | 0 of 20 |
+
+**Dense design (12 rows)**: runs that found the exact law
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 of 1 | 2 of 20 | 0 of 20 | 0 of 20 |
+| PySINDy, frozen | 0 of 1 | 0 of 20 | 0 of 20 | 0 of 20 |
+
+Dense design: exact law / right terms but a coefficient more than 5% off / wrong terms / no law
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 / 0 / 0 / 0 | 2 / 0 / 18 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 |
+| PySINDy, frozen | 0 / 0 / 1 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 | 0 / 0 / 20 / 0 |
+
+Dense design: runs whose law is within 5% of the true law between the grid points (relative RMS error at 200 random points)
+
+| method | no noise (1 run) | 1% noise (20 runs) | 5% noise (20 runs) | 10% noise (20 runs) |
+|---|---|---|---|---|
+| BACON, frozen (code defaults) | 1 of 1 | 20 of 20 | 20 of 20 | 11 of 20 |
+| PySINDy, frozen | 1 of 1 | 20 of 20 | 15 of 20 | 3 of 20 |
+
+<!-- /tables -->
+
+#### What Test 12 shows
+
+- **BACON is the only method that found any of these laws exactly.** PySINDy found none
+  in any run, clean data included. For 4 of the 5 laws that was certain before running
+  (outside its terms). On the fifth, the ideal gas law, it dropped `T` (below).
+- **Where the law relates two quantities, BACON is strong and robust.** Kepler, given
+  design: exact law in 18, 13 and 5 of 20 runs at 1%, 5% and 10% noise (dense: 20, 15, 4).
+  Synthetic `Y = 3/(X + 2)`: exact on clean data, but only 8 of 20 at 1% (given) and 2 of 20
+  (dense). Its usual wrong answer is `Y ≈ 1/√X`, which still predicts within 5% (20 of 20 at 1%).
+- **With 3 or 4 variables, frozen BACON finds the law on clean data and almost never
+  with noise.** Ohm and Black: exact on clean data (both designs), then **no law at all**
+  in every noisy run (0 of 20 at every level). BACON.3 needs every slice of the table
+  (all variables fixed but one) to give the same expression, and with noise the slices
+  disagree, so it raises "No relationships found compatible with BACON.3". More data
+  (dense design) does not help, since it only adds slices.
+- **Ideal gas: both methods miss `T`, for the same reason.** Over the authors' range,
+  `T + 273` varies only ±3.5%. BACON's default 10% tolerance calls it constant; PySINDy's
+  rule "sparsest model within 1% of the best fit" drops it. Both answer `V ≈ 293·M/P`,
+  which predicts within 5% (BACON 20 of 20 at 1%, PySINDy 12 of 20 given and 20 of 20 dense).
+- **The authors' tuned settings help a little, at 1% noise only.** They use a different
+  layer ranking (most popular expression, or lowest error) instead of BACON.3's
+  "all slices must agree". Exact law at 1%: ideal gas 6 of 20, Ohm 7 of 20, Black 0 of 20
+  (but 13 of 20 within 5%), synthetic 0 of 20 (frozen setting: 8). Their settings were
+  tuned on the authors' own noise draws, not ours.
+- **PySINDy's answers on laws it cannot express are long sums of junk terms.** They often
+  fit the grid well, but between grid points they predict within 5% mainly on clean data.
+
+This is less a contest than a picture of two different failure modes: PySINDy cannot
+write these laws down, and BACON can write them but its multi-variable search falls
+apart under small noise with its default settings.
+

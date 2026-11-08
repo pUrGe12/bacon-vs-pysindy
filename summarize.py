@@ -15,6 +15,7 @@ Tables never pool runs: one column per noise level (with its run count), smoothe
 raw derivatives in separate tables.
 """
 import io
+import json
 import os
 import re
 import subprocess
@@ -327,15 +328,15 @@ def _b6_outcomes():
 
 # ---------------------------------------------------------------------------------------
 # Test 10: ODEBench
-def _odebench_setups():
+def _odebench_setups(pooled=False):
     import json
     import sympy as sp
-    from systems import ODEBENCH, ODEBENCH_FILE
+    from systems import ODEBENCH, ODEBENCH_POOLED, ODEBENCH_FILE
     eqs = {e["id"]: e for e in json.load(open(ODEBENCH_FILE))["equations"]}
     out = []
-    for name, make in ODEBENCH.items():
+    for name, make in (ODEBENCH_POOLED if pooled else ODEBENCH).items():
         sysm = make()
-        eid, start = int(name[3:5]), int(name[-1])
+        eid, start = int(name[3:5]), (0 if pooled else int(name[-1]))
         in_lib = True
         for r in sysm.true_rhs:
             try:
@@ -343,15 +344,16 @@ def _odebench_setups():
             except sp.PolynomialError:
                 in_lib = False
         out.append(dict(name=name, id=eid, start=start, dim=len(sysm.names), in_lib=in_lib,
-                        label=f"#{eid} {eqs[eid]['eq_description']}, start {start}"))
+                        label=f"#{eid} {eqs[eid]['eq_description']}"
+                              + ("" if pooled else f", start {start}")))
     return sorted(out, key=lambda r: (r["id"], r["start"]))
 
 
-def _odebench_counts(setups):
-    """{(name, method, deriv, noise): (exact, runs)} from results/test10."""
+def _odebench_counts(setups, folder="test10"):
+    """{(name, method, deriv, noise): (exact, runs)} from results/<folder>."""
     out = {}
     for st in setups:
-        path = f"results/test10/{st['name']}.csv"
+        path = f"results/{folder}/{st['name']}.csv"
         if not os.path.exists(path):
             continue
         d = pd.read_csv(path)
@@ -378,26 +380,26 @@ def _odebench_table(rows, c, deriv):
     return out
 
 
-def _odebench_full():
-    setups = _odebench_setups()
-    c = _odebench_counts(setups)
+def _odebench_full(pooled=False, folder="test10"):
+    setups = _odebench_setups(pooled)
+    c = _odebench_counts(setups, folder)
     out = []
     for deriv, dname in DERIVS:
-        out.append(f"## {dname}\n")
+        out.append(f"{'###' if pooled else '##'} {dname}\n")
         for dim in (1, 2, 3, 4):
             rows = [st for st in setups if st["dim"] == dim]
-            out.append(f"### {dname}: systems with {dim} variable{'s' if dim > 1 else ''}"
-                       f" ({len(rows)} setups)\n")
+            out.append(f"{'#' * (4 if pooled else 3)} {dname}: systems with {dim} variable"
+                       f"{'s' if dim > 1 else ''} ({len(rows)} setups)\n")
             out.append(f"{dname}: runs that found the exact law. Columns per noise level: "
                        "BACON, then PySINDy.\n")
             out += _odebench_table(rows, c, deriv)
     return "\n".join(out)
 
 
-def _odebench_found():
+def _odebench_found(pooled=False, folder="test10"):
     """Only the setups where at least one method found the exact law at least once."""
-    setups = _odebench_setups()
-    c = _odebench_counts(setups)
+    setups = _odebench_setups(pooled)
+    c = _odebench_counts(setups, folder)
     out = []
     for deriv, dname in DERIVS:
         rows = [st for st in setups
@@ -410,14 +412,16 @@ def _odebench_found():
     return "\n".join(out)
 
 
-def _odebench_summary():
-    setups = _odebench_setups()
-    c = _odebench_counts(setups)
+def _odebench_summary(pooled=False, folder="test10", only_lib=False):
+    setups = _odebench_setups(pooled)
+    c = _odebench_counts(setups, folder)
     groups = [("All setups", setups),
               ("Setups whose true law is inside PySINDy's terms (polynomial, degree ≤ 3)",
                [s for s in setups if s["in_lib"]]),
               ("Setups whose true law is outside PySINDy's terms",
                [s for s in setups if not s["in_lib"]])]
+    if only_lib:
+        groups = groups[1:2]
     out = []
     for deriv, dname in DERIVS:
         for gname, rows in groups:
@@ -452,6 +456,67 @@ def _odebench_summary():
             for k, lab in labels.items():
                 out.append(f"| {lab} | " + " | ".join(lines[k]) + " |")
             out.append("")
+    return "\n".join(out)
+
+
+STATIC_TITLE = {
+    "ideal": "Ideal gas law, `V = M(T + 273)/P` (inside PySINDy's terms)",
+    "ohm": "Ohm's law for a wire, `I = T·D²/(2(L + 3))` (outside PySINDy's terms)",
+    "black": "Black's law of mixtures, `T_f = (M₁T₁ + M₂T₂)/(M₁ + M₂)` (outside PySINDy's terms)",
+    "kepler": "Kepler's third law, `D³ = P²`, i.e. `D = P^(2/3)` (outside PySINDy's terms)",
+    "synthetic": "BACON's synthetic law, `Y = 3/(X + 2)` (outside PySINDy's terms)",
+}
+STATIC_METHODS = [("BACON", "BACON, frozen (code defaults)"),
+                  ("BACON-authors", "BACON, authors' tuned settings (side run)"),
+                  ("PySINDy", "PySINDy, frozen")]
+STATIC_CAPTION = {
+    "exact": "runs that found the exact law",
+    "outcome": "exact law / right terms but a coefficient more than 5% off / "
+               "wrong terms / no law",
+    "pred": "runs whose law is within 5% of the true law between the grid points "
+            "(relative RMS error at 200 random points)",
+}
+
+
+def _static_table(d, kind):
+    cols = [(n, name) for n, name in NOISES if (d.noise == n).any()]
+    head = [f"{name} ({len(d[(d.noise == n) & (d.method == 'BACON')])} "
+            f"run{'s' if n > 0 else ''})" for n, name in cols]
+    out = [f"{STATIC_CAPTION[kind]}", "", "| method | " + " | ".join(head) + " |",
+           "|---" * (len(cols) + 1) + "|"]
+    for m, label in STATIC_METHODS:
+        dm = d[d.method == m]
+        if dm.empty:
+            continue
+        cells = []
+        for n, _ in cols:
+            x = dm[dm.noise == n]
+            if x.empty:
+                cells.append("not run")
+            elif kind == "pred":
+                cells.append(f"{int((x.pred_err < 0.05).sum())} of {len(x)}")
+            else:
+                cells.append(_cell(x, kind))
+        out.append(f"| {label} | " + " | ".join(cells) + " |")
+    return "\n".join(out) + "\n"
+
+
+def _static_tables(folder="test12"):
+    from static_laws import LAWS, DESIGNS
+    out = []
+    for law in LAWS:
+        out.append(f"#### {STATIC_TITLE[law]}\n")
+        for design in DESIGNS:
+            path = f"results/{folder}/{law}_{design}.csv"
+            if not os.path.exists(path):
+                out.append(f"*{design} design: not run*\n")
+                continue
+            d = pd.read_csv(path)
+            n_rows = json.load(open(path.replace(".csv", "_manifest.json")))["law"]["rows"]
+            out.append(f"**{design.capitalize()} design ({n_rows} rows)**: "
+                       + _static_table(d, "exact"))
+            out.append(f"{design.capitalize()} design: " + _static_table(d, "outcome"))
+            out.append(f"{design.capitalize()} design: " + _static_table(d, "pred"))
     return "\n".join(out)
 
 
@@ -490,12 +555,17 @@ BLOCKS = {
     "odebench_full": _odebench_full,
     "test10_summary": _odebench_summary,
     "test10_found": _odebench_found,
+    "odebench11_full": lambda: _odebench_full(True, "test11"),
+    "test11_summary": lambda: _odebench_summary(True, "test11"),
+    "test11_found": lambda: _odebench_found(True, "test11"),
+    "analysis_odebench": lambda: _odebench_summary(only_lib=True),
+    "test12": _static_tables,
 }
 
 
 def tables():
     pat = re.compile(r"(<!-- tables:(\w+) -->\n).*?(<!-- /tables -->)", re.S)
-    for doc in ("README.md", "CHANGES_FROM_BACON.md", "ODEBENCH_RESULTS.md"):
+    for doc in ("README.md", "CHANGES_FROM_BACON.md", "ODEBENCH_RESULTS.md", "ANALYSIS.md"):
         if not os.path.exists(doc):
             continue
         text = open(doc).read()

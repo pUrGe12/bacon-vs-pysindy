@@ -1,7 +1,7 @@
 {
  "about": "Every experiment in this repo: command, outputs, result fingerprints. Rebuild with `manifest.py make`, check with `manifest.py check`.",
- "made": "2026-11-07T23:47:48",
- "made_at_commit": "f3c9783034c8e2526365ab43cd6a85f91047b641",
+ "made": "2026-11-08T01:57:04",
+ "made_at_commit": "8abd3ba3201228da632e75be721290eccb419ca3",
  "pins": {
   "python": "3.10.12",
   "packages": "requirements.lock (pip freeze of the environment that produced every result)",
@@ -10,7 +10,22 @@
    "commit": "4dbdc957b6409fce57b3dae621cac3c9fb69ccd0",
    "files_sha256": {
     "space_of_laws/laws_methods/bacon1.py": "9e7593bddadfaa197d5939a16bd91e3e2b7f48a374a1d7104388c4499b813675",
-    "utils/laws_helper.py": "d9fbabb1e52178e7202fa92759d084199323ac743ec017b1544ef7b218622256"
+    "utils/laws_helper.py": "d9fbabb1e52178e7202fa92759d084199323ac743ec017b1544ef7b218622256",
+    "datasets.py": "e964b490c927ae1afa9e4d88c8bc5f3908a9e6fe1997f78394881336c523c4a7",
+    "space_of_laws/laws_manager.py": "c02369fcf8c6f8649986710f14c481ab6fe56d6723ebe6db1a4c324eaddb473c",
+    "space_of_data/layer_manager.py": "0004e06dae9f4df03281bf17229f19ab5bc0f281542225e362e3a55a478da2fb",
+    "space_of_data/layer_methods/layer_select.py": "b611e4aa1ee7eb3f74bef26f6b8f3da03efb2b3c4a210843e6907d06c70e5112",
+    "space_of_data/space_methods/data_space_manager.py": "4a65658b41e907e64d9c8d43f426ca86e1e5cf56aa305018a32cdef1573382c0",
+    "utils/df_helper.py": "5d2c349897c275ff74932a2d7588c195de396a4073618629ade6b69948841d04",
+    "utils/losses.py": "ceac3c1000d238537743f2f29e1f6119c3f8e1840137aefd5f18737b0a294b6f",
+    "space_of_laws/laws_methods/bacon7_law.py": "f7091fc907940aa927feb95af2e637fade407414fd15d1bd0dc95d4b70f24f01",
+    "args/ideal/ideal00.json": "2cc56897b0936f46918596f12692a4d062ea79e388dd6d22281a190e3040479a",
+    "args/ideal/ideal10.json": "c0c8870512f08944ea4f41b0b5ff0eb03240a2efdc594b38d499edb2230b85f9",
+    "args/ohm/ohm00.json": "c4aced4b3de080beed9ef5f3ebd06032b302321e6918f51fab274d57008d86b8",
+    "args/ohm/ohm10.json": "c4aced4b3de080beed9ef5f3ebd06032b302321e6918f51fab274d57008d86b8",
+    "args/black/black00.json": "1228061c75ae37f31e483fa96e3a486882778433bf6f1bee5e37bdfccd8ddc96",
+    "args/black/black10.json": "beb0131623866808f22bdfb55bdb770218b96de925708bf6d358997e1bcf9938",
+    "args/synthetic/synthetic.json": "470da8b83f0eba2408e76d1f9a8b3185c58f71cd9625cfef802c33bc367cf303"
    }
   },
   "odebench": {
@@ -27,7 +42,7 @@
   "./setup.sh",
   "./reproduce.sh [SET]"
  ],
- "fingerprint": "SHA-256 of the outcome columns equations, structure_ok, recovered, coef_err, sim_err, bacon_invariant sorted by n_traj, noise, seed, deriv, method; numbers to 6 significant digits; run times left out",
+ "fingerprint": "SHA-256 of the outcome columns equations, structure_ok, recovered, coef_err, sim_err, bacon_invariant, pred_err, status sorted by n_traj, noise, seed, deriv, method; numbers to 6 significant digits; run times left out",
  "sets": [
   "ablation1",
   "ablation2",
@@ -42,7 +57,9 @@
   "rerun5",
   "rerun6",
   "rerun6b",
-  "test10"
+  "test10",
+  "test11",
+  "test12"
  ],
  "experiments": [
   {
@@ -3035,6 +3052,620 @@
    "fingerprint": {
     "rows": 244,
     "sha256": "965244acdc73be2f1ab789ad7733a6228214362d5e6ed0aa25e54459d34f5af9"
+   }
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode62_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode62_both.csv",
+   "summary": "results/test11/ode62_both_summary.csv",
+   "run_manifest": "results/test11/ode62_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode63_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode63_both.csv",
+   "summary": "results/test11/ode63_both_summary.csv",
+   "run_manifest": "results/test11/ode63_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode52_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode52_both.csv",
+   "summary": "results/test11/ode52_both_summary.csv",
+   "run_manifest": "results/test11/ode52_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode53_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode53_both.csv",
+   "summary": "results/test11/ode53_both_summary.csv",
+   "run_manifest": "results/test11/ode53_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode54_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode54_both.csv",
+   "summary": "results/test11/ode54_both_summary.csv",
+   "run_manifest": "results/test11/ode54_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode55_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode55_both.csv",
+   "summary": "results/test11/ode55_both_summary.csv",
+   "run_manifest": "results/test11/ode55_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode56_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode56_both.csv",
+   "summary": "results/test11/ode56_both_summary.csv",
+   "run_manifest": "results/test11/ode56_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode57_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode57_both.csv",
+   "summary": "results/test11/ode57_both_summary.csv",
+   "run_manifest": "results/test11/ode57_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode58_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode58_both.csv",
+   "summary": "results/test11/ode58_both_summary.csv",
+   "run_manifest": "results/test11/ode58_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode59_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode59_both.csv",
+   "summary": "results/test11/ode59_both_summary.csv",
+   "run_manifest": "results/test11/ode59_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode60_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode60_both.csv",
+   "summary": "results/test11/ode60_both_summary.csv",
+   "run_manifest": "results/test11/ode60_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode61_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode61_both.csv",
+   "summary": "results/test11/ode61_both_summary.csv",
+   "run_manifest": "results/test11/ode61_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode24_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode24_both.csv",
+   "summary": "results/test11/ode24_both_summary.csv",
+   "run_manifest": "results/test11/ode24_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode25_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode25_both.csv",
+   "summary": "results/test11/ode25_both_summary.csv",
+   "run_manifest": "results/test11/ode25_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode26_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode26_both.csv",
+   "summary": "results/test11/ode26_both_summary.csv",
+   "run_manifest": "results/test11/ode26_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode27_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode27_both.csv",
+   "summary": "results/test11/ode27_both_summary.csv",
+   "run_manifest": "results/test11/ode27_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode28_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode28_both.csv",
+   "summary": "results/test11/ode28_both_summary.csv",
+   "run_manifest": "results/test11/ode28_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode29_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode29_both.csv",
+   "summary": "results/test11/ode29_both_summary.csv",
+   "run_manifest": "results/test11/ode29_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode30_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode30_both.csv",
+   "summary": "results/test11/ode30_both_summary.csv",
+   "run_manifest": "results/test11/ode30_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode31_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode31_both.csv",
+   "summary": "results/test11/ode31_both_summary.csv",
+   "run_manifest": "results/test11/ode31_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode32_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode32_both.csv",
+   "summary": "results/test11/ode32_both_summary.csv",
+   "run_manifest": "results/test11/ode32_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode33_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode33_both.csv",
+   "summary": "results/test11/ode33_both_summary.csv",
+   "run_manifest": "results/test11/ode33_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode34_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode34_both.csv",
+   "summary": "results/test11/ode34_both_summary.csv",
+   "run_manifest": "results/test11/ode34_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode35_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode35_both.csv",
+   "summary": "results/test11/ode35_both_summary.csv",
+   "run_manifest": "results/test11/ode35_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode36_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode36_both.csv",
+   "summary": "results/test11/ode36_both_summary.csv",
+   "run_manifest": "results/test11/ode36_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode37_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode37_both.csv",
+   "summary": "results/test11/ode37_both_summary.csv",
+   "run_manifest": "results/test11/ode37_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode38_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode38_both.csv",
+   "summary": "results/test11/ode38_both_summary.csv",
+   "run_manifest": "results/test11/ode38_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode39_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode39_both.csv",
+   "summary": "results/test11/ode39_both_summary.csv",
+   "run_manifest": "results/test11/ode39_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode40_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode40_both.csv",
+   "summary": "results/test11/ode40_both_summary.csv",
+   "run_manifest": "results/test11/ode40_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode41_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode41_both.csv",
+   "summary": "results/test11/ode41_both_summary.csv",
+   "run_manifest": "results/test11/ode41_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode42_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode42_both.csv",
+   "summary": "results/test11/ode42_both_summary.csv",
+   "run_manifest": "results/test11/ode42_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode43_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode43_both.csv",
+   "summary": "results/test11/ode43_both_summary.csv",
+   "run_manifest": "results/test11/ode43_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode44_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode44_both.csv",
+   "summary": "results/test11/ode44_both_summary.csv",
+   "run_manifest": "results/test11/ode44_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode45_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode45_both.csv",
+   "summary": "results/test11/ode45_both_summary.csv",
+   "run_manifest": "results/test11/ode45_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode46_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode46_both.csv",
+   "summary": "results/test11/ode46_both_summary.csv",
+   "run_manifest": "results/test11/ode46_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode47_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode47_both.csv",
+   "summary": "results/test11/ode47_both_summary.csv",
+   "run_manifest": "results/test11/ode47_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode48_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode48_both.csv",
+   "summary": "results/test11/ode48_both_summary.csv",
+   "run_manifest": "results/test11/ode48_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode49_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode49_both.csv",
+   "summary": "results/test11/ode49_both_summary.csv",
+   "run_manifest": "results/test11/ode49_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode50_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode50_both.csv",
+   "summary": "results/test11/ode50_both_summary.csv",
+   "run_manifest": "results/test11/ode50_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode51_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode51_both.csv",
+   "summary": "results/test11/ode51_both_summary.csv",
+   "run_manifest": "results/test11/ode51_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode01_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode01_both.csv",
+   "summary": "results/test11/ode01_both_summary.csv",
+   "run_manifest": "results/test11/ode01_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode02_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode02_both.csv",
+   "summary": "results/test11/ode02_both_summary.csv",
+   "run_manifest": "results/test11/ode02_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode03_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode03_both.csv",
+   "summary": "results/test11/ode03_both_summary.csv",
+   "run_manifest": "results/test11/ode03_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode04_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode04_both.csv",
+   "summary": "results/test11/ode04_both_summary.csv",
+   "run_manifest": "results/test11/ode04_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode05_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode05_both.csv",
+   "summary": "results/test11/ode05_both_summary.csv",
+   "run_manifest": "results/test11/ode05_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode06_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode06_both.csv",
+   "summary": "results/test11/ode06_both_summary.csv",
+   "run_manifest": "results/test11/ode06_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode07_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode07_both.csv",
+   "summary": "results/test11/ode07_both_summary.csv",
+   "run_manifest": "results/test11/ode07_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode08_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode08_both.csv",
+   "summary": "results/test11/ode08_both_summary.csv",
+   "run_manifest": "results/test11/ode08_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode09_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode09_both.csv",
+   "summary": "results/test11/ode09_both_summary.csv",
+   "run_manifest": "results/test11/ode09_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode10_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode10_both.csv",
+   "summary": "results/test11/ode10_both_summary.csv",
+   "run_manifest": "results/test11/ode10_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode11_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode11_both.csv",
+   "summary": "results/test11/ode11_both_summary.csv",
+   "run_manifest": "results/test11/ode11_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode12_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode12_both.csv",
+   "summary": "results/test11/ode12_both_summary.csv",
+   "run_manifest": "results/test11/ode12_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode13_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode13_both.csv",
+   "summary": "results/test11/ode13_both_summary.csv",
+   "run_manifest": "results/test11/ode13_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode14_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode14_both.csv",
+   "summary": "results/test11/ode14_both_summary.csv",
+   "run_manifest": "results/test11/ode14_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode15_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode15_both.csv",
+   "summary": "results/test11/ode15_both_summary.csv",
+   "run_manifest": "results/test11/ode15_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode16_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode16_both.csv",
+   "summary": "results/test11/ode16_both_summary.csv",
+   "run_manifest": "results/test11/ode16_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode17_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode17_both.csv",
+   "summary": "results/test11/ode17_both_summary.csv",
+   "run_manifest": "results/test11/ode17_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode18_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode18_both.csv",
+   "summary": "results/test11/ode18_both_summary.csv",
+   "run_manifest": "results/test11/ode18_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode19_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode19_both.csv",
+   "summary": "results/test11/ode19_both_summary.csv",
+   "run_manifest": "results/test11/ode19_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode20_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode20_both.csv",
+   "summary": "results/test11/ode20_both_summary.csv",
+   "run_manifest": "results/test11/ode20_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode21_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode21_both.csv",
+   "summary": "results/test11/ode21_both_summary.csv",
+   "run_manifest": "results/test11/ode21_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode22_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode22_both.csv",
+   "summary": "results/test11/ode22_both_summary.csv",
+   "run_manifest": "results/test11/ode22_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test11",
+   "command": ".venv/bin/python run_test.py --system ode23_both --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes sign_aware bounded_retry rate_seed robust_line own_rate_seed --bacon-variants robust --sindy-normalize on --sindy-alpha 0",
+   "results": "results/test11/ode23_both.csv",
+   "summary": "results/test11/ode23_both_summary.csv",
+   "run_manifest": "results/test11/ode23_both_manifest.json",
+   "fingerprint": "not run"
+  },
+  {
+   "set": "test12",
+   "command": ".venv/bin/python run_static.py --system ideal_given --out results/test12 --seeds 20 --noise 0 0.01 0.05 0.1 --authors on",
+   "results": "results/test12/ideal_given.csv",
+   "summary": "results/test12/ideal_given_summary.csv",
+   "run_manifest": "results/test12/ideal_given_manifest.json",
+   "fingerprint": {
+    "rows": 143,
+    "sha256": "ecd72703c0aa620171bba92bacc78ca2d31f79ea3091c48467099ca509b34177"
+   }
+  },
+  {
+   "set": "test12",
+   "command": ".venv/bin/python run_static.py --system ideal_dense --out results/test12 --seeds 20 --noise 0 0.01 0.05 0.1 --authors on",
+   "results": "results/test12/ideal_dense.csv",
+   "summary": "results/test12/ideal_dense_summary.csv",
+   "run_manifest": "results/test12/ideal_dense_manifest.json",
+   "fingerprint": {
+    "rows": 122,
+    "sha256": "43e88f46469619aa6998acbc11604a5b5fec87db9b39eb8e10a6ad61964c6c94"
+   }
+  },
+  {
+   "set": "test12",
+   "command": ".venv/bin/python run_static.py --system ohm_given --out results/test12 --seeds 20 --noise 0 0.01 0.05 0.1 --authors on",
+   "results": "results/test12/ohm_given.csv",
+   "summary": "results/test12/ohm_given_summary.csv",
+   "run_manifest": "results/test12/ohm_given_manifest.json",
+   "fingerprint": {
+    "rows": 143,
+    "sha256": "184c7c59a24f62b72f06de791b122aa3dc92ed4afa6a14c063cf86014d3efd6e"
+   }
+  },
+  {
+   "set": "test12",
+   "command": ".venv/bin/python run_static.py --system ohm_dense --out results/test12 --seeds 20 --noise 0 0.01 0.05 0.1 --authors on",
+   "results": "results/test12/ohm_dense.csv",
+   "summary": "results/test12/ohm_dense_summary.csv",
+   "run_manifest": "results/test12/ohm_dense_manifest.json",
+   "fingerprint": {
+    "rows": 122,
+    "sha256": "a4275f7c449a938380e0db461bef7008c5789d1ea120ca65f4510bc4c5c86e3e"
+   }
+  },
+  {
+   "set": "test12",
+   "command": ".venv/bin/python run_static.py --system black_given --out results/test12 --seeds 20 --noise 0 0.01 0.05 0.1 --authors on",
+   "results": "results/test12/black_given.csv",
+   "summary": "results/test12/black_given_summary.csv",
+   "run_manifest": "results/test12/black_given_manifest.json",
+   "fingerprint": {
+    "rows": 143,
+    "sha256": "ef2d525eca1de67ca3ca8f014d4de96612a4a798ca2fc06acf136e5b191294dd"
+   }
+  },
+  {
+   "set": "test12",
+   "command": ".venv/bin/python run_static.py --system black_dense --out results/test12 --seeds 20 --noise 0 0.01 0.05 0.1 --authors on",
+   "results": "results/test12/black_dense.csv",
+   "summary": "results/test12/black_dense_summary.csv",
+   "run_manifest": "results/test12/black_dense_manifest.json",
+   "fingerprint": {
+    "rows": 122,
+    "sha256": "2940191fcc29e39298d88b1a78299e42b22ce25f38a465e22cd0e34b4e8144fa"
+   }
+  },
+  {
+   "set": "test12",
+   "command": ".venv/bin/python run_static.py --system kepler_given --out results/test12 --seeds 20 --noise 0 0.01 0.05 0.1 --authors on",
+   "results": "results/test12/kepler_given.csv",
+   "summary": "results/test12/kepler_given_summary.csv",
+   "run_manifest": "results/test12/kepler_given_manifest.json",
+   "fingerprint": {
+    "rows": 122,
+    "sha256": "2c265fc4656055fc9a367e466aa9696dd775a541cd307d798f0771f189bf37ff"
+   }
+  },
+  {
+   "set": "test12",
+   "command": ".venv/bin/python run_static.py --system kepler_dense --out results/test12 --seeds 20 --noise 0 0.01 0.05 0.1 --authors on",
+   "results": "results/test12/kepler_dense.csv",
+   "summary": "results/test12/kepler_dense_summary.csv",
+   "run_manifest": "results/test12/kepler_dense_manifest.json",
+   "fingerprint": {
+    "rows": 122,
+    "sha256": "c45ca62bb98e6d21e87d1cb9587ad0bf41c95ebe438e12d0f6691ed5e485a989"
+   }
+  },
+  {
+   "set": "test12",
+   "command": ".venv/bin/python run_static.py --system synthetic_given --out results/test12 --seeds 20 --noise 0 0.01 0.05 0.1 --authors on",
+   "results": "results/test12/synthetic_given.csv",
+   "summary": "results/test12/synthetic_given_summary.csv",
+   "run_manifest": "results/test12/synthetic_given_manifest.json",
+   "fingerprint": {
+    "rows": 143,
+    "sha256": "702ee359827df51b25b8bdafde4a46e78e4258ecf9979e606d3936852ceccbfe"
+   }
+  },
+  {
+   "set": "test12",
+   "command": ".venv/bin/python run_static.py --system synthetic_dense --out results/test12 --seeds 20 --noise 0 0.01 0.05 0.1 --authors on",
+   "results": "results/test12/synthetic_dense.csv",
+   "summary": "results/test12/synthetic_dense_summary.csv",
+   "run_manifest": "results/test12/synthetic_dense_manifest.json",
+   "fingerprint": {
+    "rows": 122,
+    "sha256": "0ec16f41783126d808460ac4b4b2904065bb547c5dc6154c1733cd43a0f1e955"
    }
   }
  ],

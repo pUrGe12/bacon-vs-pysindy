@@ -21,6 +21,7 @@ really is the original algorithm.
 | `BACON_1`: the product / ratio / linear search, `new_term`, `product`, `division`, `linear`, `subs_expr` | `main.py`: it imports PySR (needs Julia) and GPy at startup, and `requirements.txt` lists neither |
 | | The "space of data" layers (BACON.3 ranking, BACON.5, MCTS) and `data_space`: they assume factorial experiments (all variables but one held fixed), which time series never are |
 | | BACON.6 (fits a user-supplied functional form), BACON.7, the PySR law method |
+| **Test 12 on (static laws):** the whole original pipeline, unchanged: `data_space`, the BACON.3 layer ranking, `BACON_1`, and `utils.losses` to combine the invariants and solve for the measured quantity; the datasets in `datasets.py`; the authors' args files (side run). None of the fixes B1–B7 is used there. | Test 12: `main.py` itself (we call the same functions it calls; see H8) |
 
 ---
 
@@ -993,6 +994,7 @@ Raw derivatives: runs that found the exact law (right) or another law (wrong)
 | S4 | Multiple trajectories passed as a list | Rows concatenated and fitted with the given `x_dot` (same result, since no differentiation happens inside) | Test 4 |
 | S6 | `normalize_columns=False` | Optional `--sindy-normalize on`: each library column divided by its L2 length before thresholding. The threshold then applies to coefficient × column length, so the sweep grid becomes 25 log-spaced thresholds 0.001–1000 (same density as S2). Default **on** since Test 9 (off before). Effect: Test 9a (with the default ridge penalty, PySINDy collapses: 0/32 on logistic and Lotka–Volterra) and 9b. | Test 9 |
 | S7 | STLSQ ridge penalty `alpha=0.05` | `--sindy-alpha`, default **0** since Test 9 (0.05 before). Test 9b uses 0 (plain least squares inside STLSQ, as in the original SINDy algorithm). Reason: STLSQ thresholds the ridge coefficients; on normalized columns 0.05 is a 5% penalty that keeps correlated junk terms alive. **Chosen after seeing 9a.** Effect with S6, smoothed derivatives (runs with the exact law, out of 5 per noise level, Test 8 setup → 9b): logistic 5% noise 3 → 5, 10% 3 → 4; one-trajectory oscillator 10% 2 → 5; Lotka–Volterra 1% 3 → 5, 5% 0 → 4, 10% 0 → 0; half-power side run 1% 5 → 0, 5% 4 → 0 (cancelling coefficients); decay, three-trajectory oscillator and plain power decay unchanged. Full tables: README, Test 9. | Test 9 |
+| S8 | Fits `x' = f(x)` from time series | Static laws (Test 12, `run_static.py`): STLSQ (as S2, S6, S7) fitting the measured quantity directly from the inputs, no derivatives. Candidate terms: every product of integer powers of the inputs with total degree ≤ 3, negative powers included (7 terms for one input, 63 for three, 129 for four), built as a matrix and passed to `ps.STLSQ`. Only the ideal gas law among BACON's datasets can be written in these terms; stated before running. | Test 12 |
 | S5 | — | Optional `--sindy-library poly+halfpowers`: polynomial degree 3 plus `|x|^0.5`, `|x|^1.5`, `|x|^2.5` per state. An **informed** baseline (it assumes we already suspect half-integer powers), used only as a labelled side run on power decay. Default stays polynomial. | Test 6 |
 
 ## H. Harness and scoring history
@@ -1005,6 +1007,7 @@ Raw derivatives: runs that found the exact law (right) or another law (wrong)
 | H4 | Noise: Gaussian, std = level × std of each state column. Unchanged throughout. | Test 1 |
 | H5 | Every run writes `<name>_manifest.json`: command, settings, BACON fixes on/off, git commits of both repos (with an "uncommitted changes" flag), a hash of each source file, package versions | after Test 4 |
 | H6 | Term matching merges nested powers as if variables were positive, so `sqrt(x**3)` (how BACON writes it) and `x**(3/2)` count as the same term. Checked: no committed result changed. | Test 6 |
+| H8 | Static laws (Test 12): BACON's own pipeline called from `bacon_static.py` with the same calls `main.py` makes. Its final `df_helper.score` (which prints the law) is swapped for a function doing the same two computations and keeping the result. PySR and GPy, imported at module level but unused on this path, get empty stand-in modules if not installed. A raised error or more than 300 s = "no law". Noise as in BACON's `datasets.py` (Gaussian on the measured quantity, sd = level × value), **not** H4. "Exact law" compares the numerator and denominator terms of both laws over a common denominator, coefficients within 5% (H3); answers that are plain sums of power products (all of PySINDy's) are put over their common denominator directly instead of by sympy's `cancel`, which gives the same verdict and is much faster. Data: `static_laws.py`; the given design is checked against `datasets.py`. | Test 12 |
 | H7 | ODEBench setups (Test 10): equations, constants and starting points from ODEBench; time grid t = 0..10 with 150 samples (ODEBench's own); each starting point run as its own one-trajectory setup; 20 noise draws per level. Clean data simulated with our usual LSODA at rtol 1e-10 (ODEBench uses rtol 1e-5). Manifests also hash `data/*.json`. | Test 10 |
 
 ## Configuration of each test
@@ -1023,6 +1026,7 @@ Raw derivatives: runs that found the exact law (right) or another law (wrong)
 | rerun 6 = Test 9a | as rerun 5 | B1, B3, B5, B6, B7 | robust | sweep 0.001–1000, normalized columns (S6) | RK45 | 1 (oscillator also 3) |
 | rerun 6b = Test 9b (current defaults) | as rerun 5 | B1, B3, B5, B6, B7 | robust | as 9a, ridge penalty 0 (S7) | RK45 | 1 (oscillator also 3) |
 | Test 10 | ODEBench: 63 systems × 2 starting points, 20 noise draws | B1, B3, B5, B6, B7 | robust | as 9b | RK45 | 1 per setup |
+| Test 12 | BACON's static datasets (ideal, Ohm, Black, Kepler, synthetic) × given and dense designs, 20 noise draws | none: original BACON.3 + BACON.1 pipeline at code defaults (+ authors' args files as side run) | — | as 9b, static terms (S8) | — | — |
 
 Exact commands for each are in `experiments.sh`. Reproducing Tests 1–4 with those commands
 gives results identical to the original runs (448 of 448 rows; `summarize.py repro`), and

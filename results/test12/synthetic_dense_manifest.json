@@ -1,0 +1,136 @@
+{
+  "command": "python run_static.py --system synthetic_dense --out results/test12 --seeds 20 --noise 0 0.01 0.05 0.1 --authors on",
+  "started": "2026-11-08T01:02:08",
+  "this_repo": {
+    "path": "/home/purge/Desktop/bacon-vs-pysindy",
+    "commit": "8abd3ba3201228da632e75be721290eccb419ca3",
+    "uncommitted_changes": true
+  },
+  "source_sha256": {
+    "bacon_dt.py": "914e6586895236b2",
+    "bacon_static.py": "7674d1680812f1a9",
+    "check_original.py": "37a92a08ad899d05",
+    "derivatives.py": "2f740ff77cae128e",
+    "import_odebench.py": "b0febfa24e9c7085",
+    "manifest.py": "66e74f990328711c",
+    "run_static.py": "588299922319a6a1",
+    "run_test.py": "96971415c4237cb9",
+    "scoring.py": "0fe01e06e354c373",
+    "sindy_runner.py": "f84d9ae6a5c67258",
+    "static_laws.py": "e332192bc967eeb9",
+    "summarize.py": "6738d298917039f1",
+    "systems.py": "9ce31614dcd27eb1",
+    "../BACON/space_of_laws/laws_methods/bacon1.py": "9e7593bddadfaa19",
+    "data/odebench_equations.json": "627508d4b95e5873"
+  },
+  "bacon_repo": {
+    "path": "/home/purge/Desktop/BACON",
+    "commit": "4dbdc957b6409fce57b3dae621cac3c9fb69ccd0",
+    "uncommitted_changes": false
+  },
+  "packages": {
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "sympy": "1.14.0",
+    "pandas": "2.3.3",
+    "pysindy": "2.1.0"
+  },
+  "python": "3.10.12",
+  "law": {
+    "name": "synthetic",
+    "description": "BACON's synthetic test, Y = 3/(X + 2)",
+    "inputs": [
+      "X"
+    ],
+    "target": "Y",
+    "true": "3/(X + 2)",
+    "design": "dense",
+    "rows": 12,
+    "levels": {
+      "X": [
+        1.0,
+        1.3636363636363638,
+        1.7272727272727273,
+        2.090909090909091,
+        2.4545454545454546,
+        2.8181818181818183,
+        3.1818181818181817,
+        3.5454545454545454,
+        3.909090909090909,
+        4.272727272727273,
+        4.636363636363637,
+        5.0
+      ]
+    }
+  },
+  "bacon": {
+    "pipeline": "data_space + layer + BACON.1 (original code, unchanged)",
+    "frozen_config": {
+      "layer_method": "bacon.3",
+      "layer_args": {
+        "verbose": false
+      },
+      "laws_method": "bacon.1",
+      "laws_args": {},
+      "data_space_args": {}
+    },
+    "code_defaults": {
+      "epsilon": 0.001,
+      "delta": 0.1,
+      "epsilon_scale": 1.1,
+      "delta_scale": 1.05,
+      "c_val": 0.02,
+      "Delta": 0.1
+    },
+    "time_limit_s": 300,
+    "authors_files": {}
+  },
+  "pysindy": {
+    "optimizer": "STLSQ",
+    "normalize_columns": true,
+    "ridge_alpha": 0.0,
+    "library": "products of integer powers, total degree <= 3",
+    "n_terms": 7,
+    "sweep_grid": [
+      0.001,
+      0.0017782794100389228,
+      0.0031622776601683794,
+      0.005623413251903491,
+      0.01,
+      0.01778279410038923,
+      0.03162277660168379,
+      0.05623413251903491,
+      0.1,
+      0.1778279410038923,
+      0.31622776601683794,
+      0.5623413251903491,
+      1.0,
+      1.7782794100389228,
+      3.1622776601683795,
+      5.623413251903491,
+      10.0,
+      17.78279410038923,
+      31.622776601683793,
+      56.23413251903491,
+      100.0,
+      177.82794100389228,
+      316.22776601683796,
+      562.341325190349,
+      1000.0
+    ],
+    "r2_tol": 0.01
+  },
+  "harness": {
+    "noise_levels": [
+      0.0,
+      0.01,
+      0.05,
+      0.1
+    ],
+    "seeds": 20,
+    "noise_model": "Gaussian on the target, sd = noise * |value|",
+    "success_coef_err": 0.05,
+    "held_out_points": 200
+  },
+  "finished": "2026-11-08T01:06:27"
+}

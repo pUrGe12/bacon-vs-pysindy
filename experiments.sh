@@ -124,6 +124,15 @@ for s in $($PY -c "from systems import ODEBENCH as O; print(' '.join(sorted(O, k
   cmds+=("$PY run_test.py --system $s --out results/test10 --seeds 20 --bacon-fixes $B13567 --bacon-variants robust --sindy-normalize on --sindy-alpha 0")
 done
 
+# --- Test 11: ODEBench, both starting points pooled into one fit; both methods frozen ----
+for s in $($PY -c "from systems import ODEBENCH_POOLED as O; print(' '.join(sorted(O, key=lambda n: (-len(O[n]().names), n))))"); do
+  cmds+=("$PY run_test.py --system $s --n-traj 2 --out results/test11 --seeds 20 --bacon-fixes $B13567 --bacon-variants robust --sindy-normalize on --sindy-alpha 0")
+done
+
+# --- Test 12: BACON's home turf: its own static-law datasets, 2 designs; both frozen -----
+for s in $($PY -c "from static_laws import SETUPS; print(' '.join(SETUPS))"); do
+  cmds+=("$PY run_static.py --system $s --out results/test12 --seeds 20 --noise 0 0.01 0.05 0.1 --authors on")
+done
 if [ "$MODE" = "run" ]; then
   mkdir -p results/logs
   printf '%s\n' "${cmds[@]}" | { [ -n "$ONLY" ] && grep -- "--out results/$ONLY " || cat; } |
